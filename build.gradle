@@ -1,27 +1,64 @@
 plugins {
     id 'java'
+    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = 'com.chunkslab.realms'
-version = '1.0.0'
+version = '1.0.0-SNAPSHOT'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.github.goooler.shadow'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.papermc.io/repository/maven-public/' }
+        maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    }
+
+    dependencies {
+        compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+
+        compileOnly 'org.projectlombok:lombok:1.18.34'
+        annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    }
+
+    build {
+        dependsOn shadowJar
+    }
+}
 
 repositories {
     mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.rapture.pw/repository/maven-snapshots/' }
+    maven { url 'https://repo.triumphteam.dev/snapshots/' }
+    maven { url "https://storehouse.okaeri.eu/repository/maven-public/" }
+    maven { url 'https://repo.xenondevs.xyz/releases' }
+    maven { url 'https://maven.enginehub.org/repo/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
+    implementation project(':api')
+
+    implementation("net.kyori:adventure-api:4.17.0")
+    implementation("net.kyori:adventure-text-minimessage:4.17.0")
+    implementation("net.kyori:adventure-text-serializer-legacy:4.17.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.3")
+
+    implementation 'dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT'  exclude group: 'com.google.code.gson'
+    implementation 'eu.okaeri:okaeri-configs-yaml-bukkit:5.0.5'
+    implementation 'xyz.xenondevs.invui:invui:1.36'
+    //implementation 'fr.mrmicky:fastboard:2.1.2'
+    implementation 'org.bstats:bstats-bukkit:3.0.2'
+
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.13'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly 'com.zaxxer:HikariCP:5.0.1'
 }
 
-def targetJavaVersion = 16
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -47,3 +84,19 @@ processResources {
         expand props
     }
 }
+
+shadowJar {
+    dependsOn(jar)
+
+    archiveFileName = "ChunksLab-Realms v${archiveVersion.get()}.jar"
+
+    relocate 'dev.triumphteam.cmd', 'com.chunkslab.realms.libs.triumphteam'
+    relocate 'xyz.xenondevs', 'com.chunkslab.realms.libs.xenondevs'
+    relocate 'eu.okaeri', 'com.chunkslab.realms.libs.okaeri'
+
+    from sourceSets.getByName("main").output
+    configurations = [project.configurations.getByName("runtimeClasspath")]
+    minimize()
+}
+
+shadowJar.shouldRunAfter build

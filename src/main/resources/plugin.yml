@@ -1,7 +1,8 @@
 name: ChunksLab-Realms
+description: An Realms plugin created with love.
 version: '${version}'
 main: com.chunkslab.realms.RealmsPlugin
 api-version: '1.17'
-depend: [PlaceholderAPI]
 authors: [amownyy, ChunksLab]
 website: http://chunkslab.com/
+depend: [PlaceholderAPI]
