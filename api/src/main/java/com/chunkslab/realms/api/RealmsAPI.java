@@ -1,10 +1,11 @@
 package com.chunkslab.realms.api;
 
+import com.chunkslab.realms.api.scheduler.IScheduler;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class RealmsAPI extends JavaPlugin {
+public abstract class RealmsAPI extends JavaPlugin {
 
     private static RealmsAPI api;
 
@@ -21,5 +22,11 @@ public class RealmsAPI extends JavaPlugin {
     public static RealmsAPI getInstance() {
         return api;
     }
+
+    // abstract
+
+    public abstract IScheduler getScheduler();
+
+    public abstract void setScheduler(IScheduler scheduler);
 
 }
