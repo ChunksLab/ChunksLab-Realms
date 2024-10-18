@@ -1,0 +1,7 @@
+name: ChunksLab-Realms
+version: '${version}'
+main: com.chunkslab.realms.RealmsPlugin
+api-version: '1.17'
+depend: [PlaceholderAPI]
+authors: [amownyy, ChunksLab]
+website: http://chunkslab.com/
