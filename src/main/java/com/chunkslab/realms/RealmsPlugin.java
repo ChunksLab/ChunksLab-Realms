@@ -4,12 +4,14 @@ import com.chunkslab.realms.api.RealmsAPI;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
+import com.chunkslab.realms.api.schematic.ISchematicManager;
 import com.chunkslab.realms.api.server.IServerManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.player.PlayerManager;
 import com.chunkslab.realms.scheduler.Scheduler;
+import com.chunkslab.realms.schematic.SchematicManager;
 import com.chunkslab.realms.server.ServerManager;
 import com.chunkslab.realms.util.ChatUtils;
 import com.chunkslab.realms.world.WorldManager;
@@ -53,6 +55,7 @@ public final class RealmsPlugin extends RealmsAPI {
 
     // managers
     @Setter private IWorldManager worldManager = new WorldManager(this);
+    @Setter private ISchematicManager schematicManager = new SchematicManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
     @Setter private ModuleManager moduleManager = new ModuleManager(this);
@@ -81,6 +84,10 @@ public final class RealmsPlugin extends RealmsAPI {
                 )
         );
 
+        worldManager.loadWorlds();
+        schematicManager.enable();
+        scheduler.enable();
+
         this.getModuleManager().enableModules();
     }
 
@@ -91,6 +98,10 @@ public final class RealmsPlugin extends RealmsAPI {
         if (adventure != null) {
             adventure.close();
             adventure = null;
+        }
+        if (scheduler != null) {
+            scheduler.disable();
+            scheduler = null;
         }
     }
 

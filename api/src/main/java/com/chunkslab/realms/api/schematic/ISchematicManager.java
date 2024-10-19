@@ -7,6 +7,8 @@ public interface ISchematicManager {
 
     Map<String, File> getSchematics();
 
+    void enable();
+
     SchematicPaster getSchematicPaster();
 
     SchematicPaster getDefaultSchematicPaster();
