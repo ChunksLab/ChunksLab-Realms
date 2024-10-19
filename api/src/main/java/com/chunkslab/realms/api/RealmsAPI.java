@@ -1,6 +1,7 @@
 package com.chunkslab.realms.api;
 
 import com.chunkslab.realms.api.module.ModuleManager;
+import com.chunkslab.realms.api.player.IPlayerManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import com.chunkslab.realms.api.server.IServerManager;
 import lombok.Getter;
@@ -31,11 +32,15 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract IServerManager getServerManager();
 
+    public abstract IPlayerManager getPlayerManager();
+
     public abstract ModuleManager getModuleManager();
 
     public abstract void setScheduler(IScheduler scheduler);
 
     public abstract void setServerManager(IServerManager serverManager);
+
+    public abstract void setPlayerManager(IPlayerManager playerManager);
 
     public abstract void setModuleManager(ModuleManager manager);
 
