@@ -1,6 +1,8 @@
 package com.chunkslab.realms;
 
 import com.chunkslab.realms.api.RealmsAPI;
+import com.chunkslab.realms.api.database.Database;
+import com.chunkslab.realms.api.listener.IListenerManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
@@ -9,6 +11,8 @@ import com.chunkslab.realms.api.server.IServerManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
+import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
+import com.chunkslab.realms.listener.ListenerManager;
 import com.chunkslab.realms.player.PlayerManager;
 import com.chunkslab.realms.scheduler.Scheduler;
 import com.chunkslab.realms.schematic.SchematicManager;
@@ -53,9 +57,13 @@ public final class RealmsPlugin extends RealmsAPI {
     private MessagesEN pluginMessages;
     private BukkitCommandManager<CommandSender> commandManager;
 
+    // database
+    @Setter private Database database;
+
     // managers
     @Setter private IWorldManager worldManager = new WorldManager(this);
     @Setter private ISchematicManager schematicManager = new SchematicManager(this);
+    @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
     @Setter private ModuleManager moduleManager = new ModuleManager(this);
@@ -86,18 +94,27 @@ public final class RealmsPlugin extends RealmsAPI {
 
         worldManager.loadWorlds();
         schematicManager.enable();
+        listenerManager.enable();
         scheduler.enable();
 
+        database = new YamlDatabase(this);
+
         this.getModuleManager().enableModules();
+        database.enable();
     }
 
     @Override
     public void onDisable() {
         this.getModuleManager().disableModules();
 
+        listenerManager.disable();
         if (adventure != null) {
             adventure.close();
             adventure = null;
+        }
+        if (database != null) {
+            database.disable();
+            database = null;
         }
         if (scheduler != null) {
             scheduler.disable();
