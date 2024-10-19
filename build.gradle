@@ -96,7 +96,7 @@ processResources {
 shadowJar {
     dependsOn(jar)
 
-    archiveFileName = "ChunksLab-Realms v${archiveVersion.get()}.jar"
+    archiveFileName = "Realms v${archiveVersion.get()}.jar"
 
     relocate 'dev.triumphteam.cmd', 'com.chunkslab.realms.libs.triumphteam'
     relocate 'xyz.xenondevs', 'com.chunkslab.realms.libs.xenondevs'
