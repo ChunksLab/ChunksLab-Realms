@@ -2,11 +2,17 @@ package com.chunkslab.realms;
 
 import com.chunkslab.realms.api.RealmsAPI;
 import com.chunkslab.realms.api.module.ModuleManager;
+import com.chunkslab.realms.api.player.IPlayerManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
+import com.chunkslab.realms.api.server.IServerManager;
+import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
+import com.chunkslab.realms.player.PlayerManager;
 import com.chunkslab.realms.scheduler.Scheduler;
+import com.chunkslab.realms.server.ServerManager;
 import com.chunkslab.realms.util.ChatUtils;
+import com.chunkslab.realms.world.WorldManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.exceptions.CommandRegistrationException;
@@ -46,8 +52,11 @@ public final class RealmsPlugin extends RealmsAPI {
     private BukkitCommandManager<CommandSender> commandManager;
 
     // managers
-    @Setter private IScheduler scheduler = new Scheduler(this);
+    @Setter private IWorldManager worldManager = new WorldManager(this);
+    @Setter private IServerManager serverManager = new ServerManager();
+    @Setter private IPlayerManager playerManager = new PlayerManager();
     @Setter private ModuleManager moduleManager = new ModuleManager(this);
+    @Setter private IScheduler scheduler = new Scheduler(this);
 
     @Override
     public void onLoad() {
