@@ -1,5 +1,6 @@
 package com.chunkslab.realms.api;
 
+import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,10 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract IScheduler getScheduler();
 
+    public abstract ModuleManager getModuleManager();
+
     public abstract void setScheduler(IScheduler scheduler);
+
+    public abstract void setModuleManager(ModuleManager manager);
 
 }
