@@ -1,0 +1,19 @@
+upgrades:
+  members:
+    0:
+      level: 0
+      value: 5
+      price: 500
+    1:
+      level: 1
+      value: 10
+      price: 1000
+  size:
+    0:
+      level: 0
+      value: 50
+      price: 500
+    1:
+      level: 1
+      value: 100
+      price: 1000

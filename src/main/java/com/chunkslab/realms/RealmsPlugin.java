@@ -10,6 +10,7 @@ import com.chunkslab.realms.api.role.IRoleManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import com.chunkslab.realms.api.schematic.ISchematicManager;
 import com.chunkslab.realms.api.server.IServerManager;
+import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
@@ -20,6 +21,7 @@ import com.chunkslab.realms.role.RoleManager;
 import com.chunkslab.realms.scheduler.Scheduler;
 import com.chunkslab.realms.schematic.SchematicManager;
 import com.chunkslab.realms.server.ServerManager;
+import com.chunkslab.realms.upgrade.UpgradeManager;
 import com.chunkslab.realms.util.ChatUtils;
 import com.chunkslab.realms.world.WorldManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -61,6 +63,7 @@ public final class RealmsPlugin extends RealmsAPI {
     private BukkitCommandManager<CommandSender> commandManager;
 
     // config
+    private final ConfigFile upgradesFile = new ConfigFile(this, "upgrades.yml", true);
     private final ConfigFile rolesFile = new ConfigFile(this, "roles.yml", true);
 
     // database
@@ -69,6 +72,7 @@ public final class RealmsPlugin extends RealmsAPI {
     // managers
     @Setter private IWorldManager worldManager = new WorldManager(this);
     @Setter private ISchematicManager schematicManager = new SchematicManager(this);
+    @Setter private IUpgradeManager upgradeManager = new UpgradeManager(this);
     @Setter private IRoleManager roleManager = new RoleManager(this);
     @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
@@ -92,6 +96,7 @@ public final class RealmsPlugin extends RealmsAPI {
         registerCommands();
         createConfig();
 
+        upgradesFile.create();
         rolesFile.create();
 
         ChatUtils.setCompactNumberFormat(
@@ -103,6 +108,7 @@ public final class RealmsPlugin extends RealmsAPI {
 
         worldManager.loadWorlds();
         schematicManager.enable();
+        upgradeManager.enable();
         roleManager.enable();
         listenerManager.enable();
         scheduler.enable();
