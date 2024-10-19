@@ -1,16 +1,3 @@
-plugins {
-    id 'java'
-}
-
-group = 'com.chunkslab.realms'
-version = '1.0.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {}
-
 def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)

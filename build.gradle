@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     id("io.github.goooler.shadow") version "8.1.7"
 }
 
@@ -9,6 +10,9 @@ version = '1.0.0-SNAPSHOT'
 allprojects {
     apply plugin: 'java'
     apply plugin: 'io.github.goooler.shadow'
+
+    group rootProject.group
+    version rootProject.version
 
     repositories {
         mavenCentral()
@@ -26,6 +30,10 @@ allprojects {
     build {
         dependsOn shadowJar
     }
+}
+
+subprojects {
+    apply plugin: 'maven-publish'
 }
 
 repositories {
@@ -100,3 +108,31 @@ shadowJar {
 }
 
 shadowJar.shouldRunAfter build
+
+tasks.shadowJar {
+    doLast {
+        file("${buildDir}/libs/${project.name}-${version}.jar").delete()
+    }
+}
+
+project(":api") {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name
+                version = project.version
+                artifact shadowJar
+            }
+        }
+        repositories {
+            maven {
+                url = uri("https://repo.chunkslab.com/release")
+                credentials {
+                    username = System.getenv("CHUNKSLAB_REPO_USERNAME")
+                    password = System.getenv("CHUNKSLAB_REPO_PASSWORD")
+                }
+            }
+        }
+    }
+}
