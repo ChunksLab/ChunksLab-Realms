@@ -1,10 +1,12 @@
 package com.chunkslab.realms;
 
 import com.chunkslab.realms.api.RealmsAPI;
+import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.database.Database;
 import com.chunkslab.realms.api.listener.IListenerManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
+import com.chunkslab.realms.api.role.IRoleManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import com.chunkslab.realms.api.schematic.ISchematicManager;
 import com.chunkslab.realms.api.server.IServerManager;
@@ -14,6 +16,7 @@ import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
 import com.chunkslab.realms.listener.ListenerManager;
 import com.chunkslab.realms.player.PlayerManager;
+import com.chunkslab.realms.role.RoleManager;
 import com.chunkslab.realms.scheduler.Scheduler;
 import com.chunkslab.realms.schematic.SchematicManager;
 import com.chunkslab.realms.server.ServerManager;
@@ -57,12 +60,16 @@ public final class RealmsPlugin extends RealmsAPI {
     private MessagesEN pluginMessages;
     private BukkitCommandManager<CommandSender> commandManager;
 
+    // config
+    private final ConfigFile rolesFile = new ConfigFile(this, "roles.yml", true);
+
     // database
     @Setter private Database database;
 
     // managers
     @Setter private IWorldManager worldManager = new WorldManager(this);
     @Setter private ISchematicManager schematicManager = new SchematicManager(this);
+    @Setter private IRoleManager roleManager = new RoleManager(this);
     @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
@@ -85,6 +92,8 @@ public final class RealmsPlugin extends RealmsAPI {
         registerCommands();
         createConfig();
 
+        rolesFile.create();
+
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(
                         Locale.forLanguageTag(pluginConfig.getNumberSettings().getLocale()),
@@ -94,6 +103,7 @@ public final class RealmsPlugin extends RealmsAPI {
 
         worldManager.loadWorlds();
         schematicManager.enable();
+        roleManager.enable();
         listenerManager.enable();
         scheduler.enable();
 

@@ -1,0 +1,22 @@
+visitor:
+  name: "Visitor"
+  weight: 1
+  permissions: []
+resident:
+  name: "Resident"
+  weight: 2
+  permissions:
+    - BREAK
+    - PLACE
+trusted:
+  name: "Trusted"
+  weight: 4
+  permissions:
+    - BREAK
+    - PLACE
+owner:
+  name: "Owner"
+  weight: 4
+  permissions:
+    - BREAK
+    - PLACE

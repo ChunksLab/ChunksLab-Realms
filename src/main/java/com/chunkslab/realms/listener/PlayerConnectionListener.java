@@ -20,6 +20,7 @@ public class PlayerConnectionListener implements Listener {
         Player player = event.getPlayer();
         plugin.getScheduler().runTaskAsync(() -> {
             RealmPlayer realmPlayer = plugin.getDatabase().loadPlayer(player.getUniqueId());
+            realmPlayer.setName(player.getName());
             plugin.getPlayerManager().addPlayer(realmPlayer);
         });
     }
