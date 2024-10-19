@@ -34,9 +34,9 @@ public class Scheduler implements IScheduler {
 
     public void reload() {
         try {
-            this.schedule.setMaximumPoolSize(10);
-            this.schedule.setCorePoolSize(10);
-            this.schedule.setKeepAliveTime(30, TimeUnit.SECONDS);
+            this.schedule.setMaximumPoolSize(plugin.getPluginConfig().getThreadSettings().getMaximumPoolSize());
+            this.schedule.setCorePoolSize(plugin.getPluginConfig().getThreadSettings().getCorePoolSize());
+            this.schedule.setKeepAliveTime(plugin.getPluginConfig().getThreadSettings().getKeepAliveTime(), TimeUnit.SECONDS);
         } catch (IllegalArgumentException e) {
             LogUtils.warn("Failed to create thread pool. Please lower the corePoolSize in config.yml.", e);
         }
