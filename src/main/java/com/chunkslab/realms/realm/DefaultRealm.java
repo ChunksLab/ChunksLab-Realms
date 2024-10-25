@@ -23,7 +23,7 @@ import java.util.UUID;
 @Getter @Setter
 public class DefaultRealm implements Realm {
     private UUID uniqueId;
-    private final long creationDate = System.currentTimeMillis();
+    private long creationDate = System.currentTimeMillis();
     private MembersData membersData = new DefaultMembersData();
     private String biome;
     private final Map<Upgrade.Type, Upgrade> upgrades = new HashMap<>();
@@ -35,6 +35,11 @@ public class DefaultRealm implements Realm {
     public DefaultRealm(String biome) {
         this.uniqueId = UUID.randomUUID();
         this.biome = biome;
+    }
+
+    public DefaultRealm(UUID uniqueId, long creationDate) {
+        this.uniqueId = uniqueId;
+        this.creationDate = creationDate;
     }
 
     @Override

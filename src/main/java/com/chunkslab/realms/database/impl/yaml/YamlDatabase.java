@@ -6,12 +6,16 @@ import com.chunkslab.realms.api.player.MessagePreference;
 import com.chunkslab.realms.api.player.contexts.RealmPlayerContext;
 import com.chunkslab.realms.api.player.objects.DefaultRealmPlayer;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.Realm;
+import com.chunkslab.realms.api.realm.bank.log.BankAction;
 import com.chunkslab.realms.api.realm.bank.log.BankLog;
+import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.api.util.LocationUtils;
 import com.chunkslab.realms.api.util.LogUtils;
+import com.chunkslab.realms.realm.DefaultRealm;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -19,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +66,54 @@ public class YamlDatabase implements Database {
 
     @Override
     public Realm loadRealm(UUID realmUUID) {
-        return null;
+        YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), realmUUID.toString());
+        data.create();
+
+        Realm realm = new DefaultRealm(UUID.fromString(data.getString("uniqueId")), data.getLong("creationDate"));
+        realm.setBiome(data.getString("biome"));
+        realm.setCenterLocation(LocationUtils.getServerLocation(data.getString("centerLocation")));
+        realm.setSpawnLocation(LocationUtils.getServerLocation(data.getString("spawnLocation")));
+        realm.setPrivacyOption(PrivacyOption.valueOf(data.getString("privacyOption")));
+
+        // members
+        for (String uuid : data.getConfigurationSection("membersData").getKeys(false)) {
+            RealmPlayer player = loadPlayer(UUID.fromString(data.getString("membersData." + uuid)));
+            Rank.Assignment assignment = Rank.Assignment.valueOf(data.getString("membersData." + uuid + ".rank"));
+            realm.getMembersController().setMember(player, plugin.getRankManager().getRank(assignment), false);
+        }
+
+        // bank
+        realm.getRealmBank().setBalance(BigDecimal.valueOf(data.getDouble("bank.balance")));
+        List<String> logs = data.getStringList("bank.logs");
+        for (String s : logs) {
+            String[] log = s.split(",");
+            RealmPlayer player = loadPlayer(UUID.fromString(log[0]));
+            BankAction action = BankAction.valueOf(log[1]);
+            BigDecimal amount = new BigDecimal(log[2]);
+            long time = Long.parseLong(log[3]);
+            BankLog bankLog = new BankLog(player, action, amount, time);
+            realm.getRealmBank().addLog(bankLog);
+        }
+
+        // upgrades
+        if (data.isSet("upgrades")) {
+            for (String s : data.getConfigurationSection("upgrades").getKeys(false)) {
+                Upgrade.Type type = Upgrade.Type.valueOf(s);
+                int l = data.getInt("upgrades." + s);
+                Upgrade upgrade = plugin.getUpgradeManager().getUpgrade(type, l);
+                realm.setUpgrade(upgrade);
+            }
+        }
+
+        // ratings
+        if (data.isSet("ratings")) {
+            for (String s : data.getConfigurationSection("ratings").getKeys(false)) {
+                int rating = data.getInt("ratings." + s, -1);
+                realm.addRating(loadPlayer(UUID.fromString(s)), rating);
+            }
+        }
+
+        return realm;
     }
 
     @SneakyThrows
