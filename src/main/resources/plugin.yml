@@ -1,4 +1,4 @@
-name: ChunksLab-Realms
+name: Realms
 description: An Realms plugin created with love.
 version: '${version}'
 main: com.chunkslab.realms.RealmsPlugin

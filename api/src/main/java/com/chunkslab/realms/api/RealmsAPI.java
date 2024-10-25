@@ -2,7 +2,7 @@ package com.chunkslab.realms.api;
 
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
-import com.chunkslab.realms.api.role.IRoleManager;
+import com.chunkslab.realms.api.rank.IRankManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import com.chunkslab.realms.api.schematic.ISchematicManager;
 import com.chunkslab.realms.api.server.IServerManager;
@@ -41,7 +41,7 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract IWorldManager getWorldManager();
 
-    public abstract IRoleManager getRoleManager();
+    public abstract IRankManager getRankManager();
 
     public abstract ModuleManager getModuleManager();
 
@@ -55,7 +55,7 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract void setWorldManager(IWorldManager worldManager);
 
-    public abstract void setRoleManager(IRoleManager roleManager);
+    public abstract void setRankManager(IRankManager rankManager);
 
     public abstract void setModuleManager(ModuleManager manager);
 

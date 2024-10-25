@@ -2,17 +2,26 @@ package com.chunkslab.realms.database.impl.yaml;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.database.Database;
-import com.chunkslab.realms.api.player.RealmPlayer;
+import com.chunkslab.realms.api.player.MessagePreference;
+import com.chunkslab.realms.api.player.contexts.RealmPlayerContext;
+import com.chunkslab.realms.api.player.objects.DefaultRealmPlayer;
+import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.Realm;
+import com.chunkslab.realms.api.realm.bank.log.BankLog;
+import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.api.util.LocationUtils;
 import com.chunkslab.realms.api.util.LogUtils;
-import com.chunkslab.realms.player.RealmPlayerImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -55,41 +64,30 @@ public class YamlDatabase implements Database {
         return null;
     }
 
+    @SneakyThrows
     @Override
-    public RealmPlayer loadPlayer(UUID playerUUID, boolean loadAnyway) {
-        RealmPlayer player = RealmsPlugin.getInstance().getPlayerManager().getPlayer(playerUUID);
-        if (player != null && !loadAnyway) {
-            return player;
-        }
-
+    public RealmPlayer loadPlayer(UUID playerUUID) {
         YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), playerUUID.toString());
         data.create();
 
-        player = new RealmPlayerImpl(playerUUID);
-        String name = data.getString("name");
+        RealmPlayer player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create(playerUUID).build());
         long lastLogout = data.getLong("lastLogout");
+        boolean bypass = data.getBoolean("bypass");
         if (data.isSet("realm")) {
             UUID realmUUID = UUID.fromString(data.getString("realm"));
             Realm realm = loadRealm(realmUUID);
             player.setRealm(realm);
         }
-
-        player.setName(name);
-        player.setLastLogout(lastLogout);
-        player.setOnline(true);
+        player.getData().setLastLogout(lastLogout);
+        //player.getData().setMessagePreference(MessagePreference.valueOf(data.getString("messagePreference")));
+        player.getData().setBypass(bypass);
 
         plugin.getPlayerManager().addPlayer(player);
-
         return player;
     }
 
     @Override
-    public RealmPlayer loadPlayer(String name, boolean loadAnyway) {
-        RealmPlayer player = RealmsPlugin.getInstance().getPlayerManager().getPlayer(name);
-        if (player != null && !loadAnyway) {
-            return player;
-        }
-
+    public RealmPlayer loadPlayer(String name) {
         File[] files = PLAYERS_FOLDER.listFiles();
         if (files == null) return null;
 
@@ -100,18 +98,18 @@ public class YamlDatabase implements Database {
             data.create();
 
             if (!name.equals(data.getString("name"))) continue;
-
-            player = new RealmPlayerImpl(UUID.fromString(file.getName().replace(".yml", "")));
+            RealmPlayer player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create().uuid(UUID.fromString(file.getName().replace(".yml", ""))).name(name).build());
             long lastLogout = data.getLong("lastLogout");
+            MessagePreference messagePreference = MessagePreference.valueOf(data.getString("messagePreference"));
+            boolean bypass = data.getBoolean("bypass");
             if (data.isSet("realm")) {
                 UUID realmUUID = UUID.fromString(data.getString("realm"));
                 Realm realm = loadRealm(realmUUID);
                 player.setRealm(realm);
             }
-
-            player.setName(name);
-            player.setLastLogout(lastLogout);
-            player.setOnline(true);
+            player.getData().setLastLogout(lastLogout);
+            player.getData().setMessagePreference(messagePreference);
+            player.getData().setBypass(bypass);
 
             plugin.getPlayerManager().addPlayer(player);
 
@@ -123,7 +121,44 @@ public class YamlDatabase implements Database {
 
     @Override
     public void saveRealm(Realm realm) {
+        YamlData data = new YamlData(REALMS_FOLDER.getPath(), realm.getUniqueId().toString());
+        data.create();
 
+        data.set("uniqueId", realm.getUniqueId().toString());
+        data.set("creationDate", realm.getCreationDate());
+        data.set("biome", realm.getBiome());
+        data.set("centerLocation", LocationUtils.getServerLocation(realm.getCenterLocation()));
+        data.set("spawnLocation", LocationUtils.getServerLocation(realm.getSpawnLocation()));
+        data.set("privacyOption", realm.getPrivacyOption().name());
+
+        // members
+        for (RankedPlayer member : realm.getMembersController().getMembers()) {
+            data.set("membersData." + member.getUniqueId().toString() + ".name", member.getName());
+            data.set("membersData." + member.getUniqueId().toString() + ".rank", member.getRank().assignment().name());
+        }
+
+        // bank
+        data.set("bank.balance", realm.getRealmBank().getBalance().doubleValue());
+        List<String> logs = new ArrayList<>();
+        for (BankLog log : realm.getRealmBank().getLogs()) {
+            logs.add(log.player().getUniqueId() + "," + log.action().name() + "," + log.amount() + "," + log.timestamp());
+        }
+        data.set("bank.logs", logs);
+
+        // upgrades
+        for (Upgrade.Type type : Upgrade.Type.VALUES) {
+            Upgrade upgrade = realm.getUpgrade(type);
+            if (upgrade == null) continue;
+            data.set("upgrades." + type.name(), upgrade.level());
+        }
+
+        // ratings
+        for (Map.Entry<RealmPlayer, Integer> entry : realm.getRatings().entrySet()) {
+            data.set("ratings." + entry.getKey().getUniqueId() + ".name", entry.getKey().getName());
+            data.set("ratings." + entry.getKey().getUniqueId() + ".rating", entry.getValue());
+        }
+
+        data.save();
     }
 
     @Override
@@ -134,8 +169,10 @@ public class YamlDatabase implements Database {
         data.set("name", player.getName());
 
         if (player.getRealm() != null)
-            data.set("realm", player.getRealm().getUniqueId());
+            data.set("realm", player.getRealm().getUniqueId().toString());
         data.set("lastLogout", System.currentTimeMillis());
+        data.set("messagePreference", player.getData().getMessagePreference().name());
+        data.set("bypass", player.getData().isBypass());
 
         data.save();
     }

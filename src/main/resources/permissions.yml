@@ -1,0 +1,7 @@
+ranks:
+  - id: "owner"
+    power: 3
+    display: "&cOwner"
+    assignment: OWNER
+    permissions:
+      - "ADMIN_COMMAND_RELOAD"

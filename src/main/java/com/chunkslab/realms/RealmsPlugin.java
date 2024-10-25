@@ -6,18 +6,19 @@ import com.chunkslab.realms.api.database.Database;
 import com.chunkslab.realms.api.listener.IListenerManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
-import com.chunkslab.realms.api.role.IRoleManager;
+import com.chunkslab.realms.api.rank.IRankManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import com.chunkslab.realms.api.schematic.ISchematicManager;
 import com.chunkslab.realms.api.server.IServerManager;
 import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
+import com.chunkslab.realms.command.player.CreateCommand;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
 import com.chunkslab.realms.listener.ListenerManager;
 import com.chunkslab.realms.player.PlayerManager;
-import com.chunkslab.realms.role.RoleManager;
+import com.chunkslab.realms.rank.RankManager;
 import com.chunkslab.realms.scheduler.Scheduler;
 import com.chunkslab.realms.schematic.SchematicManager;
 import com.chunkslab.realms.server.ServerManager;
@@ -64,7 +65,7 @@ public final class RealmsPlugin extends RealmsAPI {
 
     // config
     private final ConfigFile upgradesFile = new ConfigFile(this, "upgrades.yml", true);
-    private final ConfigFile rolesFile = new ConfigFile(this, "roles.yml", true);
+    private final ConfigFile permissionsFile = new ConfigFile(this, "permissions.yml", true);
 
     // database
     @Setter private Database database;
@@ -73,7 +74,7 @@ public final class RealmsPlugin extends RealmsAPI {
     @Setter private IWorldManager worldManager = new WorldManager(this);
     @Setter private ISchematicManager schematicManager = new SchematicManager(this);
     @Setter private IUpgradeManager upgradeManager = new UpgradeManager(this);
-    @Setter private IRoleManager roleManager = new RoleManager(this);
+    @Setter private IRankManager rankManager = new RankManager(this);
     @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
@@ -97,7 +98,7 @@ public final class RealmsPlugin extends RealmsAPI {
         createConfig();
 
         upgradesFile.create();
-        rolesFile.create();
+        permissionsFile.create();
 
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(
@@ -109,7 +110,7 @@ public final class RealmsPlugin extends RealmsAPI {
         worldManager.loadWorlds();
         schematicManager.enable();
         upgradeManager.enable();
-        roleManager.enable();
+        rankManager.enable();
         listenerManager.enable();
         scheduler.enable();
 
@@ -136,6 +137,9 @@ public final class RealmsPlugin extends RealmsAPI {
             scheduler.disable();
             scheduler = null;
         }
+
+        getBukkitCommands(getCommandMap()).remove("realm");
+        getBukkitCommands(getCommandMap()).remove("realms");
     }
 
     // copied from triumph-cmd, credit goes to triumph-team
@@ -173,6 +177,7 @@ public final class RealmsPlugin extends RealmsAPI {
         );
 
         // Player Commands
+        commandManager.registerCommand(new CreateCommand(this));
 
         // Admin Commands
 

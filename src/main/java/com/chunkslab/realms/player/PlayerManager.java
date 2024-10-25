@@ -1,7 +1,7 @@
 package com.chunkslab.realms.player;
 
 import com.chunkslab.realms.api.player.IPlayerManager;
-import com.chunkslab.realms.api.player.RealmPlayer;
+import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import org.bukkit.OfflinePlayer;
 
 import java.util.Collection;

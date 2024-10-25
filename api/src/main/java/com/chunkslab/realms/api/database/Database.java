@@ -1,6 +1,6 @@
 package com.chunkslab.realms.api.database;
 
-import com.chunkslab.realms.api.player.RealmPlayer;
+import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.realm.Realm;
 
 import java.util.UUID;
@@ -15,13 +15,9 @@ public interface Database {
 
     default Realm loadRealm(RealmPlayer player) { return loadRealm(player.getRealm().getUniqueId()); }
 
-    RealmPlayer loadPlayer(UUID playerUUID, boolean loadAnyway);
+    RealmPlayer loadPlayer(UUID playerUUID);
 
-    RealmPlayer loadPlayer(String name, boolean loadAnyway);
-
-    default RealmPlayer loadPlayer(UUID playerUUID) { return loadPlayer(playerUUID, false); }
-
-    default RealmPlayer loadPlayer(String name) { return loadPlayer(name, false); }
+    RealmPlayer loadPlayer(String name);
 
     void saveRealm(Realm realm);
 

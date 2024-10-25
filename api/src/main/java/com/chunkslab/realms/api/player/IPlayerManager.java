@@ -1,5 +1,6 @@
 package com.chunkslab.realms.api.player;
 
+import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import org.bukkit.OfflinePlayer;
 
 import java.util.Collection;

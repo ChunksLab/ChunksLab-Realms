@@ -22,7 +22,7 @@ public class LocationUtils {
     }
 
     public static String getServerLocation(ServerLocation location) {
-        return location == null ? "Unknown location!" : location.getServer() + "," + location.getLocation().getWorld() + "," + location.getLocation().getX() + "," + location.getLocation().getY() + "," + location.getLocation().getZ() + "," + location.getLocation().getYaw() + "," + location.getLocation().getPitch();
+        return location == null ? "Unknown location!" : location.getServer() + "," + location.getLocation().getWorld().getName() + "," + location.getLocation().getX() + "," + location.getLocation().getY() + "," + location.getLocation().getZ() + "," + location.getLocation().getYaw() + "," + location.getLocation().getPitch();
     }
 
     public static Location getLocation(String location) {
