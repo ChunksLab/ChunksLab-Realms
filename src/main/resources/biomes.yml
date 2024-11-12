@@ -1,0 +1,11 @@
+biomes:
+    # You must have at least one biome that does not require any permission.
+    plains:
+      display-name: "<green>Plains"
+      description:
+        - "A vast, open grassland with scattered trees and flowers."
+      # permission: "chunkslab.realms.biomes.plains"
+      icon: "GRASS_BLOCK"
+      # Schema files must be placed in the "schematics" folder.
+      schematics:
+        - "plains_1.schem"

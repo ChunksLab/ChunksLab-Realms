@@ -64,6 +64,8 @@ public class Config extends OkaeriConfig {
         private String defaultDescription = "A realm created by <player>";
         @Comment("Blocked keywords for name and description")
         private List<String> blockedKeywords = List.of("admin", "mod", "owner", "chunkslab", "fuck");
+        @Comment("Blocks forbidden to set realm spawn location")
+        private List<String> forbiddenBlocks = List.of("WATER", "LAVA");
     }
 
     @Getter @Setter

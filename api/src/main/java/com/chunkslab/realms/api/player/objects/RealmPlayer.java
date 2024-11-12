@@ -18,11 +18,13 @@ public interface RealmPlayer {
      */
     RealmPlayerContext getContext();
 
+    @Nullable UUID getRealmId();
+
     @Nullable Realm getRealm();
 
     RealmPlayerData getData();
 
-    void setRealm(Realm realm);
+    void setRealmId(UUID realmId);
 
     String getName();
 

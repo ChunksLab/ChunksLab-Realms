@@ -1,6 +1,8 @@
 package com.chunkslab.realms.api.realm;
 
+import com.chunkslab.realms.api.biome.Biome;
 import com.chunkslab.realms.api.location.ServerLocation;
+import com.chunkslab.realms.api.player.objects.RealmPlayer;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -21,19 +23,7 @@ public interface IRealmManager {
      */
     Realm getRealm(UUID uniqueId);
 
-    /**
-     * Get a realm by its location.
-     * @param location location
-     * @return realm or null if not found
-     */
-    Realm getRealm(ServerLocation location);
+    CompletableFuture<Boolean> createRealm(Biome biome, RealmPlayer realmPlayer);
 
-    /**
-     * Create a new realm.
-     * @param realm realm to create
-     * @return true if the realm has been created
-     */
-    CompletableFuture<Boolean> createRealm(Realm realm);
-
-    
+    CompletableFuture<Boolean> loadRealm(Realm realm);
 }

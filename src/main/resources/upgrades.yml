@@ -11,9 +11,9 @@ upgrades:
   size:
     0:
       level: 0
-      value: 50
+      value: 7
       price: 500
     1:
       level: 1
-      value: 100
+      value: 9
       price: 1000

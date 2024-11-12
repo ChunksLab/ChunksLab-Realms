@@ -50,12 +50,25 @@ public class YamlDatabase implements Database {
             plugin.getWorldManager().setLastLocation(LocationUtils.getLocation(OTHER_DATA.getString("last-realm-location")));
         } else {
             World world = Bukkit.getWorld(plugin.getWorldManager().getNormalWorldName(null));
-            plugin.getWorldManager().setLastLocation(new Location(world, 0, 99, 0));
+            plugin.getWorldManager().setLastLocation(new Location(world, 0, -50, 0));
+        }
+
+        File[] files = REALMS_FOLDER.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                UUID realmUUID = UUID.fromString(file.getName().replace(".yml", ""));
+                Realm realm = loadRealm(realmUUID);
+                plugin.getRealmManager().loadRealm(realm);
+            }
         }
     }
 
     @Override
     public void disable() {
+        for (Realm realm : RealmsPlugin.getInstance().getRealmManager().getRealms()) {
+            saveRealm(realm);
+        }
+
         for (RealmPlayer player : RealmsPlugin.getInstance().getPlayerManager().getPlayers()) {
             savePlayer(player);
         }
@@ -66,10 +79,10 @@ public class YamlDatabase implements Database {
 
     @Override
     public Realm loadRealm(UUID realmUUID) {
-        YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), realmUUID.toString());
+        YamlData data = new YamlData(REALMS_FOLDER.getPath(), realmUUID.toString());
         data.create();
 
-        Realm realm = new DefaultRealm(UUID.fromString(data.getString("uniqueId")), data.getLong("creationDate"));
+        Realm realm = new DefaultRealm(realmUUID, data.getLong("creationDate"));
         realm.setBiome(data.getString("biome"));
         realm.setCenterLocation(LocationUtils.getServerLocation(data.getString("centerLocation")));
         realm.setSpawnLocation(LocationUtils.getServerLocation(data.getString("spawnLocation")));
@@ -77,7 +90,7 @@ public class YamlDatabase implements Database {
 
         // members
         for (String uuid : data.getConfigurationSection("membersData").getKeys(false)) {
-            RealmPlayer player = loadPlayer(UUID.fromString(data.getString("membersData." + uuid)));
+            RealmPlayer player = loadPlayer(UUID.fromString(uuid));
             Rank.Assignment assignment = Rank.Assignment.valueOf(data.getString("membersData." + uuid + ".rank"));
             realm.getMembersController().setMember(player, plugin.getRankManager().getRank(assignment), false);
         }
@@ -119,16 +132,18 @@ public class YamlDatabase implements Database {
     @SneakyThrows
     @Override
     public RealmPlayer loadPlayer(UUID playerUUID) {
+        RealmPlayer player = plugin.getPlayerManager().getPlayer(playerUUID);
+        if (player != null) return player;
+
         YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), playerUUID.toString());
         data.create();
 
-        RealmPlayer player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create(playerUUID).build());
+        player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create(playerUUID).build());
         long lastLogout = data.getLong("lastLogout");
         boolean bypass = data.getBoolean("bypass");
         if (data.isSet("realm")) {
             UUID realmUUID = UUID.fromString(data.getString("realm"));
-            Realm realm = loadRealm(realmUUID);
-            player.setRealm(realm);
+            player.setRealmId(realmUUID);
         }
         player.getData().setLastLogout(lastLogout);
         //player.getData().setMessagePreference(MessagePreference.valueOf(data.getString("messagePreference")));
@@ -140,6 +155,9 @@ public class YamlDatabase implements Database {
 
     @Override
     public RealmPlayer loadPlayer(String name) {
+        RealmPlayer player = plugin.getPlayerManager().getPlayer(name);
+        if (player != null) return player;
+
         File[] files = PLAYERS_FOLDER.listFiles();
         if (files == null) return null;
 
@@ -150,14 +168,13 @@ public class YamlDatabase implements Database {
             data.create();
 
             if (!name.equals(data.getString("name"))) continue;
-            RealmPlayer player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create().uuid(UUID.fromString(file.getName().replace(".yml", ""))).name(name).build());
+            player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create().uuid(UUID.fromString(file.getName().replace(".yml", ""))).name(name).build());
             long lastLogout = data.getLong("lastLogout");
             MessagePreference messagePreference = MessagePreference.valueOf(data.getString("messagePreference"));
             boolean bypass = data.getBoolean("bypass");
             if (data.isSet("realm")) {
                 UUID realmUUID = UUID.fromString(data.getString("realm"));
-                Realm realm = loadRealm(realmUUID);
-                player.setRealm(realm);
+                player.setRealmId(realmUUID);
             }
             player.getData().setLastLogout(lastLogout);
             player.getData().setMessagePreference(messagePreference);

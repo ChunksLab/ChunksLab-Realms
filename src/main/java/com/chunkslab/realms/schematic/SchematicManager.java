@@ -17,26 +17,6 @@ public class SchematicManager implements ISchematicManager {
 
     private final RealmsPlugin plugin;
 
-    @Getter private final Map<String, File> schematics = new HashMap<>();
-
-    @Override
-    public void enable() {
-        File schematicsFolder = new File(plugin.getDataFolder(), "schematics");
-
-        if (!schematicsFolder.exists()) {
-            plugin.saveResource("schematics/plains_1.schem", false);
-        }
-
-        File[] files = schematicsFolder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    schematics.put(file.getName(), file);
-                }
-            }
-        }
-    }
-
     @Override
     public SchematicPaster getSchematicPaster() {
         String recommendedPaster = plugin.getPluginConfig().getPaster().getName();

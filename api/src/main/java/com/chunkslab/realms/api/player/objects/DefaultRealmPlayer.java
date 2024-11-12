@@ -1,5 +1,6 @@
 package com.chunkslab.realms.api.player.objects;
 
+import com.chunkslab.realms.api.RealmsAPI;
 import com.chunkslab.realms.api.player.contexts.RealmPlayerContext;
 import com.chunkslab.realms.api.player.data.DefaultRealmPlayerData;
 import com.chunkslab.realms.api.player.data.RealmPlayerData;
@@ -17,11 +18,18 @@ public class DefaultRealmPlayer implements RealmPlayer {
     @Getter
     private final RealmPlayerData data;
     @Getter @Setter
-    private transient @Nullable Realm realm;
+    private @Nullable UUID realmId;
 
     public DefaultRealmPlayer(RealmPlayerContext context) {
         this.context = context;
         this.data = new DefaultRealmPlayerData(context.getUniqueId());
+    }
+
+    @Nullable
+    public Realm getRealm() {
+        if (this.realmId == null) return null;
+
+        return RealmsAPI.getInstance().getRealmManager().getRealm(realmId);
     }
 
     @Override

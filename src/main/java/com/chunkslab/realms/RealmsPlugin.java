@@ -1,17 +1,21 @@
 package com.chunkslab.realms;
 
 import com.chunkslab.realms.api.RealmsAPI;
+import com.chunkslab.realms.api.biome.IBiomeManager;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.database.Database;
 import com.chunkslab.realms.api.listener.IListenerManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
 import com.chunkslab.realms.api.rank.IRankManager;
+import com.chunkslab.realms.api.realm.IRealmManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
 import com.chunkslab.realms.api.schematic.ISchematicManager;
 import com.chunkslab.realms.api.server.IServerManager;
 import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
+import com.chunkslab.realms.biome.BiomeManager;
+import com.chunkslab.realms.command.MainCommand;
 import com.chunkslab.realms.command.player.CreateCommand;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
@@ -19,6 +23,7 @@ import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
 import com.chunkslab.realms.listener.ListenerManager;
 import com.chunkslab.realms.player.PlayerManager;
 import com.chunkslab.realms.rank.RankManager;
+import com.chunkslab.realms.realm.RealmManager;
 import com.chunkslab.realms.scheduler.Scheduler;
 import com.chunkslab.realms.schematic.SchematicManager;
 import com.chunkslab.realms.server.ServerManager;
@@ -66,6 +71,8 @@ public final class RealmsPlugin extends RealmsAPI {
     // config
     private final ConfigFile upgradesFile = new ConfigFile(this, "upgrades.yml", true);
     private final ConfigFile permissionsFile = new ConfigFile(this, "permissions.yml", true);
+    private final ConfigFile biomesFile = new ConfigFile(this, "biomes.yml", true);
+    private final ConfigFile realmsMenuConfig = new ConfigFile(this, "menus", "realms-menu.yml");
 
     // database
     @Setter private Database database;
@@ -75,6 +82,8 @@ public final class RealmsPlugin extends RealmsAPI {
     @Setter private ISchematicManager schematicManager = new SchematicManager(this);
     @Setter private IUpgradeManager upgradeManager = new UpgradeManager(this);
     @Setter private IRankManager rankManager = new RankManager(this);
+    @Setter private IBiomeManager biomeManager= new BiomeManager(this);
+    @Setter private IRealmManager realmManager = new RealmManager(this);
     @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
@@ -99,6 +108,8 @@ public final class RealmsPlugin extends RealmsAPI {
 
         upgradesFile.create();
         permissionsFile.create();
+        biomesFile.create();
+        realmsMenuConfig.create();
 
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(
@@ -108,9 +119,9 @@ public final class RealmsPlugin extends RealmsAPI {
         );
 
         worldManager.loadWorlds();
-        schematicManager.enable();
         upgradeManager.enable();
         rankManager.enable();
+        biomeManager.enable();
         listenerManager.enable();
         scheduler.enable();
 
@@ -176,8 +187,12 @@ public final class RealmsPlugin extends RealmsAPI {
                 new ArrayList<>(this.serverManager.getAllOnlinePlayers())
         );
 
+        commandManager.registerCommand(new MainCommand(this));
+
         // Player Commands
-        commandManager.registerCommand(new CreateCommand(this));
+        commandManager.registerCommand(
+                new CreateCommand(this)
+        );
 
         // Admin Commands
 

@@ -1,0 +1,34 @@
+structure:
+  - "# # # # # # # # #"
+  - "# # # # # # # # #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# < # # # # # > #"
+
+title: "<underlined>Realms"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  'x':
+    name: "%player_prefix% %player_name%"
+    lore:
+      - "<gray>Current Players: <reset><current-players>"
+      - "<gray>Created: <reset><creation-date>"
+    custom-model-data: 5000
+  '<':
+    material: "ARROW"
+    name: "<yellow>Previous Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the previous page"
+      - ""
+  '>':
+    material: "ARROW"
+    name: "<yellow>Next Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the next page"
+      - ""

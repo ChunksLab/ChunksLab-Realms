@@ -59,7 +59,7 @@ public class DefaultMembersController implements MembersController {
     @Override
     public void removeMember(RealmPlayer player) {
         getMembers().removeIf(member -> member.getContext().equals(player.getContext()));
-        player.setRealm(null);
+        player.setRealmId(null);
     }
 
     @Override
@@ -100,14 +100,14 @@ public class DefaultMembersController implements MembersController {
 
     @Override
     public void join(@NotNull RealmPlayer player) {
-        player.setRealm(getRealm());
+        player.setRealmId(getRealm().getUniqueId());
         setMember(player, RealmsPlugin.getInstance().getRankManager().getRank(Rank.Assignment.RESIDENT),false);
         //TODO: SEND BROADCAST MESSAGE TO ALL MEMBER
     }
 
     @Override
     public void kick(@NotNull RealmPlayer player, @Nullable String kicker) {
-        player.setRealm(null);
+        player.setRealmId(null);
         removeMember(player);
         //TODO: SEND BROADCAST MESSAGE TO ALL MEMBER
     }

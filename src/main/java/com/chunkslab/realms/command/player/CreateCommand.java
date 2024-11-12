@@ -22,5 +22,18 @@ public class CreateCommand extends BaseCommand {
             ChatUtils.sendMessage(player, ChatUtils.format("<red>Your data is still loading, please try again."));
             return;
         }
+        if (realmPlayer.getRealmId() != null) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<red>You are already a member of a realm"));
+            return;
+        }
+
+        plugin.getRealmManager().createRealm(plugin.getBiomeManager().getDefaultBiome(), realmPlayer).thenAccept(result -> {
+           if (!result) {
+               ChatUtils.sendMessage(player, ChatUtils.format("<red>Problem encountered please notify the administrator"));
+               return;
+           }
+
+           plugin.getScheduler().runTaskSync(() -> player.teleportAsync(realmPlayer.getRealm().getSpawnLocation().getLocation()), player.getLocation());
+        });
     }
 }
