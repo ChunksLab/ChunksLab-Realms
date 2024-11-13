@@ -38,7 +38,7 @@ public class ConfigFile extends YamlConfiguration {
                     throw new RuntimeException(e);
                 }
             } else {
-                plugin.saveResource(file.getName(), false);
+                plugin.saveResource(folder == null ? file.getName() : folder + File.separator + file.getName(), false);
             }
         }
 

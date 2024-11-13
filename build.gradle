@@ -58,7 +58,7 @@ dependencies {
 
     implementation 'dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT'  exclude group: 'com.google.code.gson'
     implementation 'eu.okaeri:okaeri-configs-yaml-bukkit:5.0.5'
-    implementation 'xyz.xenondevs.invui:invui:1.36'
+    implementation 'xyz.xenondevs.invui:invui:1.41'
     //implementation 'fr.mrmicky:fastboard:2.1.2'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'dev.dbassett:skullcreator:3.0.1'
@@ -100,14 +100,15 @@ shadowJar {
 
     archiveFileName = "Realms v${archiveVersion.get()}.jar"
 
-    relocate 'net.kyori', 'com.chunkslab.merchant.aac.libs.adventure'
+    relocate 'net.kyori', 'com.chunkslab.realms.libs.adventure'
     relocate 'dev.triumphteam.cmd', 'com.chunkslab.realms.libs.triumphteam'
+    relocate 'xyz.xenondevs.invui', 'com.chunkslab.realms.libs.invui'
+    relocate 'dev.dbassett', 'com.chunkslab.realms.libs.skullcreator'
     relocate 'eu.okaeri', 'com.chunkslab.realms.libs.okaeri'
-    relocate 'org.bstats', 'com.chunkslab.aac.libs.bstats'
+    relocate 'org.bstats', 'com.chunkslab.realms.libs.bstats'
 
     from sourceSets.getByName("main").output
     configurations = [project.configurations.getByName("runtimeClasspath")]
-    minimize()
 }
 
 shadowJar.shouldRunAfter build

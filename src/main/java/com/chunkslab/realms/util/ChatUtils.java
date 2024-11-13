@@ -53,6 +53,10 @@ public class ChatUtils {
         return LEGACY_AMPERSAND.serialize(component);
     }
 
+    public static List<String> fromLegacy(List<Component> components) {
+        return components.stream().map(ChatUtils::fromLegacy).collect(Collectors.toList());
+    }
+
     public static Component colorLegacyString(String string) {
         return LEGACY.deserialize(string);
     }

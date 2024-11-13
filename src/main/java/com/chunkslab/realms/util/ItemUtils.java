@@ -31,7 +31,7 @@ public class ItemUtils {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (config.contains(path + ".name"))
-            itemMeta.displayName(ChatUtils.format(PlaceholderAPI.setPlaceholders(null, config.getString(path + ".name"))));
+            itemMeta.setDisplayName(ChatUtils.fromLegacy(ChatUtils.format(PlaceholderAPI.setPlaceholders(null, config.getString(path + ".name")))));
         if (config.contains(path + ".amount"))
             itemStack.setAmount(config.getInt(path + ".amount"));
         if (config.contains(path + ".damage"))
@@ -39,7 +39,7 @@ public class ItemUtils {
         if (config.contains(path + ".custom-model-data"))
             itemMeta.setCustomModelData(Integer.valueOf(config.getInt(path + ".custom-model-data")));
         if (config.contains(path + ".lore"))
-            itemMeta.lore(ChatUtils.format(PlaceholderAPI.setPlaceholders(null, config.getStringList(path + ".lore"))));
+            itemMeta.setLore(ChatUtils.fromLegacy(ChatUtils.format(PlaceholderAPI.setPlaceholders(null, config.getStringList(path + ".lore")))));
         if (config.contains(path + ".unbreakable"))
             itemMeta.setUnbreakable(config.getBoolean(path + ".unbreakable"));
         if (config.contains(path + ".hide-attributes")) {

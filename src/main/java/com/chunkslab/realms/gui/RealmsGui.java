@@ -22,6 +22,7 @@ import xyz.xenondevs.invui.window.Window;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RealmsGui {
 
@@ -30,7 +31,7 @@ public class RealmsGui {
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        List<Item> realms = plugin.getRealmManager().getRealms().stream().map(realm -> createRealmItem(player, config, realm)).toList();
+        List<Item> realms = plugin.getRealmManager().getRealms().stream().map(realm -> createRealmItem(player, config, realm)).collect(Collectors.toList());
 
         Gui gui = PagedGui.items()
                 .setStructure(config.getStringList("structure").toArray(new String[0]))
@@ -55,7 +56,7 @@ public class RealmsGui {
             SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(
                     realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer()));
             item.setDisplayName(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer(), config.getString("items.x.name"))));
-            item.setLore(ChatUtils.formatForGui(config.getStringList("items.x.lore"), Placeholder.unparsed("current-players", String.valueOf(1)), Placeholder.unparsed("creation-date", realm.getCreationDateFormatted())));
+            item.setLore(ChatUtils.formatForGui(config.getStringList("items.x.lore"), Placeholder.parsed("current-players", String.valueOf(1)), Placeholder.parsed("creation-date", realm.getCreationDateFormatted())));
             item.setCustomModelData(config.getInt("items.x.custom-model-data"));
             return new UpdatingItem(
                     20,
