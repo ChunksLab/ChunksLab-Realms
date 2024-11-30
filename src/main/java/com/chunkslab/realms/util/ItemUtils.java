@@ -3,6 +3,7 @@ package com.chunkslab.realms.util;
 import com.chunkslab.realms.api.config.ConfigFile;
 import dev.dbassett.skullcreator.SkullCreator;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -16,7 +17,7 @@ import java.util.Locale;
 
 public class ItemUtils {
     @NotNull
-    public static ItemStack build(ConfigFile config, String path) {
+    public static ItemStack build(ConfigFile config, String path, TagResolver... placeholders) {
         String material = config.getString(path + ".material") == null ? "BARRIER" : config.getString(path + ".material");
         ItemStack itemStack;
         assert material != null;
@@ -39,7 +40,7 @@ public class ItemUtils {
         if (config.contains(path + ".custom-model-data"))
             itemMeta.setCustomModelData(Integer.valueOf(config.getInt(path + ".custom-model-data")));
         if (config.contains(path + ".lore"))
-            itemMeta.setLore(ChatUtils.fromLegacy(ChatUtils.format(PlaceholderAPI.setPlaceholders(null, config.getStringList(path + ".lore")))));
+            itemMeta.setLore(ChatUtils.fromLegacy(ChatUtils.format(PlaceholderAPI.setPlaceholders(null, config.getStringList(path + ".lore")), placeholders)));
         if (config.contains(path + ".unbreakable"))
             itemMeta.setUnbreakable(config.getBoolean(path + ".unbreakable"));
         if (config.contains(path + ".hide-attributes")) {

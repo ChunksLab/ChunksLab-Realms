@@ -2,6 +2,7 @@ package com.chunkslab.realms.gui;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
+import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.gui.item.BackItem;
 import com.chunkslab.realms.gui.item.ForwardItem;
@@ -31,12 +32,34 @@ public class RealmsGui {
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        List<Item> realms = plugin.getRealmManager().getRealms().stream().map(realm -> createRealmItem(player, config, realm)).collect(Collectors.toList());
+        Item community = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.c")), event -> {
+
+        });
+
+        Item teleport = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.t")), event -> {
+            if (event.getClickType().isShiftClick()) {
+                plugin.getPlayerManager().getPlayer(player).getRealm().setSpawnLocation(ServerLocation.Builder.create(player.getLocation()).build());
+                ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>You successfully set your realm spawn point!"));
+            } else {
+                player.teleportAsync(plugin.getPlayerManager().getPlayer(player).getRealm().getSpawnLocation().getLocation());
+            }
+        });
+
+        Item settings = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.s")), event -> {
+            SettingsGui.open(plugin.getPlayerManager().getPlayer(player), plugin);
+        });
+
+        List<Item> realms = plugin.getRealmManager().getRealms()
+                .stream().map(realm -> createRealmItem(player, config, realm))
+                .collect(Collectors.toList());
 
         Gui gui = PagedGui.items()
                 .setStructure(config.getStringList("structure").toArray(new String[0]))
                 .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
                 .addIngredient('#', border)
+                .addIngredient('c', community)
+                .addIngredient('t', teleport)
+                .addIngredient('s', settings)
                 .addIngredient('<', new BackItem(config))
                 .addIngredient('>', new ForwardItem(config))
                 .setContent(realms)
@@ -53,16 +76,11 @@ public class RealmsGui {
 
     private static Item createRealmItem(Player player, ConfigFile config, Realm realm) {
         try {
-            SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(
-                    realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer()));
+            SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer()));
             item.setDisplayName(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer(), config.getString("items.x.name"))));
             item.setLore(ChatUtils.formatForGui(config.getStringList("items.x.lore"), Placeholder.parsed("current-players", String.valueOf(1)), Placeholder.parsed("creation-date", realm.getCreationDateFormatted())));
             item.setCustomModelData(config.getInt("items.x.custom-model-data"));
-            return new UpdatingItem(
-                    20,
-                    () -> item,
-                    event -> player.teleportAsync(realm.getSpawnLocation().getLocation())
-            );
+            return new UpdatingItem(20, () -> item, event -> player.teleportAsync(realm.getSpawnLocation().getLocation()));
         } catch (MojangApiUtils.MojangApiException | IOException e) {
             throw new RuntimeException(e);
         }

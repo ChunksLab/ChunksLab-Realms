@@ -1,5 +1,5 @@
 structure:
-  - "# # # # # # # # #"
+  - "# c # t t t # s #"
   - "# # # # # # # # #"
   - "# x x x x x x x #"
   - "# x x x x x x x #"
@@ -12,6 +12,28 @@ items:
   '#':
     material: "GRAY_STAINED_GLASS_PANE"
     name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  'c':
+    material: "BOOK"
+    name: "<#A7AEBA>Visit the community voted"
+    lore:
+      - "<#A7AEBA>realm of the month!"
+      - ""
+      - "<#DC2625> ❌ Currently unavailable..."
+  't':
+    material: "ENDER_PEARL"
+    name: "<#A7AEBA>Return back to the spawn"
+    lore:
+      - "<#A7AEBA>of your personal realm."
+      - ""
+      - "<#85CC16> → Click to travel"
+      - "<#0099DB> → Shift-click to set spawnpoint"
+  's':
+    material: "CHORUS_FRUIT"
+    name: "<#A7AEBA>Make changes to your realm"
+    lore:
+      - "<#A7AEBA>invite friends, and more."
+      - ""
+      - "<#85CC16> → Click to open menu"
   'x':
     name: "%player_prefix% %player_name%"
     lore:

@@ -73,6 +73,7 @@ public final class RealmsPlugin extends RealmsAPI {
     private final ConfigFile permissionsFile = new ConfigFile(this, "permissions.yml", true);
     private final ConfigFile biomesFile = new ConfigFile(this, "biomes.yml", true);
     private final ConfigFile realmsMenuConfig = new ConfigFile(this, "menus", "realms-menu.yml");
+    private final ConfigFile settingsMenuConfig = new ConfigFile(this, "menus", "settings-menu.yml");
 
     // database
     @Setter private Database database;
@@ -110,6 +111,7 @@ public final class RealmsPlugin extends RealmsAPI {
         permissionsFile.create();
         biomesFile.create();
         realmsMenuConfig.create();
+        settingsMenuConfig.create();
 
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(

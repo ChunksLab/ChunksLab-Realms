@@ -1,0 +1,36 @@
+structure:
+  - "# # # # # # # # ?"
+  - "# m m # r # p p #"
+
+title: "<underlined>Realms Settings"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  '?':
+    material: "BOOK"
+    name: "<#3C8DC3>Click to learn more about this"
+    lore:
+      - "<#3C8DC3>area of ChunksLab Realms!"
+  'm':
+    material: "ARROW"
+    name: "<#A7AEBA>Add, manage, and remove"
+    lore:
+      - "<#A7AEBA>members of your realm."
+      - ""
+      - "<white>Realms Members: <#F49E0B><current>/<max>"
+      - ""
+      - "<#85CC16> → Click to open menu"
+  'r':
+    material: "BARRIER"
+    name: "<#DC2625><bold>Reset Realm"
+  'p':
+    material: "CHORUS_FRUIT"
+    name: "<#A7AEBA>Control the visiting status"
+    lore:
+      - "<#A7AEBA>of your realm at all times."
+      - ""
+      - "<white>Current: <#F49E0B><status>"
+      - ""
+      - "<#85CC16> → Click to change status"
