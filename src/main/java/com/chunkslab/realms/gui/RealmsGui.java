@@ -3,6 +3,7 @@ package com.chunkslab.realms.gui;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.location.ServerLocation;
+import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.gui.item.BackItem;
 import com.chunkslab.realms.gui.item.ForwardItem;
@@ -30,6 +31,8 @@ public class RealmsGui {
     public static void open(Player player, RealmsPlugin plugin) {
         ConfigFile config = plugin.getRealmsMenuConfig();
 
+        RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
+
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
         Item community = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.c")), event -> {
@@ -38,15 +41,23 @@ public class RealmsGui {
 
         Item teleport = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.t")), event -> {
             if (event.getClickType().isShiftClick()) {
-                plugin.getPlayerManager().getPlayer(player).getRealm().setSpawnLocation(ServerLocation.Builder.create(player.getLocation()).build());
-                ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>You successfully set your realm spawn point!"));
+                if (realmPlayer.getRealmId() == null) {
+                    ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+                } else {
+                    realmPlayer.getRealm().setSpawnLocation(ServerLocation.Builder.create(player.getLocation()).build());
+                    ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>You successfully set your realm spawn point!"));
+                }
             } else {
-                player.teleportAsync(plugin.getPlayerManager().getPlayer(player).getRealm().getSpawnLocation().getLocation());
+                player.teleportAsync(realmPlayer.getRealm().getSpawnLocation().getLocation());
             }
         });
 
         Item settings = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.s")), event -> {
-            SettingsGui.open(plugin.getPlayerManager().getPlayer(player), plugin);
+            if (realmPlayer.getRealmId() == null) {
+                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+            } else {
+                SettingsGui.open(realmPlayer, plugin);
+            }
         });
 
         List<Item> realms = plugin.getRealmManager().getRealms()

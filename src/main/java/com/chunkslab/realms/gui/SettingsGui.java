@@ -36,7 +36,7 @@ public class SettingsGui {
             ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>Maintenance!"));
         });
 
-        Item privacy = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.p", Placeholder.parsed("status", realm.getPrivacyOption().name()))), event -> {
+        Item privacy = new UpdatingItem(10, () -> new ItemBuilder(ItemUtils.build(config, "items.p", Placeholder.parsed("status", realm.getPrivacyOption().name()))), event -> {
             PrivacyOption privacyOption = realm.getPrivacyOption();
 
             PrivacyOption[] values = PrivacyOption.values();
