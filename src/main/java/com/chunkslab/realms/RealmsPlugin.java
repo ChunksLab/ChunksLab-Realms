@@ -89,8 +89,8 @@ public final class RealmsPlugin extends RealmsAPI {
     @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
-    @Setter private ModuleManager moduleManager = new ModuleManager(this);
     @Setter private IScheduler scheduler = new Scheduler(this);
+    @Setter private ModuleManager moduleManager = new ModuleManager(this);
 
     @Override
     public void onLoad() {
@@ -199,7 +199,8 @@ public final class RealmsPlugin extends RealmsAPI {
                 new TeleportCommand(this),
                 new SettingsCommand(this),
                 new SetSpawnCommand(this),
-                new MembersCommand(this)
+                new MembersCommand(this),
+                new RemoveCommand(this)
         );
 
         // Admin Commands
