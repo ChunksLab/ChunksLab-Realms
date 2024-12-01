@@ -17,6 +17,7 @@ import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.biome.BiomeManager;
 import com.chunkslab.realms.command.MainCommand;
 import com.chunkslab.realms.command.player.CreateCommand;
+import com.chunkslab.realms.command.player.TeleportCommand;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
@@ -195,7 +196,8 @@ public final class RealmsPlugin extends RealmsAPI {
 
         // Player Commands
         commandManager.registerCommand(
-                new CreateCommand(this)
+                new CreateCommand(this),
+                new TeleportCommand(this)
         );
 
         // Admin Commands
