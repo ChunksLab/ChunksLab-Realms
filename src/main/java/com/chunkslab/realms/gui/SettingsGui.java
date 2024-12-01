@@ -29,7 +29,7 @@ public class SettingsGui {
 
         ItemStack memberItem = ItemUtils.build(config, "items.m", Placeholder.parsed("current", String.valueOf(realm.getMembersController().getMembersCount())), Placeholder.parsed("max", String.valueOf(PermissionUtils.getMax(player.getBukkitPlayer(), "chunkslab.realms.member", plugin.getPluginConfig().getSettings().getDefaultRealmMemberAmount()))));
         Item member = new UpdatingItem(20, () -> new ItemBuilder(memberItem), event -> {
-            MembersGui.open(player, plugin);
+            MembersGui.open(player, realm, plugin);
         });
 
         Item reset = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.r")), event -> {

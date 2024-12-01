@@ -1,5 +1,6 @@
 package com.chunkslab.realms.api.config;
 
+import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,14 +10,14 @@ import java.io.IOException;
 public class ConfigFile extends YamlConfiguration {
 
     private final JavaPlugin plugin;
-    private final File file;
+    @Getter private final File file;
     private final String folder;
     private final boolean save;
 
     public ConfigFile(JavaPlugin plugin, String name, boolean save) {
         this.plugin = plugin;
-        file = new File(plugin.getDataFolder(), name);
-        this.folder = plugin.getDataFolder().getName();
+        file = new File(plugin.getDataFolder(), name.endsWith(".yml") ? name : name + ".yml");
+        this.folder = null;
         this.save = save;
     }
 
@@ -27,6 +28,7 @@ public class ConfigFile extends YamlConfiguration {
         this.save = true;
     }
 
+    @SuppressWarnings("all")
     public void create() {
         if (!file.exists()) {
             file.getParentFile().mkdirs();

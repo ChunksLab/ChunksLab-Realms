@@ -19,7 +19,7 @@ public class ForwardItem extends PageItem {
 
     @Override
     public ItemProvider getItemProvider(PagedGui<?> gui) {
-        return new ItemBuilder(ItemUtils.build(config, "items.<"));
+        return new ItemBuilder(ItemUtils.build(config, "items.>"));
     }
 
 }

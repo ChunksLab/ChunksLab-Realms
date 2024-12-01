@@ -1,0 +1,51 @@
+structure:
+  - "# # # # # # # # #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# < # # # # # > #"
+
+title: "<underlined>Members"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  'x':
+    member:
+      name: "&6&l<member-rank>"
+      lore:
+        - "%player_prefix% %player_name%"
+        - "<#A7AEBA>Online: <white><last-online-date>"
+        - "<#A7AEBA>Date Invited: <white><join-date>"
+    add:
+      material: "ENDER_PEARL"
+      name: "<#85CC16>Add Member"
+      lore:
+        - "<#A7AEBA>Add people to your realm"
+        - "<#A7AEBA>giving them more access."
+        - ""
+        - "<#A7AEBA>Command: <white>/realm invite <name>"
+    locked:
+      material: "ENDER_EYE"
+      name: "<#DC2625>Locked Slot"
+      lore:
+        - "<#A7AEBA>Gain access to this slot"
+        - "<#A7AEBA>by upgrading your rank."
+        - ""
+        - "<#0099DB>store.chunkslab.com"
+  '<':
+    material: "ARROW"
+    name: "<yellow>Previous Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the previous page"
+      - ""
+  '>':
+    material: "ARROW"
+    name: "<yellow>Next Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the next page"
+      - ""

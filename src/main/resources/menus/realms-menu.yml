@@ -39,7 +39,6 @@ items:
     lore:
       - "<gray>Current Players: <reset><current-players>"
       - "<gray>Created: <reset><creation-date>"
-    custom-model-data: 5000
   '<':
     material: "ARROW"
     name: "<yellow>Previous Page"
