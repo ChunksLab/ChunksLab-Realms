@@ -51,9 +51,12 @@ public interface ServerLocation {
         }
 
         public ServerLocation build() {
-            if (server == null)
-                this.server = "server-1";
-                //this.server = RealmsAPI.getServerName();
+            if (server == null) {
+                if (RealmsAPI.getInstance().getModuleManager().isModulePresent("MultiServer"))
+                    this.server = RealmsAPI.getInstance().getModuleManager().getModule("MultiServer").getConfig().getString("server-name");
+                else
+                    this.server = "server-1";
+            }
             Preconditions.checkNotNull(location, "Specify a valid Bukkit's location to create a new instance of ServerLocation");
             return new ServerLocationImpl(server, location);
         }
