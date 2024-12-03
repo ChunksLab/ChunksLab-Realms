@@ -4,6 +4,7 @@ import com.chunkslab.realms.api.RealmsAPI;
 import com.chunkslab.realms.api.biome.IBiomeManager;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.database.Database;
+import com.chunkslab.realms.api.invite.IInviteManager;
 import com.chunkslab.realms.api.listener.IListenerManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
@@ -16,10 +17,19 @@ import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.biome.BiomeManager;
 import com.chunkslab.realms.command.MainCommand;
-import com.chunkslab.realms.command.player.*;
+import com.chunkslab.realms.command.player.AcceptCommand;
+import com.chunkslab.realms.command.player.CreateCommand;
+import com.chunkslab.realms.command.player.DenyCommand;
+import com.chunkslab.realms.command.player.InviteCommand;
+import com.chunkslab.realms.command.player.MembersCommand;
+import com.chunkslab.realms.command.player.RemoveCommand;
+import com.chunkslab.realms.command.player.SetSpawnCommand;
+import com.chunkslab.realms.command.player.SettingsCommand;
+import com.chunkslab.realms.command.player.TeleportCommand;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
+import com.chunkslab.realms.invite.InviteManager;
 import com.chunkslab.realms.listener.ListenerManager;
 import com.chunkslab.realms.player.PlayerManager;
 import com.chunkslab.realms.rank.RankManager;
@@ -86,6 +96,7 @@ public final class RealmsPlugin extends RealmsAPI {
     @Setter private IRankManager rankManager = new RankManager(this);
     @Setter private IBiomeManager biomeManager= new BiomeManager(this);
     @Setter private IRealmManager realmManager = new RealmManager(this);
+    @Setter private IInviteManager inviteManager = new InviteManager(this);
     @Setter private IListenerManager listenerManager = new ListenerManager(this);
     @Setter private IServerManager serverManager = new ServerManager();
     @Setter private IPlayerManager playerManager = new PlayerManager();
@@ -200,7 +211,10 @@ public final class RealmsPlugin extends RealmsAPI {
                 new SettingsCommand(this),
                 new SetSpawnCommand(this),
                 new MembersCommand(this),
-                new RemoveCommand(this)
+                new RemoveCommand(this),
+                new InviteCommand(this),
+                new AcceptCommand(this),
+                new DenyCommand(this)
         );
 
         // Admin Commands

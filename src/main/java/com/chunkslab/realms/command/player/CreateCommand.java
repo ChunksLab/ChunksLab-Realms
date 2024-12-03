@@ -19,17 +19,17 @@ public class CreateCommand extends BaseCommand {
     public void createCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
             return;
         }
         if (realmPlayer.getRealmId() != null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You are already a member of a realm"));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You are already a member of a realm"));
             return;
         }
 
         plugin.getRealmManager().createRealm(plugin.getBiomeManager().getDefaultBiome(), realmPlayer).thenAccept(result -> {
            if (!result) {
-               ChatUtils.sendMessage(player, ChatUtils.format("<red>Problem encountered please notify the administrator"));
+               ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Problem encountered please notify the administrator"));
                return;
            }
 

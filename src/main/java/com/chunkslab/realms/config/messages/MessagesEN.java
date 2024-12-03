@@ -22,13 +22,13 @@ public class MessagesEN extends OkaeriConfig {
 
     private String prefix = "<#D0EFB1>Realms <dark_gray>•";
 
-    private String invalidArgument = "<prefix> <red>Invalid argument.";
+    private String invalidArgument = "<prefix> <#DC2625>Invalid argument.";
 
-    private String tooManyArguments = "<prefix> <red>Too many arguments.";
+    private String tooManyArguments = "<prefix> <#DC2625>Too many arguments.";
 
-    private String notEnoughArguments = "<prefix> <red>Not enough arguments.";
+    private String notEnoughArguments = "<prefix> <#DC2625>Not enough arguments.";
 
-    private String unknownCommand = "<prefix> <red>Unknown command.";
+    private String unknownCommand = "<prefix> <#DC2625>Unknown command.";
 
-    private String notEnoughPermission = "<prefix> <red>You don't have enough permission to do this.";
+    private String notEnoughPermission = "<prefix> <#DC2625>You don't have enough permission to do this.";
 }

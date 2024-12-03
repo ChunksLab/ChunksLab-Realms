@@ -33,7 +33,7 @@ public class SettingsGui {
         });
 
         Item reset = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.r")), event -> {
-            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>Maintenance!"));
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<#DC2625>Maintenance!"));
         });
 
         Item privacy = new UpdatingItem(10, () -> new ItemBuilder(ItemUtils.build(config, "items.p", Placeholder.parsed("status", realm.getPrivacyOption().name()))), event -> {

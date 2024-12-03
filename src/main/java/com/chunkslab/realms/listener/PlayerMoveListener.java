@@ -50,7 +50,7 @@ public class PlayerMoveListener implements Listener {
             if (player.isFlying() && !player.hasPermission("chunkslab.realms.permission.bypass.fly")) {
                 player.setFlying(false);
                 player.setAllowFlight(false);
-                player.sendMessage(ChatUtils.format("<red>You do not have permission to fly in this realm."));
+                player.sendMessage(ChatUtils.format("<#DC2625>You do not have permission to fly in this realm."));
             }
         }
     }

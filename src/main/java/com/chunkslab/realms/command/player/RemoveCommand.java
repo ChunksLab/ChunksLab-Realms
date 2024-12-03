@@ -21,11 +21,11 @@ public class RemoveCommand extends BaseCommand {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         RealmPlayer targetPlayer = plugin.getPlayerManager().getPlayer(target);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
             return;
         }
         if (targetPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>Player is not available, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Player is not available, please try again."));
             return;
         }
         if (realmPlayer.getRealmId() == null) {

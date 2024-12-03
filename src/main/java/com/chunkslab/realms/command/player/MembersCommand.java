@@ -21,7 +21,7 @@ public class MembersCommand extends BaseCommand {
     public void membersCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
             return;
         }
         if (realmPlayer.getRealmId() == null) {
