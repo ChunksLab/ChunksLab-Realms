@@ -7,6 +7,8 @@ import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 import com.chunkslab.realms.api.realm.IRealmManager;
 import com.chunkslab.realms.api.realm.Realm;
+import com.chunkslab.realms.api.upgrade.Upgrade;
+import com.chunkslab.realms.api.util.LogUtils;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 
@@ -20,6 +22,7 @@ public class RealmManager implements IRealmManager {
     private final RealmsPlugin plugin;
 
     private final Map<UUID, Realm> realmMap = new ConcurrentHashMap<>();
+    private final TreeMap<Integer, TreeMap<Integer, Realm>> locationMap = new TreeMap<>();
 
     @Override
     public Collection<Realm> getRealms() {
@@ -51,6 +54,45 @@ public class RealmManager implements IRealmManager {
     @Override
     public CompletableFuture<Boolean> loadRealm(Realm realm) {
         realmMap.put(realm.getUniqueId(), realm);
+
+        putLocations(realm);
+
         return CompletableFuture.completedFuture(true);
+    }
+
+    private void putLocations(Realm realm) {
+        TreeMap<Integer, Realm> map = new TreeMap<>();
+        int range = realm.getUpgrade(Upgrade.Type.SIZE).value();
+        if (range % 2 == 0)
+            range += 1;
+        map.put(realm.getCenterLocation().getLocation().getBlockZ() - range, realm);
+        locationMap.put(realm.getCenterLocation().getLocation().getBlockX() - range, map);
+    }
+
+    @Override
+    public void unloadRealm(Realm realm) {
+        if (!this.realmMap.containsKey(realm.getUniqueId())) return;
+
+        LogUtils.debug(String.format("Unloading realm... [%s]", realm.getUniqueId().toString()));
+
+        this.realmMap.remove(realm.getUniqueId());
+
+        plugin.getScheduler().runTaskSync(() -> plugin.getDatabase().saveRealm(realm), realm.getSpawnLocation().getLocation());
+    }
+
+    @Override
+    public Realm getRealm(Location location) {
+        // idea is from BentoBox, big credit to them.
+        Map.Entry<Integer, TreeMap<Integer, Realm>> entry = locationMap.floorEntry(location.getBlockX());
+        if (entry == null) return null;
+
+        Map.Entry<Integer, Realm> zEntry = entry.getValue().floorEntry(location.getBlockZ());
+        if (zEntry == null) return null;
+
+        Realm realm = zEntry.getValue();
+        if (realm.isInBorder(location))
+            return realm;
+
+        return null;
     }
 }

@@ -2,6 +2,8 @@ package com.chunkslab.realms.listener;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.realm.Realm;
+import com.chunkslab.realms.util.WorldBorderUtils;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +20,13 @@ public class PlayerConnectionListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        plugin.getScheduler().runTaskAsync(() -> plugin.getDatabase().loadPlayer(player.getUniqueId()));
+        plugin.getScheduler().runTaskAsync(() -> {
+            plugin.getDatabase().loadPlayer(player.getUniqueId());
+            Realm realm = plugin.getRealmManager().getRealm(player.getLocation());
+            if (realm == null) return;
+
+            plugin.getScheduler().runTaskSync(() -> WorldBorderUtils.send(player, realm), player.getLocation());
+        });
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

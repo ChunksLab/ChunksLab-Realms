@@ -14,6 +14,7 @@ import com.chunkslab.realms.realm.member.DefaultMembersController;
 import com.chunkslab.realms.realm.member.data.DefaultMembersData;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -70,5 +71,16 @@ public class DefaultRealm implements Realm {
     @Override
     public void addRating(RealmPlayer player, int rating) {
         this.ratings.put(player, rating);
+    }
+
+    @Override
+    public boolean isInBorder(Location location) {
+        double size = this.getUpgrade(Upgrade.Type.SIZE).value() / 2d;
+        if (size % 2 == 0)
+            size += 1;
+        Location centerLocationBukkit = centerLocation.getLocation();
+        double x = Math.abs(location.getX() - centerLocationBukkit.getX());
+        double z = Math.abs(location.getZ() - centerLocationBukkit.getZ());
+        return x <= size && z <= size;
     }
 }

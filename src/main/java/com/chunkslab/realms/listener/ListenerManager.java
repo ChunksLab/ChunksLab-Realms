@@ -21,6 +21,9 @@ public class ListenerManager implements IListenerManager {
     @Override
     public void enable() {
         register(new PlayerConnectionListener(plugin));
+        register(new PlayerMoveListener(plugin));
+        register(new PlayerTeleportListener(plugin));
+        register(new PlayerRespawnListener(plugin));
     }
 
     @Override

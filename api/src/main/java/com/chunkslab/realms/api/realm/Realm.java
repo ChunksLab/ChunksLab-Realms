@@ -7,6 +7,7 @@ import com.chunkslab.realms.api.realm.member.MembersController;
 import com.chunkslab.realms.api.realm.member.data.MembersData;
 import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.upgrade.Upgrade;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -77,7 +78,6 @@ public interface Realm {
      */
     int getRating(RealmPlayer player);
 
-
     /**
      * Get the center location of this realm.
      * @return center location
@@ -101,6 +101,8 @@ public interface Realm {
      * @return realm bank
      */
     @NotNull RealmBank getRealmBank();
+
+    boolean isInBorder(Location location);
 
     /**
      * Set the member data of this realm.

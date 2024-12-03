@@ -3,6 +3,7 @@ package com.chunkslab.realms.api.realm;
 import com.chunkslab.realms.api.biome.Biome;
 import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import org.bukkit.Location;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -26,4 +27,8 @@ public interface IRealmManager {
     CompletableFuture<Boolean> createRealm(Biome biome, RealmPlayer realmPlayer);
 
     CompletableFuture<Boolean> loadRealm(Realm realm);
+
+    void unloadRealm(Realm realm);
+
+    Realm getRealm(Location location);
 }
