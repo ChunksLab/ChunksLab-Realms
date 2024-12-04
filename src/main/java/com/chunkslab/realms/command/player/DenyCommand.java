@@ -19,18 +19,17 @@ public class DenyCommand extends BaseCommand {
     public void denyCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            player.sendMessage(ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
             return;
         }
 
         plugin.getInviteManager().getInvite(player.getUniqueId()).whenComplete((realmId, ex) -> {
             if (realmId == null) {
-                player.sendMessage(ChatUtils.format("<#DC2625>You do not have an invite. -_-"));
+                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You do not have an invite. -_-"));
                 return;
             }
 
-            player.sendMessage(ChatUtils.format("<#85CC16>Invite rejected."));
-
+            ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>Invite rejected."));
             plugin.getInviteManager().rejectInvite(realmPlayer);
         });
     }

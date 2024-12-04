@@ -3,6 +3,7 @@ package com.chunkslab.realms.command.player;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.util.LogUtils;
+import com.chunkslab.realms.gui.InviteGui;
 import com.chunkslab.realms.util.ChatUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -35,18 +36,23 @@ public class InviteCommand extends BaseCommand {
         // TODO: Role permission check
 
         if (target.equalsIgnoreCase(player.getName())) {
-            player.sendMessage(ChatUtils.format("<#DC2625>You cannot invite yourself."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You cannot invite yourself."));
             return;
         }
         
         plugin.getScheduler().runTaskAsync(() -> {
             Collection<String> players = plugin.getServerManager().getAllOnlinePlayers();
             if (!players.contains(target)) {
-                player.sendMessage(ChatUtils.format("<#DC2625><player> is not online.", Placeholder.unparsed("player", target)));
+                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625><player> is not online.", Placeholder.unparsed("player", target)));
                 return;
             }
 
             RealmPlayer targetPlayer = plugin.getDatabase().loadPlayer(target);
+            if (targetPlayer.getRealmId().equals(realmPlayer.getRealmId())) {
+                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Target player already member of your realm."));
+                return;
+            }
+
             plugin.getInviteManager().getInvite(targetPlayer.getUniqueId()).whenComplete((invite, ex) -> {
                 if (ex != null) {
                     LogUtils.warn("An exception was found!", ex);
@@ -54,13 +60,11 @@ public class InviteCommand extends BaseCommand {
                 }
 
                 if (invite != null) {
-                    player.sendMessage(ChatUtils.format("<#DC2625>Target player already has an invite, please wait for 3 minutes and try again."));
+                    ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Target player already has an invite, please wait for 3 minutes and try again."));
                     return;
                 }
 
-                plugin.getInviteManager().invitePlayer(realmPlayer, targetPlayer);
-
-                player.sendMessage(ChatUtils.format("<#85CC16>Player invited successfully."));
+                InviteGui.open(realmPlayer, targetPlayer, plugin);
             });
         });
     }

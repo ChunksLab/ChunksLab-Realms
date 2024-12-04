@@ -1,22 +1,19 @@
 package com.chunkslab.realms.api.invite;
 
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface IInviteManager {
 
-    void invitePlayer(RealmPlayer inviter, RealmPlayer target);
+    void invitePlayer(RealmPlayer inviter, RealmPlayer target, Rank rank);
 
-    /**
-     * @param uuid UUID of the target player
-     * @return The Realm UUID player got invited to
-     */
-    CompletableFuture<UUID> getInvite(UUID uuid);
+    CompletableFuture<Invite> getInvite(UUID uuid);
 
     void rejectInvite(RealmPlayer player);
 
-    void acceptInvite(RealmPlayer player, UUID realmUniqueId);
+    void acceptInvite(RealmPlayer player, Invite invite);
 
 }

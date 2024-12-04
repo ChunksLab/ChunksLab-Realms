@@ -85,6 +85,7 @@ public final class RealmsPlugin extends RealmsAPI {
     private final ConfigFile realmsMenuConfig = new ConfigFile(this, "menus", "realms-menu.yml");
     private final ConfigFile settingsMenuConfig = new ConfigFile(this, "menus", "settings-menu.yml");
     private final ConfigFile membersMenuConfig = new ConfigFile(this, "menus", "members-menu.yml");
+    private final ConfigFile inviteMenuConfig = new ConfigFile(this, "menus", "invite-menu.yml");
 
     // database
     @Setter private Database database;
@@ -125,6 +126,7 @@ public final class RealmsPlugin extends RealmsAPI {
         realmsMenuConfig.create();
         settingsMenuConfig.create();
         membersMenuConfig.create();
+        inviteMenuConfig.create();
 
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(

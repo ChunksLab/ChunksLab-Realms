@@ -20,23 +20,23 @@ public class AcceptCommand extends BaseCommand {
     public void acceptCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            player.sendMessage(ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
             return;
         }
 
-        plugin.getInviteManager().getInvite(player.getUniqueId()).whenComplete((realmId, ex) -> {
+        plugin.getInviteManager().getInvite(player.getUniqueId()).whenComplete((invite, ex) -> {
             if (ex != null) {
                 LogUtils.warn("An exception was found on redis!", ex);
                 return;
             }
 
-            if (realmId == null) {
-                player.sendMessage(ChatUtils.format("<#DC2625>You do not have an invite. -_-"));
+            if (invite == null) {
+                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You do not have an invite. -_-"));
                 return;
             }
 
-            player.sendMessage(ChatUtils.format("<#85CC16>Invite accepted. Teleporting..."));
-            plugin.getInviteManager().acceptInvite(realmPlayer, realmId);
+            ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>Invite accepted. Teleporting..."));
+            plugin.getInviteManager().acceptInvite(realmPlayer, invite);
         });
     }
 }

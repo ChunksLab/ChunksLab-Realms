@@ -1,0 +1,21 @@
+structure:
+  - "# # # # # # # # ?"
+  - "# r r r # t t t #"
+
+title: "<underlined>Invite"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  '?':
+    material: "BOOK"
+    name: "<#3C8DC3>Click to learn more about this"
+    lore:
+      - "<#3C8DC3>area of ChunksLab Realms!"
+  'r':
+    material: "ENDER_PEAL"
+    name: "<#85CC16><bold>RESIDENT"
+  't':
+    material: "ENDER_EYE"
+    name: "<#0099DB><bold>TRUSTED"

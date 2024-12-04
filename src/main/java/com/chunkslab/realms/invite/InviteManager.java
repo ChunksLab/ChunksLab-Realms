@@ -2,6 +2,7 @@ package com.chunkslab.realms.invite;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.invite.IInviteManager;
+import com.chunkslab.realms.api.invite.Invite;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 import com.chunkslab.realms.util.ChatUtils;
@@ -21,11 +22,11 @@ public class InviteManager implements IInviteManager {
 
     private final RealmsPlugin plugin;
 
-    private final Cache<UUID, UUID> inviteCache = CacheBuilder.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES).build();
+    private final Cache<UUID, Invite> inviteCache = CacheBuilder.newBuilder().expireAfterWrite(3, TimeUnit.MINUTES).build();
 
     @Override
-    public void invitePlayer(RealmPlayer inviter, RealmPlayer target) {
-        inviteCache.put(target.getUniqueId(), inviter.getRealmId());
+    public void invitePlayer(RealmPlayer inviter, RealmPlayer target, Rank rank) {
+        inviteCache.put(target.getUniqueId(), new Invite(inviter.getRealmId(), rank));
 
         Component component = ChatUtils.format("<yellow>You just got an invite from <player>. ", Placeholder.unparsed("player", inviter.getName()));
         component = component.append(ChatUtils.format("<green>ACCEPT").clickEvent(ClickEvent.runCommand("/realms accept " + inviter.getName())));
@@ -37,7 +38,7 @@ public class InviteManager implements IInviteManager {
     }
 
     @Override
-    public CompletableFuture<UUID> getInvite(UUID uuid) {
+    public CompletableFuture<Invite> getInvite(UUID uuid) {
         return CompletableFuture.completedFuture(inviteCache.getIfPresent(uuid));
     }
 
@@ -47,9 +48,10 @@ public class InviteManager implements IInviteManager {
     }
 
     @Override
-    public void acceptInvite(RealmPlayer player, UUID realmId) {
-        plugin.getRealmManager().getRealm(realmId).getMembersController().setMember(player, plugin.getRankManager().getRank(Rank.Assignment.RESIDENT), false);
-        player.setRealmId(realmId);
+    public void acceptInvite(RealmPlayer player, Invite invite) {
+        plugin.getRealmManager().getRealm(invite.getRealmId()).getMembersController().setMember(player, invite.getRank(), false);
+        player.setRealmId(invite.getRealmId());
+        inviteCache.invalidate(player.getUniqueId());
     }
 
 }
