@@ -10,9 +10,12 @@ public class DefaultRankedPlayer extends DefaultRealmPlayer implements RankedPla
 
     @Getter @Setter
     private Rank rank;
+    @Getter @Setter
+    private long joinDate;
 
-    public DefaultRankedPlayer(RealmPlayerContext context, Rank rank) {
+    public DefaultRankedPlayer(RealmPlayerContext context, Rank rank, long joinDate) {
         super(context);
         this.rank = rank;
+        this.joinDate = joinDate;
     }
 }

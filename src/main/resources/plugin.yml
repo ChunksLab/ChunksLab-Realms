@@ -2,10 +2,11 @@ name: Realms
 description: An Realms plugin created with love.
 version: '${version}'
 main: com.chunkslab.realms.RealmsPlugin
-api-version: '1.17'
+api-version: '1.18'
 authors: [amownyy, ChunksLab]
 website: http://chunkslab.com/
 depend: [PlaceholderAPI]
 softdepend:
+  - WorldEdit
   - ItemsAdder
   - Oraxen

@@ -36,21 +36,21 @@ public class PlayerMoveListener implements Listener {
         if (realmPlayer == null) return;
 
         if (from != null) {
-            // TODO: Visitor removing here
+            if (from.getMembersController().isVisitor(realmPlayer))
+                from.getMembersController().getVisitors().remove(realmPlayer);
             WorldBorderUtils.reset(player);
         }
 
         if (to != null) {
-            // TODO: if player has banned do event cancel
-
-            // TODO: Visit add here
+            if (!to.getMembersController().isMember(realmPlayer))
+                to.getMembersController().getVisitors().add(realmPlayer);
             LogUtils.debug("Sending Border...");
             plugin.getScheduler().runTaskSyncLater(() -> WorldBorderUtils.send(player, to), to.getCenterLocation().getLocation(), 5);
 
             if (player.isFlying() && !player.hasPermission("chunkslab.realms.permission.bypass.fly")) {
                 player.setFlying(false);
                 player.setAllowFlight(false);
-                player.sendMessage(ChatUtils.format("<#DC2625>You do not have permission to fly in this realm."));
+                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You do not have permission to fly in this realm."));
             }
         }
     }

@@ -19,10 +19,30 @@ public interface MembersController {
     Set<RankedPlayer> getMembers();
 
     /**
+     * Get a list of all {@link RealmPlayer} visitors of the realm.
+     * @return set of visitors
+     */
+    @NotNull
+    Set<RealmPlayer> getVisitors();
+
+    /**
+     * Get a list of all {@link RankedPlayer} banned players of the realm.
+     * @return set of members
+     */
+    @NotNull
+    Set<RankedPlayer> getBans();
+
+    /**
      * Get the number of members of this realm.
      * @return number of members
      */
     int getMembersCount();
+
+    /**
+     * Get the member
+     * @return the member ranked player
+     */
+    RankedPlayer getMember(RealmPlayer realmPlayer);
 
     /**
      * Check if a {@link RealmPlayer} is member of this realm.
@@ -39,6 +59,20 @@ public interface MembersController {
     boolean isMember(@NotNull RealmPlayerContext playerContext);
 
     /**
+     * Check if a {@link RealmPlayer} is visitor of this realm.
+     * @param player to check
+     * @return true if it's a visitor
+     */
+    boolean isVisitor(@NotNull RealmPlayer player);
+
+    /**
+     * Check if a {@link RealmPlayer} is banned of this realm.
+     * @param player to check
+     * @return true if it's a banned
+     */
+    boolean isBanned(@NotNull RealmPlayer player);
+
+    /**
      * Set or add a new member inside this realm.
      * @param player to set/add
      * @param rank to set
@@ -46,6 +80,16 @@ public interface MembersController {
      *                     realm, don't add the player as new member
      */
     void setMember(@NotNull RealmPlayer player, @NotNull Rank rank, boolean onlyExisting);
+
+    /**
+     * Set or add a new member inside this realm.
+     * @param player to set/add
+     * @param rank to set
+     * @param joinDate to set
+     * @param onlyExisting true means that if the player is not a member of the
+     *                     realm, don't add the player as new member
+     */
+    void setMember(@NotNull RealmPlayer player, @NotNull Rank rank, long joinDate, boolean onlyExisting);
 
     /**
      * Remove a member from this realm.
@@ -92,7 +136,6 @@ public interface MembersController {
      * @param player to add to the members
      */
     void join(@NotNull RealmPlayer player);
-
 
     /**
      * Execute this method when a member is kicked from this realm.

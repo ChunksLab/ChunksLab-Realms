@@ -3,7 +3,6 @@ package com.chunkslab.realms.gui;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
-import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.util.PermissionUtils;
 import com.chunkslab.realms.gui.item.BackItem;
@@ -23,8 +22,8 @@ import xyz.xenondevs.invui.util.MojangApiUtils;
 import xyz.xenondevs.invui.window.Window;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MembersGui {
 
@@ -33,11 +32,27 @@ public class MembersGui {
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        List<Item> members = realm.getMembersController().getMembers()
-                .stream().map(member -> createMemberItem(member, config, realm))
-                .toList();
-
-        List<Item> slots = new ArrayList<>(members);
+        List<Item> slots = realm.getMembersController().getMembers()
+                .stream().map(member -> {
+                    try {
+                        SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
+                        item.setDisplayName(
+                                ChatUtils.formatForGui(
+                                        PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.member.name")),
+                                        Placeholder.component("member-rank", member.getRank().display())
+                                ));
+                        item.setLore(
+                                ChatUtils.formatForGui(
+                                        PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getStringList("items.x.member.lore")),
+                                        Placeholder.parsed("last-online-date", Realm.DATE_FORMAT.format(member.getData().getLastLogout())),
+                                        Placeholder.parsed("join-date", Realm.DATE_FORMAT.format(member.getJoinDate()))
+                                ));
+                        item.setCustomModelData(config.getInt("items.x.member.custom-model-data"));
+                        return new UpdatingItem(20, () -> item, event -> RankGui.open(player, member, realm, plugin));
+                    } catch (MojangApiUtils.MojangApiException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
 
         int currentMemberAmount = realm.getMembersController().getMembersCount();
         int maxMemberAmount = PermissionUtils.getMax(player.getBukkitPlayer(), "chunkslab.realms.member", plugin.getPluginConfig().getSettings().getDefaultRealmMemberAmount());
@@ -77,17 +92,4 @@ public class MembersGui {
 
         window.open();
     }
-
-    private static Item createMemberItem(RankedPlayer member, ConfigFile config, Realm realm) {
-        try {
-            SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
-            item.setDisplayName(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.member.name")), Placeholder.component("member-rank", member.getRank().display())));
-            item.setLore(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getStringList("items.x.member.lore")), Placeholder.parsed("last-online-date", Realm.DATE_FORMAT.format(member.getData().getLastLogout())), Placeholder.parsed("join-date", "Daha Join Date Datası Tutmuyon!")));
-            item.setCustomModelData(config.getInt("items.x.member.custom-model-data"));
-            return new UpdatingItem(20, () -> item, event -> System.out.println("s"));
-        } catch (MojangApiUtils.MojangApiException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

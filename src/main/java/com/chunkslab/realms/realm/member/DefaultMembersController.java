@@ -27,8 +27,23 @@ public class DefaultMembersController implements MembersController {
     }
 
     @Override
+    public @NotNull Set<RealmPlayer> getVisitors() {
+        return realm.getMembersData().getVisitors();
+    }
+
+    @Override
+    public @NotNull Set<RankedPlayer> getBans() {
+        return realm.getMembersData().getBans();
+    }
+
+    @Override
     public int getMembersCount() {
         return getMembers().size();
+    }
+
+    @Override
+    public RankedPlayer getMember(RealmPlayer realmPlayer) {
+        return getMembers().stream().filter(rankedPlayer -> rankedPlayer.getContext().equals(realmPlayer.getContext())).findFirst().orElse(null);
     }
 
     @Override
@@ -48,11 +63,32 @@ public class DefaultMembersController implements MembersController {
     }
 
     @Override
+    public boolean isVisitor(@NotNull RealmPlayer player) {
+        for (RealmPlayer member : getVisitors())
+            if (member.getContext().equals(player.getContext()))
+                return true;
+        return false;
+    }
+
+    @Override
+    public boolean isBanned(@NotNull RealmPlayer player) {
+        for (RankedPlayer member : getBans())
+            if (member.getContext().equals(player.getContext()))
+                return true;
+        return false;
+    }
+
+    @Override
     public void setMember(@NotNull RealmPlayer player, @NotNull Rank rank, boolean onlyExisting) {
+        setMember(player, rank, System.currentTimeMillis(), onlyExisting);
+    }
+
+    @Override
+    public void setMember(@NotNull RealmPlayer player, @NotNull Rank rank, long joinDate, boolean onlyExisting) {
         if (onlyExisting && isMember(player)) return;
         removeMember(player);
 
-        RankedPlayer member = new DefaultRankedPlayer(player.getContext(), rank);
+        RankedPlayer member = new DefaultRankedPlayer(player.getContext(), rank, joinDate);
         getMembers().add(member);
     }
 

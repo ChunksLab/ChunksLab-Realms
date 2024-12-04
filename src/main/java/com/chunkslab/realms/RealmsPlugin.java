@@ -21,6 +21,7 @@ import com.chunkslab.realms.command.player.AcceptCommand;
 import com.chunkslab.realms.command.player.CreateCommand;
 import com.chunkslab.realms.command.player.DenyCommand;
 import com.chunkslab.realms.command.player.InviteCommand;
+import com.chunkslab.realms.command.player.MemberCommand;
 import com.chunkslab.realms.command.player.MembersCommand;
 import com.chunkslab.realms.command.player.RemoveCommand;
 import com.chunkslab.realms.command.player.SetSpawnCommand;
@@ -86,6 +87,7 @@ public final class RealmsPlugin extends RealmsAPI {
     private final ConfigFile settingsMenuConfig = new ConfigFile(this, "menus", "settings-menu.yml");
     private final ConfigFile membersMenuConfig = new ConfigFile(this, "menus", "members-menu.yml");
     private final ConfigFile inviteMenuConfig = new ConfigFile(this, "menus", "invite-menu.yml");
+    private final ConfigFile rankMenuConfig = new ConfigFile(this, "menus", "rank-menu.yml");
 
     // database
     @Setter private Database database;
@@ -127,6 +129,7 @@ public final class RealmsPlugin extends RealmsAPI {
         settingsMenuConfig.create();
         membersMenuConfig.create();
         inviteMenuConfig.create();
+        rankMenuConfig.create();
 
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(
@@ -213,6 +216,7 @@ public final class RealmsPlugin extends RealmsAPI {
                 new SettingsCommand(this),
                 new SetSpawnCommand(this),
                 new MembersCommand(this),
+                new MemberCommand(this),
                 new RemoveCommand(this),
                 new InviteCommand(this),
                 new AcceptCommand(this),

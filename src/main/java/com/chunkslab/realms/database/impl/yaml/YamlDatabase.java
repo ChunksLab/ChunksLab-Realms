@@ -91,8 +91,9 @@ public class YamlDatabase implements Database {
         // members
         for (String uuid : data.getConfigurationSection("membersData").getKeys(false)) {
             RealmPlayer player = loadPlayer(UUID.fromString(uuid));
-            Rank.Assignment assignment = Rank.Assignment.valueOf(data.getString("membersData." + uuid + ".rank"));
-            realm.getMembersController().setMember(player, plugin.getRankManager().getRank(assignment), false);
+            Rank rank = plugin.getRankManager().getRank(Rank.Assignment.valueOf(data.getString("membersData." + uuid + ".rank")));
+            long joinDate = data.getLong("membersData." + uuid + ".joinDate");
+            realm.getMembersController().setMember(player, rank, joinDate, false);
         }
 
         // bank
@@ -204,6 +205,7 @@ public class YamlDatabase implements Database {
         for (RankedPlayer member : realm.getMembersController().getMembers()) {
             data.set("membersData." + member.getUniqueId().toString() + ".name", member.getName());
             data.set("membersData." + member.getUniqueId().toString() + ".rank", member.getRank().assignment().name());
+            data.set("membersData." + member.getUniqueId().toString() + ".joinDate", member.getJoinDate());
         }
 
         // bank

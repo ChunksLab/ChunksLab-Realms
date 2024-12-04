@@ -7,4 +7,8 @@ public interface RankedPlayer extends RealmPlayer {
     Rank getRank();
 
     void setRank(Rank rank);
+
+    long getJoinDate();
+
+    void setJoinDate(long joinDate);
 }
