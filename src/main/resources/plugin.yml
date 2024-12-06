@@ -4,7 +4,8 @@ version: '${version}'
 main: com.chunkslab.realms.RealmsPlugin
 api-version: '1.18'
 authors: [amownyy, ChunksLab]
-website: http://chunkslab.com/
+website: https://chunkslab.com/
+folia-supported: true
 depend: [PlaceholderAPI]
 softdepend:
   - WorldEdit
