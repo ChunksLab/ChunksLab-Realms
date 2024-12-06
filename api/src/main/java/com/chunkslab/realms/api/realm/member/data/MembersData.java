@@ -8,5 +8,5 @@ import java.util.Set;
 public interface MembersData {
     Set<RankedPlayer> getMembers();
     Set<RealmPlayer> getVisitors();
-    Set<RankedPlayer> getBans();
+    Set<RealmPlayer> getBans();
 }

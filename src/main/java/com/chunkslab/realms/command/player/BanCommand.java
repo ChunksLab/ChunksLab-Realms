@@ -12,12 +12,12 @@ import org.bukkit.entity.Player;
 
 @Command(value = "realms", alias = {"realm"})
 @RequiredArgsConstructor
-public class RemoveCommand extends BaseCommand {
+public class BanCommand extends BaseCommand {
 
     private final RealmsPlugin plugin;
 
-    @SubCommand("remove")
-    public void removeCommand(Player player, String target) {
+    @SubCommand("ban")
+    public void banCommand(Player player, String target) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         RealmPlayer targetPlayer = plugin.getPlayerManager().getPlayer(target);
         if (realmPlayer == null) {
@@ -33,14 +33,16 @@ public class RemoveCommand extends BaseCommand {
             return;
         }
         if (target.equalsIgnoreCase(player.getName())) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You cannot remove yourself."));
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You cannot ban yourself."));
             return;
         }
         Realm realm = realmPlayer.getRealm();
-        if (!realm.getMembersController().isMember(targetPlayer)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Target not member of your realm..."));
+        if (realm.getMembersController().isBanned(targetPlayer)) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Player already banned"));
             return;
         }
-        realm.getMembersController().kick(targetPlayer, realmPlayer.getName());
+        if (realm.getMembersController().isMember(targetPlayer))
+            realm.getMembersController().removeMember(targetPlayer);
+        realm.getMembersController().getBans().add(targetPlayer);
     }
 }

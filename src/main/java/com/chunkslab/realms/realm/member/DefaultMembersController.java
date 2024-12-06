@@ -32,7 +32,7 @@ public class DefaultMembersController implements MembersController {
     }
 
     @Override
-    public @NotNull Set<RankedPlayer> getBans() {
+    public @NotNull Set<RealmPlayer> getBans() {
         return realm.getMembersData().getBans();
     }
 
@@ -72,7 +72,7 @@ public class DefaultMembersController implements MembersController {
 
     @Override
     public boolean isBanned(@NotNull RealmPlayer player) {
-        for (RankedPlayer member : getBans())
+        for (RealmPlayer member : getBans())
             if (member.getContext().equals(player.getContext()))
                 return true;
         return false;

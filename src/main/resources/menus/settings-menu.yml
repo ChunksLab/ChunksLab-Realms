@@ -24,7 +24,7 @@ items:
       - "<#85CC16> → Click to open menu"
   'r':
     material: "BARRIER"
-    name: "<#DC2625><bold>Reset Realm"
+    name: "<#DC2625><bold>DELETE Realm"
   'p':
     material: "CHORUS_FRUIT"
     name: "<#A7AEBA>Control the visiting status"

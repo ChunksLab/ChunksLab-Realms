@@ -16,5 +16,5 @@ public class DefaultMembersData implements MembersData {
     @Getter
     private final Set<RealmPlayer> visitors = ConcurrentHashMap.newKeySet();
     @Getter
-    private final Set<RankedPlayer> bans = ConcurrentHashMap.newKeySet();
+    private final Set<RealmPlayer> bans = ConcurrentHashMap.newKeySet();
 }

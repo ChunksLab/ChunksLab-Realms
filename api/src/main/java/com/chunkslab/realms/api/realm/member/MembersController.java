@@ -30,7 +30,7 @@ public interface MembersController {
      * @return set of members
      */
     @NotNull
-    Set<RankedPlayer> getBans();
+    Set<RealmPlayer> getBans();
 
     /**
      * Get the number of members of this realm.
