@@ -212,7 +212,8 @@ public final class RealmsPlugin extends RealmsAPI {
                 new InviteCommand(this),
                 new AcceptCommand(this),
                 new DenyCommand(this),
-                new BanCommand(this)
+                new BanCommand(this),
+                new UnBanCommand(this)
         );
 
         // Admin Commands
