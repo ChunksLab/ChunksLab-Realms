@@ -1,0 +1,26 @@
+structure:
+  - "# # # v v v # # #"
+  - "# x # r r r # b #"
+  - "# # # t t t # # #"
+  - "# # # # # # # # #"
+
+title: "<underlined>Change Rank"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  'x':
+    name: "%player_prefix% %player_name%"
+  'v':
+    material: "COMPASS"
+    name: "<#A7AEBA><bold>VISITOR"
+  'r':
+    material: "ENDER_PEAL"
+    name: "<#85CC16><bold>RESIDENT"
+  't':
+    material: "ENDER_EYE"
+    name: "<#0099DB><bold>TRUSTED"
+  'b':
+    material: "REDSTONE_TORCH"
+    name: "<#DC2625><bold>BAN"

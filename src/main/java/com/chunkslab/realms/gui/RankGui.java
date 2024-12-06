@@ -9,17 +9,25 @@ import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.gui.item.UpdatingItem;
 import com.chunkslab.realms.util.ChatUtils;
 import com.chunkslab.realms.util.ItemUtils;
+import lombok.SneakyThrows;
+import me.clip.placeholderapi.PlaceholderAPI;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.item.Item;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
+import xyz.xenondevs.invui.item.builder.SkullBuilder;
 import xyz.xenondevs.invui.window.Window;
 
 public class RankGui {
 
+    @SneakyThrows
     public static void open(RealmPlayer player, RankedPlayer member, Realm realm, RealmsPlugin plugin) {
         ConfigFile config = plugin.getRankMenuConfig();
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
+
+        SkullBuilder skull = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
+        skull.setDisplayName(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.name"))));
+        skull.setCustomModelData(config.getInt("items.x.custom-model-data"));
 
         Item visitor = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.v")), event -> {
             realm.getMembersController().kick(member, player.getName());
@@ -47,6 +55,7 @@ public class RankGui {
         Gui gui = Gui.normal()
                 .setStructure(config.getStringList("structure").toArray(new String[0]))
                 .addIngredient('#', border)
+                .addIngredient('x', skull)
                 .addIngredient('v', visitor)
                 .addIngredient('r', resident)
                 .addIngredient('t', trusted)
