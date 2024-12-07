@@ -3,6 +3,8 @@ package com.chunkslab.realms.database.impl.yaml;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.database.Database;
 import com.chunkslab.realms.api.player.MessagePreference;
+import com.chunkslab.realms.api.player.ban.BannedPlayer;
+import com.chunkslab.realms.api.player.ban.DefaultBannedPlayer;
 import com.chunkslab.realms.api.player.contexts.RealmPlayerContext;
 import com.chunkslab.realms.api.player.objects.DefaultRealmPlayer;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
@@ -94,6 +96,13 @@ public class YamlDatabase implements Database {
             Rank rank = plugin.getRankManager().getRank(Rank.Assignment.valueOf(data.getString("membersData." + uuid + ".rank")));
             long joinDate = data.getLong("membersData." + uuid + ".joinDate");
             realm.getMembersController().setMember(player, rank, joinDate, false);
+        }
+
+        // banned members
+        for (String uuid : data.getConfigurationSection("banData").getKeys(false)) {
+            RealmPlayer player = loadPlayer(UUID.fromString(uuid));
+            long banDate = data.getLong("banData." + uuid + ".banDate");
+            realm.getMembersController().getBans().add(new DefaultBannedPlayer(player.getContext(), banDate));
         }
 
         // bank
@@ -206,6 +215,12 @@ public class YamlDatabase implements Database {
             data.set("membersData." + member.getUniqueId().toString() + ".name", member.getName());
             data.set("membersData." + member.getUniqueId().toString() + ".rank", member.getRank().assignment().name());
             data.set("membersData." + member.getUniqueId().toString() + ".joinDate", member.getJoinDate());
+        }
+
+        // banned members
+        for (BannedPlayer bannedPlayer : realm.getMembersController().getBans()) {
+            data.set("banData." + bannedPlayer.getUniqueId().toString() + ".name", bannedPlayer.getName());
+            data.set("banData." + bannedPlayer.getUniqueId().toString() + ".banDate", bannedPlayer.getBanDate());
         }
 
         // bank

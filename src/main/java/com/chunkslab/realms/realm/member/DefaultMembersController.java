@@ -1,6 +1,7 @@
 package com.chunkslab.realms.realm.member;
 
 import com.chunkslab.realms.RealmsPlugin;
+import com.chunkslab.realms.api.player.ban.BannedPlayer;
 import com.chunkslab.realms.api.player.contexts.RealmPlayerContext;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
@@ -32,7 +33,7 @@ public class DefaultMembersController implements MembersController {
     }
 
     @Override
-    public @NotNull Set<RealmPlayer> getBans() {
+    public @NotNull Set<BannedPlayer> getBans() {
         return realm.getMembersData().getBans();
     }
 
@@ -42,8 +43,23 @@ public class DefaultMembersController implements MembersController {
     }
 
     @Override
+    public int getBansCount() {
+        return getBans().size();
+    }
+
+    @Override
+    public int getVisitorsCount() {
+        return getVisitors().size();
+    }
+
+    @Override
     public RankedPlayer getMember(RealmPlayer realmPlayer) {
         return getMembers().stream().filter(rankedPlayer -> rankedPlayer.getContext().equals(realmPlayer.getContext())).findFirst().orElse(null);
+    }
+
+    @Override
+    public BannedPlayer getBanned(RealmPlayer realmPlayer) {
+        return getBans().stream().filter(bannedPlayer -> bannedPlayer.getContext().equals(realmPlayer.getContext())).findFirst().orElse(null);
     }
 
     @Override
@@ -72,7 +88,7 @@ public class DefaultMembersController implements MembersController {
 
     @Override
     public boolean isBanned(@NotNull RealmPlayer player) {
-        for (RealmPlayer member : getBans())
+        for (BannedPlayer member : getBans())
             if (member.getContext().equals(player.getContext()))
                 return true;
         return false;

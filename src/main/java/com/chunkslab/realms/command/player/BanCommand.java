@@ -1,6 +1,7 @@
 package com.chunkslab.realms.command.player;
 
 import com.chunkslab.realms.RealmsPlugin;
+import com.chunkslab.realms.api.player.ban.DefaultBannedPlayer;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.util.ChatUtils;
@@ -43,6 +44,6 @@ public class BanCommand extends BaseCommand {
         }
         if (realm.getMembersController().isMember(targetPlayer))
             realm.getMembersController().removeMember(targetPlayer);
-        realm.getMembersController().getBans().add(targetPlayer);
+        realm.getMembersController().getBans().add(new DefaultBannedPlayer(targetPlayer.getContext(), System.currentTimeMillis()));
     }
 }

@@ -17,7 +17,18 @@ import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.biome.BiomeManager;
 import com.chunkslab.realms.command.MainCommand;
-import com.chunkslab.realms.command.player.*;
+import com.chunkslab.realms.command.player.AcceptCommand;
+import com.chunkslab.realms.command.player.BanCommand;
+import com.chunkslab.realms.command.player.CreateCommand;
+import com.chunkslab.realms.command.player.DenyCommand;
+import com.chunkslab.realms.command.player.InviteCommand;
+import com.chunkslab.realms.command.player.MemberCommand;
+import com.chunkslab.realms.command.player.MembersCommand;
+import com.chunkslab.realms.command.player.RemoveCommand;
+import com.chunkslab.realms.command.player.SetSpawnCommand;
+import com.chunkslab.realms.command.player.SettingsCommand;
+import com.chunkslab.realms.command.player.TeleportCommand;
+import com.chunkslab.realms.command.player.UnBanCommand;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
@@ -79,6 +90,7 @@ public final class RealmsPlugin extends RealmsAPI {
     private final ConfigFile membersMenuConfig = new ConfigFile(this, "menus", "members-menu.yml");
     private final ConfigFile inviteMenuConfig = new ConfigFile(this, "menus", "invite-menu.yml");
     private final ConfigFile rankMenuConfig = new ConfigFile(this, "menus", "rank-menu.yml");
+    private final ConfigFile bansMenuConfig = new ConfigFile(this, "menus", "bans-menu.yml");
 
     // database
     @Setter private Database database;
@@ -121,6 +133,7 @@ public final class RealmsPlugin extends RealmsAPI {
         membersMenuConfig.create();
         inviteMenuConfig.create();
         rankMenuConfig.create();
+        bansMenuConfig.create();
 
         ChatUtils.setCompactNumberFormat(
                 CompactNumberFormat.getCompactNumberInstance(

@@ -1,5 +1,6 @@
 package com.chunkslab.realms.realm.member.data;
 
+import com.chunkslab.realms.api.player.ban.BannedPlayer;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.member.data.MembersData;
@@ -16,5 +17,5 @@ public class DefaultMembersData implements MembersData {
     @Getter
     private final Set<RealmPlayer> visitors = ConcurrentHashMap.newKeySet();
     @Getter
-    private final Set<RealmPlayer> bans = ConcurrentHashMap.newKeySet();
+    private final Set<BannedPlayer> bans = ConcurrentHashMap.newKeySet();
 }

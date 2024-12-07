@@ -12,6 +12,7 @@ import com.chunkslab.realms.util.ChatUtils;
 import com.chunkslab.realms.util.ItemUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.inventory.ItemStack;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.structure.Markers;
@@ -25,49 +26,37 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MembersGui {
+public class BansGui {
 
     public static void open(RealmPlayer player, Realm realm, RealmsPlugin plugin) {
-        ConfigFile config = plugin.getMembersMenuConfig();
+        ConfigFile config = plugin.getBansMenuConfig();
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        Item bans = new UpdatingItem(20, () -> new ItemBuilder(
-                ItemUtils.build(config, "items.b", Placeholder.parsed("banned-player", String.valueOf(realm.getMembersController().getBansCount())))),
-                event -> BansGui.open(player, realm, plugin));
+        ItemStack memberItem = ItemUtils.build(config, "items.m", Placeholder.parsed("current", String.valueOf(realm.getMembersController().getMembersCount())), Placeholder.parsed("max", String.valueOf(PermissionUtils.getMax(player.getBukkitPlayer(), "chunkslab.realms.member", plugin.getPluginConfig().getSettings().getDefaultRealmMemberAmount()))));
+        Item members = new UpdatingItem(20, () -> new ItemBuilder(memberItem), event -> {
+            MembersGui.open(player, realm, plugin);
+        });
 
-        List<Item> slots = realm.getMembersController().getMembers()
+        List<Item> slots = realm.getMembersController().getBans()
                 .stream().map(member -> {
                     try {
                         SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
                         item.setDisplayName(
                                 ChatUtils.formatForGui(
-                                        PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.member.name")),
-                                        Placeholder.component("member-rank", member.getRank().display())
+                                        PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.member.name"))
                                 ));
                         item.setLore(
                                 ChatUtils.formatForGui(
                                         PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getStringList("items.x.member.lore")),
-                                        Placeholder.parsed("last-online-date", Realm.DATE_FORMAT.format(member.getData().getLastLogout())),
-                                        Placeholder.parsed("join-date", Realm.DATE_FORMAT.format(member.getJoinDate()))
+                                        Placeholder.parsed("ban-date", Realm.DATE_FORMAT.format(member.getBanDate()))
                                 ));
                         item.setCustomModelData(config.getInt("items.x.member.custom-model-data"));
-                        return new UpdatingItem(20, () -> item, event -> RankGui.open(player, member, realm, plugin));
+                        return new UpdatingItem(20, () -> item, event -> {});
                     } catch (MojangApiUtils.MojangApiException | IOException e) {
                         throw new RuntimeException(e);
                     }
                 }).collect(Collectors.toList());
-
-        int currentMemberAmount = realm.getMembersController().getMembersCount();
-        int maxMemberAmount = PermissionUtils.getMax(player.getBukkitPlayer(), "chunkslab.realms.member", plugin.getPluginConfig().getSettings().getDefaultRealmMemberAmount());
-
-        if (currentMemberAmount < maxMemberAmount) {
-            int remained = maxMemberAmount - currentMemberAmount;
-            for (int i = 1; i <= remained; i++) {
-                Item addMember = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.x.add")), event -> {});
-                slots.add(addMember);
-            }
-        }
 
         int xCount = config.getStringList("structure").stream()
                 .mapToInt(line -> (int) line.chars().filter(ch -> ch == 'x').count())
@@ -75,15 +64,15 @@ public class MembersGui {
 
         int remainedSlot = xCount - slots.size();
         for (int i = 1; i <= remainedSlot; i++) {
-            Item lockedItem = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.x.locked")), event -> {});
-            slots.add(lockedItem);
+            Item addItem = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.x.add")), event -> {});
+            slots.add(addItem);
         }
 
         Gui gui = PagedGui.items()
                 .setStructure(config.getStringList("structure").toArray(new String[0]))
                 .addIngredient('x', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
                 .addIngredient('#', border)
-                .addIngredient('b', bans)
+                .addIngredient('m', members)
                 .addIngredient('<', new BackItem(config))
                 .addIngredient('>', new ForwardItem(config))
                 .setContent(slots)

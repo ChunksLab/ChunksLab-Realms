@@ -28,6 +28,7 @@ public class RankManager implements IRankManager {
             Component display = ChatUtils.format((String) rankMap.get("display"));
             Rank.Assignment assignment = Rank.Assignment.valueOf((String) rankMap.get("assignment"));
             List<Permission> permissions = new ArrayList<>();
+            //noinspection unchecked
             for (String perm : (List<String>) rankMap.get("permissions")) {
                 permissions.add(Permission.valueOf(perm));
             }

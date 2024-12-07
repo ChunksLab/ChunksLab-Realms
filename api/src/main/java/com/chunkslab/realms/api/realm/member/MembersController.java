@@ -1,5 +1,6 @@
 package com.chunkslab.realms.api.realm.member;
 
+import com.chunkslab.realms.api.player.ban.BannedPlayer;
 import com.chunkslab.realms.api.player.contexts.RealmPlayerContext;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
@@ -30,7 +31,7 @@ public interface MembersController {
      * @return set of members
      */
     @NotNull
-    Set<RealmPlayer> getBans();
+    Set<BannedPlayer> getBans();
 
     /**
      * Get the number of members of this realm.
@@ -39,10 +40,28 @@ public interface MembersController {
     int getMembersCount();
 
     /**
+     * Get the number of bans of this realm.
+     * @return number of bans
+     */
+    int getBansCount();
+
+    /**
+     * Get the number of visitors of this realm.
+     * @return number of visitors
+     */
+    int getVisitorsCount();
+
+    /**
      * Get the member
      * @return the member ranked player
      */
     RankedPlayer getMember(RealmPlayer realmPlayer);
+
+    /**
+     * Get the banned player
+     * @return the banned player
+     */
+    BannedPlayer getBanned(RealmPlayer realmPlayer);
 
     /**
      * Check if a {@link RealmPlayer} is member of this realm.

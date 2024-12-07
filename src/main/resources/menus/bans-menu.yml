@@ -1,0 +1,51 @@
+structure:
+  - "# # # # # # # # #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# < # # m # # > #"
+
+title: "<underlined>Bans"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  'x':
+    member:
+      name: "<red><bold>BANNED"
+      lore:
+        - "%player_prefix% %player_name%"
+        - "<#A7AEBA>Banned: <white><ban-date>"
+    add:
+      material: "ENDER_PEARL"
+      name: "<green><bold>BAN PLAYER"
+      lore:
+        - "<#A7AEBA>Ban someone from ever"
+        - "<#A7AEBA>entering your realm land."
+        - ""
+        - "<#A7AEBA>Command: <white>/realm ban <name>"
+  'm':
+    material: "BARRIER"
+    name: "<#A7AEBA>Add, manage, and remove"
+    lore:
+      - "<#A7AEBA>members of your realm."
+      - ""
+      - "<white>Realms Members: <#F49E0B><current>/<max>"
+      - ""
+      - "<#85CC16> → Click to toggle view"
+  '<':
+    material: "ARROW"
+    name: "<yellow>Previous Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the previous page"
+      - ""
+  '>':
+    material: "ARROW"
+    name: "<yellow>Next Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the next page"
+      - ""

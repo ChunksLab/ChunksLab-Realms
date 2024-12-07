@@ -41,6 +41,6 @@ public class UnBanCommand extends BaseCommand {
             ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Player not banned"));
             return;
         }
-        realm.getMembersController().getBans().remove(targetPlayer);
+        realm.getMembersController().getBans().remove(realm.getMembersController().getBanned(targetPlayer));
     }
 }

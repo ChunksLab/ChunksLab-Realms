@@ -4,7 +4,7 @@ structure:
   - "# x x x x x x x #"
   - "# x x x x x x x #"
   - "# x x x x x x x #"
-  - "# < # # # # # > #"
+  - "# < # # b # # > #"
 
 title: "<underlined>Members"
 
@@ -35,6 +35,14 @@ items:
         - "<#A7AEBA>by upgrading your rank."
         - ""
         - "<#0099DB>store.chunkslab.com"
+  'b':
+    material: "BARRIER"
+    name: "<#A7AEBA>View players that have been"
+    lore:
+      - "<#A7AEBA>banned from your realm."
+      - "<white>Banned Players: <#F49E0B><banned-player>"
+      - ""
+      - "<#85CC16> → Click to toggle view"
   '<':
     material: "ARROW"
     name: "<yellow>Previous Page"
