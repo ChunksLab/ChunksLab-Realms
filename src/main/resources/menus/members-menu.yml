@@ -14,7 +14,7 @@ items:
     name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
   'x':
     member:
-      name: "&6&l<member-rank>"
+      name: "<member-rank>"
       lore:
         - "%player_prefix% %player_name%"
         - "<#A7AEBA>Online: <white><last-online-date>"

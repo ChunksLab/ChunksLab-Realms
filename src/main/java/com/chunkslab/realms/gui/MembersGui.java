@@ -57,7 +57,13 @@ public class MembersGui {
                                         Placeholder.parsed("join-date", Realm.DATE_FORMAT.format(member.getJoinDate()))
                                 ));
                         item.setCustomModelData(config.getInt("items.x.member.custom-model-data"));
-                        return new UpdatingItem(20, () -> item, event -> RankGui.open(player, member, realm, plugin));
+                        return new UpdatingItem(20, () -> item, event -> {
+                            if (member.getContext().equals(player.getContext())) {
+                                ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getCannotChangeRank()));
+                                return;
+                            }
+                            RankGui.open(player, member, realm, plugin);
+                        });
                     } catch (MojangApiUtils.MojangApiException | IOException e) {
                         throw new RuntimeException(e);
                     }
