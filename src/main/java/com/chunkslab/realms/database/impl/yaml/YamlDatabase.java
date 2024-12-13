@@ -99,10 +99,12 @@ public class YamlDatabase implements Database {
         }
 
         // banned members
-        for (String uuid : data.getConfigurationSection("banData").getKeys(false)) {
-            RealmPlayer player = loadPlayer(UUID.fromString(uuid));
-            long banDate = data.getLong("banData." + uuid + ".banDate");
-            realm.getMembersController().getBans().add(new DefaultBannedPlayer(player.getContext(), banDate));
+        if (data.isSet("banData")) {
+            for (String uuid : data.getConfigurationSection("banData").getKeys(false)) {
+                RealmPlayer player = loadPlayer(UUID.fromString(uuid));
+                long banDate = data.getLong("banData." + uuid + ".banDate");
+                realm.getMembersController().getBans().add(new DefaultBannedPlayer(player.getContext(), banDate));
+            }
         }
 
         // bank

@@ -39,7 +39,7 @@ public class RankManager implements IRankManager {
             ranks.add(new Rank(id, power, display, assignment, permissions));
         }
         common.clear();
-        for (String perm : plugin.getPermissionsFile().getStringList("permissions")) {
+        for (String perm : plugin.getPermissionsFile().getStringList("common")) {
             common.add(Permission.valueOf(perm));
         }
     }
