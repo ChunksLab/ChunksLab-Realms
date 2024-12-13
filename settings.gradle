@@ -1,2 +1,3 @@
 rootProject.name = 'ChunksLab-Realms'
 include(':api')
+include(':folia')

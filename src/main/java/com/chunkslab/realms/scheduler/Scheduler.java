@@ -3,6 +3,7 @@ package com.chunkslab.realms.scheduler;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.scheduler.CancellableTask;
 import com.chunkslab.realms.api.scheduler.IScheduler;
+import com.chunkslab.realms.api.scheduler.SyncScheduler;
 import com.chunkslab.realms.api.util.LogUtils;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
@@ -25,7 +26,12 @@ public class Scheduler implements IScheduler {
     private ScheduledThreadPoolExecutor schedule;
 
     public void enable() {
-        this.syncScheduler = new BukkitSchedulerImpl(plugin);
+        boolean foliaScheduler = false;
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            foliaScheduler = true;
+        } catch (ClassNotFoundException ignored) {}
+        this.syncScheduler = foliaScheduler ? new FoliaSchedulerImpl(plugin) : new BukkitSchedulerImpl(plugin);
         this.schedule = new ScheduledThreadPoolExecutor(1);
         this.schedule.setMaximumPoolSize(1);
         this.schedule.setKeepAliveTime(30, TimeUnit.SECONDS);

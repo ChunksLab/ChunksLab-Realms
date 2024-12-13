@@ -2,6 +2,7 @@ package com.chunkslab.realms.scheduler;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.scheduler.CancellableTask;
+import com.chunkslab.realms.api.scheduler.SyncScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

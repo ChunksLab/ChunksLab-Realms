@@ -1,6 +1,5 @@
-package com.chunkslab.realms.scheduler;
+package com.chunkslab.realms.api.scheduler;
 
-import com.chunkslab.realms.api.scheduler.CancellableTask;
 import org.bukkit.Location;
 import org.bukkit.World;
 
