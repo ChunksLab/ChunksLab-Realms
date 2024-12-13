@@ -3,6 +3,7 @@ package com.chunkslab.realms.gui;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.util.PermissionUtils;
@@ -19,6 +20,10 @@ import xyz.xenondevs.invui.window.Window;
 public class SettingsGui {
 
     public static void open(RealmPlayer player, RealmsPlugin plugin) {
+        if (!player.hasPermission(Permission.REALM_MENU_SETTINGS)) {
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         ConfigFile config = plugin.getSettingsMenuConfig();
 
         Realm realm = player.getRealm();

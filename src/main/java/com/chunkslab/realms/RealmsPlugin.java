@@ -8,6 +8,7 @@ import com.chunkslab.realms.api.invite.IInviteManager;
 import com.chunkslab.realms.api.listener.IListenerManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.rank.IRankManager;
 import com.chunkslab.realms.api.realm.IRealmManager;
 import com.chunkslab.realms.api.scheduler.IScheduler;
@@ -211,22 +212,22 @@ public final class RealmsPlugin extends RealmsAPI {
                 new ArrayList<>(this.serverManager.getAllOnlinePlayers())
         );
 
-        commandManager.registerCommand(new MainCommand(this));
+        commandManager.registerCommand(new MainCommand(this, Permission.REALM_COMMAND));
 
         // Player Commands
         commandManager.registerCommand(
-                new CreateCommand(this),
-                new TeleportCommand(this),
-                new SettingsCommand(this),
-                new SetSpawnCommand(this),
-                new MembersCommand(this),
-                new MemberCommand(this),
-                new RemoveCommand(this),
-                new InviteCommand(this),
-                new AcceptCommand(this),
-                new DenyCommand(this),
-                new BanCommand(this),
-                new UnBanCommand(this)
+                new CreateCommand(this, Permission.REALM_COMMAND_CREATE),
+                new TeleportCommand(this, Permission.REALM_COMMAND_TELEPORT),
+                new SettingsCommand(this, Permission.REALM_COMMAND_SETTINGS),
+                new SetSpawnCommand(this, Permission.REALM_COMMAND_SETSPAWN),
+                new MembersCommand(this, Permission.REALM_COMMAND_MEMBERS),
+                new MemberCommand(this, Permission.REALM_COMMAND_MEMBER),
+                new RemoveCommand(this, Permission.REALM_COMMAND_REMOVE),
+                new InviteCommand(this, Permission.REALM_COMMAND_INVITE),
+                new AcceptCommand(this, Permission.REALM_COMMAND_ACCEPT),
+                new DenyCommand(this, Permission.REALM_COMMAND_DENY),
+                new BanCommand(this, Permission.REALM_COMMAND_BAN),
+                new UnBanCommand(this, Permission.REALM_COMMAND_UNBAN)
         );
 
         // Admin Commands

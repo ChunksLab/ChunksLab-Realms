@@ -2,6 +2,7 @@ package com.chunkslab.realms.command.player;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.util.LogUtils;
 import com.chunkslab.realms.gui.InviteGui;
 import com.chunkslab.realms.util.ChatUtils;
@@ -20,6 +21,7 @@ import java.util.Collection;
 public class InviteCommand extends BaseCommand {
 
     private final RealmsPlugin plugin;
+    private final Permission permission;
 
     @SubCommand("invite")
     public void inviteCommand(Player player, @Suggestion("players") String target) {
@@ -32,14 +34,14 @@ public class InviteCommand extends BaseCommand {
             ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
             return;
         }
-        
-        // TODO: Role permission check
-
+        if (!realmPlayer.hasPermission(permission)) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         if (target.equalsIgnoreCase(player.getName())) {
             ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You cannot invite yourself."));
             return;
         }
-        
         plugin.getScheduler().runTaskAsync(() -> {
             Collection<String> players = plugin.getServerManager().getAllOnlinePlayers();
             if (!players.contains(target)) {

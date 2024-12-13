@@ -3,6 +3,7 @@ package com.chunkslab.realms.gui;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.util.PermissionUtils;
 import com.chunkslab.realms.gui.item.BackItem;
@@ -29,6 +30,10 @@ import java.util.stream.Collectors;
 public class BansGui {
 
     public static void open(RealmPlayer player, Realm realm, RealmsPlugin plugin) {
+        if (!player.hasPermission(Permission.REALM_MENU_BAN)) {
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         ConfigFile config = plugin.getBansMenuConfig();
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));

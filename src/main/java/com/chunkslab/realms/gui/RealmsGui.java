@@ -4,6 +4,7 @@ import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.gui.item.BackItem;
 import com.chunkslab.realms.gui.item.ForwardItem;
@@ -33,11 +34,14 @@ public class RealmsGui {
 
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
 
+        if (!realmPlayer.hasPermission(Permission.REALM_MENU)) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
+
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        Item community = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.c")), event -> {
-
-        });
+        ItemBuilder community = new ItemBuilder(ItemUtils.build(config, "items.c"));
 
         Item teleport = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.t")), event -> {
             if (event.getClickType().isShiftClick()) {

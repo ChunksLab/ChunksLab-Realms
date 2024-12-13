@@ -2,6 +2,7 @@ package com.chunkslab.realms.command.player;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.util.ChatUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 public class CreateCommand extends BaseCommand {
 
     private final RealmsPlugin plugin;
+    private final Permission permission;
 
     @SubCommand("create")
     public void createCommand(Player player) {
@@ -26,7 +28,10 @@ public class CreateCommand extends BaseCommand {
             ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You are already a member of a realm"));
             return;
         }
-
+        if (!realmPlayer.hasPermission(permission)) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         plugin.getRealmManager().createRealm(plugin.getBiomeManager().getDefaultBiome(), realmPlayer).thenAccept(result -> {
            if (!result) {
                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Problem encountered please notify the administrator"));

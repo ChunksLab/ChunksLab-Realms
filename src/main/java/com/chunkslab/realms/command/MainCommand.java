@@ -1,7 +1,9 @@
 package com.chunkslab.realms.command;
 
 import com.chunkslab.realms.RealmsPlugin;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.gui.RealmsGui;
+import com.chunkslab.realms.util.ChatUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
@@ -13,9 +15,14 @@ import org.bukkit.entity.Player;
 public class MainCommand extends BaseCommand {
 
     private final RealmsPlugin plugin;
+    private final Permission permission;
 
     @Default
     public void defaultCommand(Player player) {
+        if (!plugin.getPlayerManager().getPlayer(player).hasPermission(permission)) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         RealmsGui.open(player, plugin);
     }
 }

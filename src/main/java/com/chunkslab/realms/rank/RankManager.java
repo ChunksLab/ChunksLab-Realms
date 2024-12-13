@@ -19,6 +19,9 @@ public class RankManager implements IRankManager {
     @Getter
     private final Set<Rank> ranks = new HashSet<>();
 
+    @Getter
+    List<Permission> common = new ArrayList<>();
+
     @Override
     public void enable() {
         List<Map<?, ?>> rankMaps = plugin.getPermissionsFile().getMapList("ranks");
@@ -28,11 +31,16 @@ public class RankManager implements IRankManager {
             Component display = ChatUtils.format((String) rankMap.get("display"));
             Rank.Assignment assignment = Rank.Assignment.valueOf((String) rankMap.get("assignment"));
             List<Permission> permissions = new ArrayList<>();
-            //noinspection unchecked
-            for (String perm : (List<String>) rankMap.get("permissions")) {
-                permissions.add(Permission.valueOf(perm));
-            }
+            if (rankMap.containsKey("permissions"))
+                //noinspection unchecked
+                for (String perm : (List<String>) rankMap.get("permissions")) {
+                    permissions.add(Permission.valueOf(perm));
+                }
             ranks.add(new Rank(id, power, display, assignment, permissions));
+        }
+        common.clear();
+        for (String perm : plugin.getPermissionsFile().getStringList("permissions")) {
+            common.add(Permission.valueOf(perm));
         }
     }
 

@@ -1,7 +1,47 @@
+common:
+  - "REALM_COMMAND"
+  - "REALM_COMMAND_CREATE"
+  - "REALM_COMMAND_ACCEPT"
+  - "REALM_COMMAND_DENY"
+  - "REALM_COMMAND_TELEPORT"
+  - "REALM_MENU"
 ranks:
   - id: "owner"
     power: 3
     display: "&cOwner"
     assignment: OWNER
     permissions:
-      - "ADMIN_COMMAND_RELOAD"
+      - "REALM_COMMAND_SETTINGS"
+      - "REALM_COMMAND_MEMBER"
+      - "REALM_COMMAND_MEMBERS"
+      - "REALM_COMMAND_INVITE"
+      - "REALM_COMMAND_BAN"
+      - "REALM_COMMAND_UNBAN"
+      - "REALM_COMMAND_REMOVE"
+      - "REALM_COMMAND_SETSPAWN"
+      - "REALM_MENU_SETTINGS"
+      - "REALM_MENU_MEMBERS"
+      - "REALM_MENU_INVITE"
+      - "REALM_MENU_RANK"
+      - "REALM_MENU_BAN"
+      - "PROTECTION_PLACE"
+      - "PROTECTION_BREAK"
+      - "PROTECTION_INTERACT"
+      - "PROTECTION_USE"
+  - id: "trusted"
+    power: 2
+    display: "&bTrusted"
+    assignment: TRUSTED
+    permissions:
+      - "REALM_COMMAND_SETTINGS"
+      - "REALM_COMMAND_MEMBERS"
+      - "REALM_MENU_SETTINGS"
+      - "REALM_MENU_MEMBERS"
+      - "PROTECTION_PLACE"
+      - "PROTECTION_BREAK"
+      - "PROTECTION_INTERACT"
+      - "PROTECTION_USE"
+  - id: "resident"
+    power: 1
+    display: "&7Resident"
+    assignment: RESIDENT

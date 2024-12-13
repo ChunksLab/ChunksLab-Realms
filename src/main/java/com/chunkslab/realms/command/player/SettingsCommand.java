@@ -2,6 +2,7 @@ package com.chunkslab.realms.command.player;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.gui.SettingsGui;
 import com.chunkslab.realms.util.ChatUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 public class SettingsCommand extends BaseCommand {
 
     private final RealmsPlugin plugin;
+    private final Permission permission;
 
     @SubCommand("settings")
     public void settingsCommand(Player player) {
@@ -25,6 +27,10 @@ public class SettingsCommand extends BaseCommand {
         }
         if (realmPlayer.getRealmId() == null) {
             ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+            return;
+        }
+        if (!realmPlayer.hasPermission(permission)) {
+            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
             return;
         }
         SettingsGui.open(realmPlayer, plugin);

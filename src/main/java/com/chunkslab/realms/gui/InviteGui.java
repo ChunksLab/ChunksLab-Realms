@@ -3,6 +3,7 @@ package com.chunkslab.realms.gui;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 import com.chunkslab.realms.gui.item.UpdatingItem;
 import com.chunkslab.realms.util.ChatUtils;
@@ -15,6 +16,10 @@ import xyz.xenondevs.invui.window.Window;
 public class InviteGui {
 
     public static void open(RealmPlayer inviter, RealmPlayer target, RealmsPlugin plugin) {
+        if (!inviter.hasPermission(Permission.REALM_MENU_INVITE)) {
+            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         ConfigFile config = plugin.getInviteMenuConfig();
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));

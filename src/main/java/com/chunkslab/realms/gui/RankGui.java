@@ -2,7 +2,9 @@ package com.chunkslab.realms.gui;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
+import com.chunkslab.realms.api.player.ban.DefaultBannedPlayer;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.Realm;
@@ -21,6 +23,10 @@ public class RankGui {
 
     @SneakyThrows
     public static void open(RealmPlayer player, RankedPlayer member, Realm realm, RealmsPlugin plugin) {
+        if (!player.hasPermission(Permission.REALM_MENU_RANK)) {
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            return;
+        }
         ConfigFile config = plugin.getRankMenuConfig();
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
@@ -48,7 +54,7 @@ public class RankGui {
 
         Item ban = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.b")), event -> {
             realm.getMembersController().kick(member, player.getName());
-            realm.getMembersController().getBans().add(member);
+            realm.getMembersController().getBans().add(new DefaultBannedPlayer(member.getContext(), System.currentTimeMillis()));
             player.getBukkitPlayer().closeInventory();
         });
 
