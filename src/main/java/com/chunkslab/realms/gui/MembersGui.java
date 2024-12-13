@@ -5,7 +5,7 @@ import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.realm.Realm;
-import com.chunkslab.realms.api.util.PermissionUtils;
+import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.gui.item.BackItem;
 import com.chunkslab.realms.gui.item.ForwardItem;
 import com.chunkslab.realms.gui.item.UpdatingItem;
@@ -64,7 +64,7 @@ public class MembersGui {
                 }).collect(Collectors.toList());
 
         int currentMemberAmount = realm.getMembersController().getMembersCount();
-        int maxMemberAmount = PermissionUtils.getMax(player.getBukkitPlayer(), "chunkslab.realms.member", plugin.getPluginConfig().getSettings().getDefaultRealmMemberAmount());
+        int maxMemberAmount = realm.getUpgrade(Upgrade.Type.MEMBERS).value();
 
         if (currentMemberAmount < maxMemberAmount) {
             int remained = maxMemberAmount - currentMemberAmount;

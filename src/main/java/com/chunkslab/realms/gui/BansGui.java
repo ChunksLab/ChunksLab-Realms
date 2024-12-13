@@ -5,7 +5,7 @@ import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.realm.Realm;
-import com.chunkslab.realms.api.util.PermissionUtils;
+import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.gui.item.BackItem;
 import com.chunkslab.realms.gui.item.ForwardItem;
 import com.chunkslab.realms.gui.item.UpdatingItem;
@@ -38,7 +38,7 @@ public class BansGui {
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        ItemStack memberItem = ItemUtils.build(config, "items.m", Placeholder.parsed("current", String.valueOf(realm.getMembersController().getMembersCount())), Placeholder.parsed("max", String.valueOf(PermissionUtils.getMax(player.getBukkitPlayer(), "chunkslab.realms.member", plugin.getPluginConfig().getSettings().getDefaultRealmMemberAmount()))));
+        ItemStack memberItem = ItemUtils.build(config, "items.m", Placeholder.parsed("current", String.valueOf(realm.getMembersController().getMembersCount())), Placeholder.parsed("max", String.valueOf(realm.getUpgrade(Upgrade.Type.MEMBERS).value())));
         Item members = new UpdatingItem(20, () -> new ItemBuilder(memberItem), event -> {
             MembersGui.open(player, realm, plugin);
         });
