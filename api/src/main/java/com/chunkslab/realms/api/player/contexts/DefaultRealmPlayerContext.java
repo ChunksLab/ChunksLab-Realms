@@ -13,4 +13,11 @@ public class DefaultRealmPlayerContext implements RealmPlayerContext {
     public boolean equals(RealmPlayerContext context) {
         return name.equals(context.getName()) && uniqueId.equals(context.getUniqueId());
     }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + uniqueId.hashCode();
+        return result;
+    }
 }
