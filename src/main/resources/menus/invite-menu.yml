@@ -14,7 +14,7 @@ items:
     lore:
       - "<#3C8DC3>area of ChunksLab Realms!"
   'r':
-    material: "ENDER_PEAL"
+    material: "ENDER_PEARL"
     name: "<#85CC16><bold>RESIDENT"
   't':
     material: "ENDER_EYE"
