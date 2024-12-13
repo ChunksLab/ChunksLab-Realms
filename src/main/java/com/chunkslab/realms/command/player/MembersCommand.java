@@ -23,15 +23,15 @@ public class MembersCommand extends BaseCommand {
     public void membersCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getDataLoading()));
             return;
         }
         if (realmPlayer.getRealmId() == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoRealm()));
             return;
         }
         if (!realmPlayer.hasPermission(permission)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         Realm realm = realmPlayer.getRealm();

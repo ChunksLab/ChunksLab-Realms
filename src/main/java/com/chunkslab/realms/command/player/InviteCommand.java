@@ -27,31 +27,31 @@ public class InviteCommand extends BaseCommand {
     public void inviteCommand(Player player, @Suggestion("players") String target) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getDataLoading()));
             return;
         }
         if (realmPlayer.getRealmId() == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoRealm()));
             return;
         }
         if (!realmPlayer.hasPermission(permission)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         if (target.equalsIgnoreCase(player.getName())) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You cannot invite yourself."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getCannotInviteYourself()));
             return;
         }
         plugin.getScheduler().runTaskAsync(() -> {
             Collection<String> players = plugin.getServerManager().getAllOnlinePlayers();
             if (!players.contains(target)) {
-                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625><player> is not online.", Placeholder.unparsed("player", target)));
+                ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getPlayerNotOnline(), Placeholder.unparsed("player", target)));
                 return;
             }
 
             RealmPlayer targetPlayer = plugin.getDatabase().loadPlayer(target);
             if (targetPlayer.getRealmId().equals(realmPlayer.getRealmId())) {
-                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Target player already member of your realm."));
+                ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTargetAlreadyMember()));
                 return;
             }
 
@@ -62,7 +62,7 @@ public class InviteCommand extends BaseCommand {
                 }
 
                 if (invite != null) {
-                    ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Target player already has an invite, please wait for 3 minutes and try again."));
+                    ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTargetAlreadyHasInvite()));
                     return;
                 }
 

@@ -21,20 +21,20 @@ public class DenyCommand extends BaseCommand {
     public void denyCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getDataLoading()));
             return;
         }
         if (!realmPlayer.hasPermission(permission)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         plugin.getInviteManager().getInvite(player.getUniqueId()).whenComplete((realmId, ex) -> {
             if (realmId == null) {
-                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You do not have an invite. -_-"));
+                ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoInvite()));
                 return;
             }
 
-            ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>Invite rejected."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getInviteRejected()));
             plugin.getInviteManager().rejectInvite(realmPlayer);
         });
     }

@@ -21,14 +21,14 @@ public class TeleportCommand extends BaseCommand {
     public void teleportCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getDataLoading()));
             return;
         }
         if (!realmPlayer.hasPermission(permission)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
-        ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>Teleporting to your realm..."));
+        ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTeleportToRealm()));
         player.teleportAsync(realmPlayer.getRealm().getSpawnLocation().getLocation());
     }
 }

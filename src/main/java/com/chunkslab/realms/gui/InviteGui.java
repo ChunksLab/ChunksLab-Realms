@@ -17,7 +17,7 @@ public class InviteGui {
 
     public static void open(RealmPlayer inviter, RealmPlayer target, RealmsPlugin plugin) {
         if (!inviter.hasPermission(Permission.REALM_MENU_INVITE)) {
-            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         ConfigFile config = plugin.getInviteMenuConfig();
@@ -30,7 +30,7 @@ public class InviteGui {
             Rank residentRank = plugin.getRankManager().getRank(Rank.Assignment.RESIDENT);
             plugin.getInviteManager().invitePlayer(inviter, target, residentRank);
 
-            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format("<#85CC16>Player invited successfully."));
+            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getPlayerInvited()));
             inviter.getBukkitPlayer().closeInventory();
         });
 
@@ -38,7 +38,7 @@ public class InviteGui {
             Rank trustedRank = plugin.getRankManager().getRank(Rank.Assignment.TRUSTED);
             plugin.getInviteManager().invitePlayer(inviter, target, trustedRank);
 
-            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format("<#85CC16>Player invited successfully."));
+            ChatUtils.sendMessage(inviter.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getPlayerInvited()));
             inviter.getBukkitPlayer().closeInventory();
         });
 

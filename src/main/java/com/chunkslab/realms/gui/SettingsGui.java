@@ -21,7 +21,7 @@ public class SettingsGui {
 
     public static void open(RealmPlayer player, RealmsPlugin plugin) {
         if (!player.hasPermission(Permission.REALM_MENU_SETTINGS)) {
-            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         ConfigFile config = plugin.getSettingsMenuConfig();

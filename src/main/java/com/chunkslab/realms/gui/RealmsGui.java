@@ -35,7 +35,7 @@ public class RealmsGui {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
 
         if (!realmPlayer.hasPermission(Permission.REALM_MENU)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
 
@@ -46,10 +46,10 @@ public class RealmsGui {
         Item teleport = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.t")), event -> {
             if (event.getClickType().isShiftClick()) {
                 if (realmPlayer.getRealmId() == null) {
-                    ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+                    ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoRealm()));
                 } else {
                     realmPlayer.getRealm().setSpawnLocation(ServerLocation.Builder.create(player.getLocation()).build());
-                    ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>You successfully set your realm spawn point!"));
+                    ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getRealmSpawnSet()));
                 }
             } else {
                 player.teleportAsync(realmPlayer.getRealm().getSpawnLocation().getLocation());
@@ -58,7 +58,7 @@ public class RealmsGui {
 
         Item settings = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.s")), event -> {
             if (realmPlayer.getRealmId() == null) {
-                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You don't have any realm."));
+                ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoRealm()));
             } else {
                 SettingsGui.open(realmPlayer, plugin);
             }

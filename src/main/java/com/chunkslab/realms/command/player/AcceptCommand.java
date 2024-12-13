@@ -22,11 +22,11 @@ public class AcceptCommand extends BaseCommand {
     public void acceptCommand(Player player) {
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>Your data is still loading, please try again."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getDataLoading()));
             return;
         }
         if (!realmPlayer.hasPermission(permission)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         plugin.getInviteManager().getInvite(player.getUniqueId()).whenComplete((invite, ex) -> {
@@ -36,11 +36,11 @@ public class AcceptCommand extends BaseCommand {
             }
 
             if (invite == null) {
-                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You do not have an invite. -_-"));
+                ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoInvite()));
                 return;
             }
 
-            ChatUtils.sendMessage(player, ChatUtils.format("<#85CC16>Invite accepted. Teleporting..."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getInviteAccepted()));
             plugin.getInviteManager().acceptInvite(realmPlayer, invite);
         });
     }

@@ -24,7 +24,7 @@ public class RankGui {
     @SneakyThrows
     public static void open(RealmPlayer player, RankedPlayer member, Realm realm, RealmsPlugin plugin) {
         if (!player.hasPermission(Permission.REALM_MENU_RANK)) {
-            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         ConfigFile config = plugin.getRankMenuConfig();

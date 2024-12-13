@@ -20,7 +20,7 @@ public class MainCommand extends BaseCommand {
     @Default
     public void defaultCommand(Player player) {
         if (!plugin.getPlayerManager().getPlayer(player).hasPermission(permission)) {
-            ChatUtils.sendMessage(player, ChatUtils.format("<red>You dont have required permission."));
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
             return;
         }
         RealmsGui.open(player, plugin);
