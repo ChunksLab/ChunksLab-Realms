@@ -2,6 +2,7 @@ package com.chunkslab.realms.database.impl.yaml;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.database.Database;
+import com.chunkslab.realms.api.player.BorderColor;
 import com.chunkslab.realms.api.player.MessagePreference;
 import com.chunkslab.realms.api.player.ban.BannedPlayer;
 import com.chunkslab.realms.api.player.ban.DefaultBannedPlayer;
@@ -152,13 +153,16 @@ public class YamlDatabase implements Database {
 
         player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create(playerUUID).build());
         long lastLogout = data.getLong("lastLogout");
+        MessagePreference messagePreference = MessagePreference.safeValue(data.getString("messagePreference"), plugin.getPluginConfig().getSettings().getDefaultMessagePreference());
+        BorderColor borderColor = BorderColor.safeValue(data.getString("borderColor"), plugin.getPluginConfig().getSettings().getDefaultBorderColor());
         boolean bypass = data.getBoolean("bypass");
         if (data.isSet("realm")) {
             UUID realmUUID = UUID.fromString(data.getString("realm"));
             player.setRealmId(realmUUID);
         }
         player.getData().setLastLogout(lastLogout);
-        //player.getData().setMessagePreference(MessagePreference.valueOf(data.getString("messagePreference")));
+        player.getData().setMessagePreference(messagePreference);
+        player.getData().setBorderColor(borderColor);
         player.getData().setBypass(bypass);
 
         plugin.getPlayerManager().addPlayer(player);
@@ -182,7 +186,8 @@ public class YamlDatabase implements Database {
             if (!name.equals(data.getString("name"))) continue;
             player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create().uuid(UUID.fromString(file.getName().replace(".yml", ""))).name(name).build());
             long lastLogout = data.getLong("lastLogout");
-            MessagePreference messagePreference = MessagePreference.valueOf(data.getString("messagePreference"));
+            MessagePreference messagePreference = MessagePreference.safeValue(data.getString("messagePreference"), plugin.getPluginConfig().getSettings().getDefaultMessagePreference());
+            BorderColor borderColor = BorderColor.safeValue(data.getString("borderColor"), plugin.getPluginConfig().getSettings().getDefaultBorderColor());
             boolean bypass = data.getBoolean("bypass");
             if (data.isSet("realm")) {
                 UUID realmUUID = UUID.fromString(data.getString("realm"));
@@ -190,6 +195,7 @@ public class YamlDatabase implements Database {
             }
             player.getData().setLastLogout(lastLogout);
             player.getData().setMessagePreference(messagePreference);
+            player.getData().setBorderColor(borderColor);
             player.getData().setBypass(bypass);
 
             plugin.getPlayerManager().addPlayer(player);
@@ -260,6 +266,7 @@ public class YamlDatabase implements Database {
             data.set("realm", player.getRealm().getUniqueId().toString());
         data.set("lastLogout", System.currentTimeMillis());
         data.set("messagePreference", player.getData().getMessagePreference().name());
+        data.set("borderColor", player.getData().getBorderColor().name());
         data.set("bypass", player.getData().isBypass());
 
         data.save();

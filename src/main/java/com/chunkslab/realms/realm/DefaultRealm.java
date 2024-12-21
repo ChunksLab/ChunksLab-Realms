@@ -75,12 +75,12 @@ public class DefaultRealm implements Realm {
 
     @Override
     public boolean isInBorder(Location location) {
-        double size = this.getUpgrade(Upgrade.Type.SIZE).value() / 2d;
+        double size = this.getUpgrade(Upgrade.Type.SIZE).value() * 16 * 2;
         if (size % 2 == 0)
             size += 1;
-        Location centerLocationBukkit = centerLocation.getLocation();
-        double x = Math.abs(location.getX() - centerLocationBukkit.getX());
-        double z = Math.abs(location.getZ() - centerLocationBukkit.getZ());
+        Location centerLocation = getCenterLocation().getLocation();
+        double x = Math.abs(location.getX() - centerLocation.getX());
+        double z = Math.abs(location.getZ() - centerLocation.getZ());
         return x <= size && z <= size;
     }
 }

@@ -1,5 +1,7 @@
 package com.chunkslab.realms.config;
 
+import com.chunkslab.realms.api.player.BorderColor;
+import com.chunkslab.realms.api.player.MessagePreference;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.*;
 import lombok.Getter;
@@ -62,6 +64,12 @@ public class Config extends OkaeriConfig {
         private String defaultName = "<player>'s Realm";
         @Comment("Default realm description")
         private String defaultDescription = "A realm created by <player>";
+        @Comment("Change players default preference on how messages are received")
+        @Comment("CHAT, TITLE, SUBTITLE, ACTION_BAR, BOSS_BAR")
+        private MessagePreference defaultMessagePreference = MessagePreference.CHAT;
+        @Comment("Change players default preference on realm border color")
+        @Comment("BLUE, GREEN, RED")
+        private BorderColor defaultBorderColor = BorderColor.BLUE;
         @Comment("Blocked keywords for name and description")
         private List<String> blockedKeywords = List.of("admin", "mod", "owner", "chunkslab", "fuck");
         @Comment("Blocks forbidden to set realm spawn location")

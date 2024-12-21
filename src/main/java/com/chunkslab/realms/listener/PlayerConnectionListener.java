@@ -21,11 +21,11 @@ public class PlayerConnectionListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         plugin.getScheduler().runTaskAsync(() -> {
-            plugin.getDatabase().loadPlayer(player.getUniqueId());
+            RealmPlayer realmPlayer = plugin.getDatabase().loadPlayer(player.getUniqueId());
             Realm realm = plugin.getRealmManager().getRealm(player.getLocation());
             if (realm == null) return;
 
-            plugin.getScheduler().runTaskSync(() -> WorldBorderUtils.send(player, realm), player.getLocation());
+            plugin.getScheduler().runTaskSync(() -> WorldBorderUtils.send(realmPlayer, realm), player.getLocation());
         });
     }
 

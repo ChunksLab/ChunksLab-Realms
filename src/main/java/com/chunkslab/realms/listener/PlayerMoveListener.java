@@ -45,7 +45,7 @@ public class PlayerMoveListener implements Listener {
             if (!to.getMembersController().isMember(realmPlayer))
                 to.getMembersController().getVisitors().add(realmPlayer);
             LogUtils.debug("Sending Border...");
-            plugin.getScheduler().runTaskSyncLater(() -> WorldBorderUtils.send(player, to), to.getCenterLocation().getLocation(), 5);
+            plugin.getScheduler().runTaskSyncLater(() -> WorldBorderUtils.send(realmPlayer, to), to.getCenterLocation().getLocation(), 5);
 
             if (player.isFlying() && !player.hasPermission("chunkslab.realms.permission.bypass.fly")) {
                 player.setFlying(false);

@@ -1,5 +1,6 @@
 package com.chunkslab.realms.api.player.data;
 
+import com.chunkslab.realms.api.player.BorderColor;
 import com.chunkslab.realms.api.player.MessagePreference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,9 @@ public class DefaultRealmPlayerData implements RealmPlayerData {
     @Getter @Setter
     private long lastLogout = System.currentTimeMillis();
     @Getter @Setter
-    private MessagePreference messagePreference = MessagePreference.CHAT;
+    private MessagePreference messagePreference;
+    @Getter @Setter
+    private BorderColor borderColor;
     @Getter @Setter
     private boolean bypass = false;
 }

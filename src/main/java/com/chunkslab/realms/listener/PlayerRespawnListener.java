@@ -19,7 +19,7 @@ public class PlayerRespawnListener implements Listener {
         Player player = event.getPlayer();
         Realm realm = plugin.getRealmManager().getRealm(event.getPlayer().getLocation());
         if (realm != null) {
-            WorldBorderUtils.send(player, realm);
+            WorldBorderUtils.send(plugin.getPlayerManager().getPlayer(player), realm);
         } else {
             WorldBorderUtils.reset(player);
         }

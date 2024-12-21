@@ -22,7 +22,7 @@ public class RealmManager implements IRealmManager {
     private final RealmsPlugin plugin;
 
     private final Map<UUID, Realm> realmMap = new ConcurrentHashMap<>();
-    private final TreeMap<Integer, TreeMap<Integer, Realm>> locationMap = new TreeMap<>();
+    private final TreeMap<Double, TreeMap<Double, Realm>> locationMap = new TreeMap<>();
 
     @Override
     public Collection<Realm> getRealms() {
@@ -46,7 +46,7 @@ public class RealmManager implements IRealmManager {
                     realm.setSpawnLocation(ServerLocation.Builder.create(result.right()).build());
 
                     realmPlayer.setRealmId(realm.getUniqueId());
-                    realmMap.put(realm.getUniqueId(), realm);
+                    loadRealm(realm);
                     return true;
                 });
     }
@@ -61,8 +61,8 @@ public class RealmManager implements IRealmManager {
     }
 
     private void putLocations(Realm realm) {
-        TreeMap<Integer, Realm> map = new TreeMap<>();
-        int range = realm.getUpgrade(Upgrade.Type.SIZE).value();
+        TreeMap<Double, Realm> map = new TreeMap<>();
+        double range = realm.getUpgrade(Upgrade.Type.SIZE).value() * 16 * 2;
         if (range % 2 == 0)
             range += 1;
         map.put(realm.getCenterLocation().getLocation().getBlockZ() - range, realm);
@@ -83,10 +83,10 @@ public class RealmManager implements IRealmManager {
     @Override
     public Realm getRealm(Location location) {
         // idea is from BentoBox, big credit to them.
-        Map.Entry<Integer, TreeMap<Integer, Realm>> entry = locationMap.floorEntry(location.getBlockX());
+        Map.Entry<Double, TreeMap<Double, Realm>> entry = locationMap.floorEntry((double) location.getBlockX());
         if (entry == null) return null;
 
-        Map.Entry<Integer, Realm> zEntry = entry.getValue().floorEntry(location.getBlockZ());
+        Map.Entry<Double, Realm> zEntry = entry.getValue().floorEntry((double) location.getBlockZ());
         if (zEntry == null) return null;
 
         Realm realm = zEntry.getValue();

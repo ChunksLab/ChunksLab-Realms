@@ -4,6 +4,7 @@ common:
   - "REALM_COMMAND_ACCEPT"
   - "REALM_COMMAND_DENY"
   - "REALM_COMMAND_TELEPORT"
+  - "REALM_COMMAND_BORDER"
   - "REALM_MENU"
 ranks:
   - id: "owner"

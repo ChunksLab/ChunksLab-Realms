@@ -18,18 +18,7 @@ import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.biome.BiomeManager;
 import com.chunkslab.realms.command.MainCommand;
-import com.chunkslab.realms.command.player.AcceptCommand;
-import com.chunkslab.realms.command.player.BanCommand;
-import com.chunkslab.realms.command.player.CreateCommand;
-import com.chunkslab.realms.command.player.DenyCommand;
-import com.chunkslab.realms.command.player.InviteCommand;
-import com.chunkslab.realms.command.player.MemberCommand;
-import com.chunkslab.realms.command.player.MembersCommand;
-import com.chunkslab.realms.command.player.RemoveCommand;
-import com.chunkslab.realms.command.player.SetSpawnCommand;
-import com.chunkslab.realms.command.player.SettingsCommand;
-import com.chunkslab.realms.command.player.TeleportCommand;
-import com.chunkslab.realms.command.player.UnBanCommand;
+import com.chunkslab.realms.command.player.*;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
@@ -227,7 +216,8 @@ public final class RealmsPlugin extends RealmsAPI {
                 new AcceptCommand(this, Permission.REALM_COMMAND_ACCEPT),
                 new DenyCommand(this, Permission.REALM_COMMAND_DENY),
                 new BanCommand(this, Permission.REALM_COMMAND_BAN),
-                new UnBanCommand(this, Permission.REALM_COMMAND_UNBAN)
+                new UnBanCommand(this, Permission.REALM_COMMAND_UNBAN),
+                new BorderCommand(this, Permission.REALM_COMMAND_BORDER)
         );
 
         // Admin Commands
