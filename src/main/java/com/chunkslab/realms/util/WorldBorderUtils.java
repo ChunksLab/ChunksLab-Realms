@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class WorldBorderUtils {
 
     public static void send(RealmPlayer player, Realm realm) {
-        //if (player.hasPermission("chunkslab.realms.permission.bypass.border")) return;
+        if (player.getData().isBypass()) return;
 
         Player bukkitPlayer = player.getBukkitPlayer();
         WorldBorder border = Bukkit.createWorldBorder();

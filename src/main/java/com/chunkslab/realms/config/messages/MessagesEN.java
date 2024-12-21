@@ -45,6 +45,7 @@ public class MessagesEN extends OkaeriConfig {
     private String targetAlreadyMember = "<prefix> <#DC2625>Target player already a member of your realm.";
     private String targetAlreadyHasInvite = "<prefix> <#DC2625>Target player already has an invite, please wait for 3 minutes and try again.";
     private String noInvite = "<prefix> <#DC2625>You do not have an invite. -_-";
+    private String noFlyPermission = "<prefix> <#DC2625>You do not have permission to fly in this realm.";
 
     private String realmSpawnSet = "<prefix> <#85CC16>You successfully set your realm spawn point!";
     private String teleportToRealm = "<prefix> <#85CC16>Teleporting to your realm...";

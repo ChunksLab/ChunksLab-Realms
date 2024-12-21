@@ -29,6 +29,7 @@ ranks:
       - "PROTECTION_BREAK"
       - "PROTECTION_INTERACT"
       - "PROTECTION_USE"
+      - "PROTECTION_FLY"
   - id: "trusted"
     power: 2
     display: "&bTrusted"
@@ -42,6 +43,7 @@ ranks:
       - "PROTECTION_BREAK"
       - "PROTECTION_INTERACT"
       - "PROTECTION_USE"
+      - "PROTECTION_FLY"
   - id: "resident"
     power: 1
     display: "&7Resident"

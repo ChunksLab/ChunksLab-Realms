@@ -5,6 +5,7 @@ import com.chunkslab.realms.api.player.BorderColor;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.util.ChatUtils;
+import com.chunkslab.realms.util.WorldBorderUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
@@ -36,5 +37,6 @@ public class BorderCommand extends BaseCommand {
 
         ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getBorderColorChanged()));
         realmPlayer.getData().setBorderColor(borderColor);
+        WorldBorderUtils.send(realmPlayer, realmPlayer.getRealm());
     }
 }

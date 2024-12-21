@@ -2,6 +2,7 @@ package com.chunkslab.realms.listener;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
+import com.chunkslab.realms.api.player.permissions.Permission;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.util.LogUtils;
 import com.chunkslab.realms.util.ChatUtils;
@@ -49,10 +50,10 @@ public class PlayerTeleportListener implements Listener {
             LogUtils.debug("Sending Border...");
             plugin.getScheduler().runTaskSyncLater(() -> WorldBorderUtils.send(realmPlayer, to), to.getCenterLocation().getLocation(), 5);
 
-            if (player.isFlying() && !player.hasPermission("chunkslab.realms.permission.bypass.fly")) {
+            if (player.isFlying() && realmPlayer.hasPermission(Permission.PROTECTION_FLY) && !realmPlayer.getData().isBypass()) {
                 player.setFlying(false);
                 player.setAllowFlight(false);
-                ChatUtils.sendMessage(player, ChatUtils.format("<#DC2625>You do not have permission to fly in this realm."));
+                ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoFlyPermission()));
             }
         }
     }

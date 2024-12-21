@@ -40,6 +40,7 @@ public enum Permission {
     PROTECTION_BREAK,
     PROTECTION_INTERACT,
     PROTECTION_USE,
+    PROTECTION_FLY,
 
     ADMIN_COMMAND_RELOAD("towny.admin.reload"),
     ADMIN_COMMAND_MODULE("towny.admin.module"),
