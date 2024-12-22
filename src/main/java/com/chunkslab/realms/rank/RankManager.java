@@ -20,7 +20,7 @@ public class RankManager implements IRankManager {
     private final Set<Rank> ranks = new HashSet<>();
 
     @Getter
-    List<Permission> common = new ArrayList<>();
+    private final List<Permission> common = new ArrayList<>();
 
     @Override
     public void enable() {

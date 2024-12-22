@@ -97,6 +97,7 @@ public class YamlDatabase implements Database {
             Rank rank = plugin.getRankManager().getRank(Rank.Assignment.valueOf(data.getString("membersData." + uuid + ".rank")));
             long joinDate = data.getLong("membersData." + uuid + ".joinDate");
             realm.getMembersController().setMember(player, rank, joinDate, false);
+            player.setRealmId(realmUUID);
         }
 
         // banned members
@@ -146,12 +147,13 @@ public class YamlDatabase implements Database {
     @Override
     public RealmPlayer loadPlayer(UUID playerUUID) {
         RealmPlayer player = plugin.getPlayerManager().getPlayer(playerUUID);
-        if (player != null) return player;
+        if (player != null)
+            return player;
 
         YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), playerUUID.toString());
         data.create();
 
-        player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create(playerUUID).build());
+        player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create().uuid(playerUUID).name(data.getString("name")).build());
         long lastLogout = data.getLong("lastLogout");
         MessagePreference messagePreference = MessagePreference.safeValue(data.getString("messagePreference"), plugin.getPluginConfig().getSettings().getDefaultMessagePreference());
         BorderColor borderColor = BorderColor.safeValue(data.getString("borderColor"), plugin.getPluginConfig().getSettings().getDefaultBorderColor());
