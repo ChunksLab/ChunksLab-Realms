@@ -37,7 +37,7 @@ items:
   'x':
     name: "%player_prefix% %player_name%"
     lore:
-      - "<gray>Current Players: <reset><current-players>"
+      - "<gray>Current Visitors: <reset><current-visitors>"
       - "<gray>Created: <reset><creation-date>"
   '<':
     material: "ARROW"

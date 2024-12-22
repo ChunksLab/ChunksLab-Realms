@@ -5,7 +5,6 @@ import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.Permission;
-import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.gui.item.BackItem;
 import com.chunkslab.realms.gui.item.ForwardItem;
 import com.chunkslab.realms.gui.item.UpdatingItem;
@@ -14,6 +13,7 @@ import com.chunkslab.realms.util.ItemUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.entity.Player;
+import xyz.xenondevs.inventoryaccess.component.ComponentWrapper;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.structure.Markers;
@@ -65,7 +65,37 @@ public class RealmsGui {
         });
 
         List<Item> realms = plugin.getRealmManager().getRealms()
-                .stream().map(realm -> createRealmItem(player, config, realm))
+                .stream().map(realm -> {
+                    try {
+                        SkullBuilder item = new SkullBuilder(
+                                SkullBuilder.HeadTexture.of(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer()));
+
+                        ComponentWrapper displayName = ChatUtils.formatForGui(
+                                PlaceholderAPI.setPlaceholders(
+                                        realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer(),
+                                        config.getString("items.x.name")
+                                )
+                        );
+                        item.setDisplayName(displayName);
+
+                        List<ComponentWrapper> lore = ChatUtils.formatForGui(
+                                config.getStringList("items.x.lore"),
+                                Placeholder.parsed("current-visitors", String.valueOf(realm.getMembersController().getVisitorsCount())),
+                                Placeholder.parsed("creation-date", realm.getCreationDateFormatted())
+                        );
+                        item.setLore(lore);
+
+                        int customModelData = config.getInt("items.x.custom-model-data");
+                        item.setCustomModelData(customModelData);
+                        return new UpdatingItem(
+                                20,
+                                () -> item,
+                                event -> player.teleportAsync(realm.getSpawnLocation().getLocation())
+                        );
+                    } catch (MojangApiUtils.MojangApiException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
 
         Gui gui = PagedGui.items()
@@ -87,17 +117,5 @@ public class RealmsGui {
                 .build();
 
         window.open();
-    }
-
-    private static Item createRealmItem(Player player, ConfigFile config, Realm realm) {
-        try {
-            SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer()));
-            item.setDisplayName(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer(), config.getString("items.x.name"))));
-            item.setLore(ChatUtils.formatForGui(config.getStringList("items.x.lore"), Placeholder.parsed("current-players", String.valueOf(1)), Placeholder.parsed("creation-date", realm.getCreationDateFormatted())));
-            item.setCustomModelData(config.getInt("items.x.custom-model-data"));
-            return new UpdatingItem(20, () -> item, event -> player.teleportAsync(realm.getSpawnLocation().getLocation()));
-        } catch (MojangApiUtils.MojangApiException | IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
