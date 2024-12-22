@@ -62,7 +62,7 @@ public class RealmManager implements IRealmManager {
 
     private void putLocations(Realm realm) {
         TreeMap<Double, Realm> map = new TreeMap<>();
-        double range = realm.getUpgrade(Upgrade.Type.SIZE).value() * 16 * 2;
+        double range = realm.getUpgrade(Upgrade.Type.SIZE).value() * 16;
         if (range % 2 == 0)
             range += 1;
         map.put(realm.getCenterLocation().getLocation().getBlockZ() - range, realm);
