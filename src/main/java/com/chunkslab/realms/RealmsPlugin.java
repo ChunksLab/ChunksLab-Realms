@@ -24,6 +24,7 @@ import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
 import com.chunkslab.realms.invite.InviteManager;
 import com.chunkslab.realms.listener.ListenerManager;
+import com.chunkslab.realms.papi.PapiHook;
 import com.chunkslab.realms.player.PlayerManager;
 import com.chunkslab.realms.rank.RankManager;
 import com.chunkslab.realms.realm.RealmManager;
@@ -140,6 +141,8 @@ public final class RealmsPlugin extends RealmsAPI {
         scheduler.enable();
 
         database = new YamlDatabase(this);
+
+        new PapiHook(this).register();
 
         this.getModuleManager().enableModules();
         database.enable();
