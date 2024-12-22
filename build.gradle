@@ -62,7 +62,7 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'dev.dbassett:skullcreator:3.0.1'
 
-    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.3.9'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.13'
     compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly 'com.zaxxer:HikariCP:5.0.1'
 }
