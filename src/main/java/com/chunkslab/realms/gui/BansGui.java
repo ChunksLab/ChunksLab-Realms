@@ -44,7 +44,9 @@ public class BansGui {
         });
 
         List<Item> slots = realm.getMembersController().getBans()
-                .stream().map(member -> {
+                .stream()
+                .sorted((member1, member2) -> Float.compare(member2.getBanDate(), member1.getBanDate()))
+                .map(member -> {
                     try {
                         SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
                         item.setDisplayName(

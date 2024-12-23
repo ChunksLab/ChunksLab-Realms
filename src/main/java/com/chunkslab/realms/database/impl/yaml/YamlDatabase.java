@@ -153,7 +153,7 @@ public class YamlDatabase implements Database {
         YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), playerUUID.toString());
         data.create();
 
-        player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create().uuid(playerUUID).name(data.getString("name")).build());
+        player = new DefaultRealmPlayer(RealmPlayerContext.Builder.create(playerUUID).build());
         long lastLogout = data.getLong("lastLogout");
         MessagePreference messagePreference = MessagePreference.safeValue(data.getString("messagePreference"), plugin.getPluginConfig().getSettings().getDefaultMessagePreference());
         BorderColor borderColor = BorderColor.safeValue(data.getString("borderColor"), plugin.getPluginConfig().getSettings().getDefaultBorderColor());

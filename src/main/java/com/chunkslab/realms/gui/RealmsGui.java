@@ -52,7 +52,11 @@ public class RealmsGui {
                     ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getRealmSpawnSet()));
                 }
             } else {
-                player.teleportAsync(realmPlayer.getRealm().getSpawnLocation().getLocation());
+                if (realmPlayer.getRealmId() == null) {
+                    ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoRealm()));
+                } else {
+                    player.teleportAsync(realmPlayer.getRealm().getSpawnLocation().getLocation());
+                }
             }
         });
 

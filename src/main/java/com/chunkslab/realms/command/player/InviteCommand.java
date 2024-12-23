@@ -50,7 +50,7 @@ public class InviteCommand extends BaseCommand {
             }
 
             RealmPlayer targetPlayer = plugin.getDatabase().loadPlayer(target);
-            if (targetPlayer.getRealmId().equals(realmPlayer.getRealmId())) {
+            if (realmPlayer.getRealmId().equals(targetPlayer.getRealmId())) {
                 ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTargetAlreadyMember()));
                 return;
             }
@@ -66,7 +66,7 @@ public class InviteCommand extends BaseCommand {
                     return;
                 }
 
-                InviteGui.open(realmPlayer, targetPlayer, plugin);
+                plugin.getScheduler().runTaskSync(() -> InviteGui.open(realmPlayer, targetPlayer, plugin), player.getLocation());
             });
         });
     }
