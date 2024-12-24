@@ -2,7 +2,6 @@ package com.chunkslab.realms.api.realm;
 
 import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
-import com.chunkslab.realms.api.realm.bank.RealmBank;
 import com.chunkslab.realms.api.realm.member.MembersController;
 import com.chunkslab.realms.api.realm.member.data.MembersData;
 import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
@@ -95,12 +94,6 @@ public interface Realm {
      * @return privacy option
      */
     PrivacyOption getPrivacyOption();
-
-    /**
-     * Get the bank of this realm.
-     * @return realm bank
-     */
-    @NotNull RealmBank getRealmBank();
 
     boolean isInBorder(Location location);
 

@@ -4,12 +4,10 @@ import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.realm.Realm;
-import com.chunkslab.realms.api.realm.bank.RealmBank;
 import com.chunkslab.realms.api.realm.member.MembersController;
 import com.chunkslab.realms.api.realm.member.data.MembersData;
 import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.upgrade.Upgrade;
-import com.chunkslab.realms.realm.bank.DefaultRealmBank;
 import com.chunkslab.realms.realm.member.DefaultMembersController;
 import com.chunkslab.realms.realm.member.data.DefaultMembersData;
 import lombok.Getter;
@@ -46,11 +44,6 @@ public class DefaultRealm implements Realm {
     @Override
     public @NotNull MembersController getMembersController() {
         return new DefaultMembersController(this);
-    }
-
-    @Override
-    public @NotNull RealmBank getRealmBank() {
-        return new DefaultRealmBank(this);
     }
 
     @Override
