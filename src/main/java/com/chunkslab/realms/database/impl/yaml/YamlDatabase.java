@@ -12,8 +12,6 @@ import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
 import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.Realm;
-import com.chunkslab.realms.api.realm.bank.log.BankAction;
-import com.chunkslab.realms.api.realm.bank.log.BankLog;
 import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.api.util.LocationUtils;
@@ -26,9 +24,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -107,19 +102,6 @@ public class YamlDatabase implements Database {
                 long banDate = data.getLong("banData." + uuid + ".banDate");
                 realm.getMembersController().getBans().add(new DefaultBannedPlayer(player.getContext(), banDate));
             }
-        }
-
-        // bank
-        realm.getRealmBank().setBalance(BigDecimal.valueOf(data.getDouble("bank.balance")));
-        List<String> logs = data.getStringList("bank.logs");
-        for (String s : logs) {
-            String[] log = s.split(",");
-            RealmPlayer player = loadPlayer(UUID.fromString(log[0]));
-            BankAction action = BankAction.valueOf(log[1]);
-            BigDecimal amount = new BigDecimal(log[2]);
-            long time = Long.parseLong(log[3]);
-            BankLog bankLog = new BankLog(player, action, amount, time);
-            realm.getRealmBank().addLog(bankLog);
         }
 
         // upgrades
@@ -232,14 +214,6 @@ public class YamlDatabase implements Database {
             data.set("banData." + bannedPlayer.getUniqueId().toString() + ".name", bannedPlayer.getName());
             data.set("banData." + bannedPlayer.getUniqueId().toString() + ".banDate", bannedPlayer.getBanDate());
         }
-
-        // bank
-        data.set("bank.balance", realm.getRealmBank().getBalance().doubleValue());
-        List<String> logs = new ArrayList<>();
-        for (BankLog log : realm.getRealmBank().getLogs()) {
-            logs.add(log.player().getUniqueId() + "," + log.action().name() + "," + log.amount() + "," + log.timestamp());
-        }
-        data.set("bank.logs", logs);
 
         // upgrades
         for (Upgrade.Type type : Upgrade.Type.VALUES) {
