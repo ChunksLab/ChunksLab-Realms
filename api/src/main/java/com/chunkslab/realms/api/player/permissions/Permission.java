@@ -38,8 +38,8 @@ public enum Permission {
 
     PROTECTION_PLACE,
     PROTECTION_BREAK,
-    PROTECTION_INTERACT,
     PROTECTION_USE,
+    PROTECTION_SWITCH,
     PROTECTION_FLY,
 
     ADMIN_COMMAND_RELOAD("towny.admin.reload"),

@@ -2,6 +2,11 @@ package com.chunkslab.realms.listener;
 
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.listener.IListenerManager;
+import com.chunkslab.realms.api.player.permissions.Permission;
+import com.chunkslab.realms.listener.realm.BreakPermission;
+import com.chunkslab.realms.listener.realm.PlacePermission;
+import com.chunkslab.realms.listener.realm.SwitchPermission;
+import com.chunkslab.realms.listener.realm.UsePermission;
 import com.google.common.base.Preconditions;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.HandlerList;
@@ -24,6 +29,10 @@ public class ListenerManager implements IListenerManager {
         register(new PlayerMoveListener(plugin));
         register(new PlayerTeleportListener(plugin));
         register(new PlayerRespawnListener(plugin));
+        register(new PlacePermission(Permission.PROTECTION_PLACE));
+        register(new BreakPermission(Permission.PROTECTION_BREAK));
+        register(new UsePermission(Permission.PROTECTION_USE));
+        register(new SwitchPermission(Permission.PROTECTION_SWITCH));
     }
 
     @Override

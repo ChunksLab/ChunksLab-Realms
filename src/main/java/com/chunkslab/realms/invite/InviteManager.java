@@ -28,9 +28,9 @@ public class InviteManager implements IInviteManager {
     public void invitePlayer(RealmPlayer inviter, RealmPlayer target, Rank rank) {
         inviteCache.put(target.getUniqueId(), new Invite(inviter.getRealmId(), rank));
 
-        Component component = ChatUtils.format("<yellow>You just got an invite from <player>. ", Placeholder.unparsed("player", inviter.getName()));
-        component = component.append(ChatUtils.format("<green>ACCEPT").clickEvent(ClickEvent.runCommand("/realms accept")));
-        component = component.append(ChatUtils.format("<dark_red>DENY").clickEvent(ClickEvent.runCommand("/realms deny")));
+        Component component = ChatUtils.format(plugin.getPluginMessages().getInviteReceived(), Placeholder.unparsed("player", inviter.getName()));
+        component = component.append(ChatUtils.format(plugin.getPluginMessages().getInviteAccept()).clickEvent(ClickEvent.runCommand("/realms accept")));
+        component = component.append(ChatUtils.format(plugin.getPluginMessages().getInviteReject()).clickEvent(ClickEvent.runCommand("/realms deny")));
 
         if (target.getBukkitPlayer() != null) {
             ChatUtils.sendMessage(target.getBukkitPlayer(), component);

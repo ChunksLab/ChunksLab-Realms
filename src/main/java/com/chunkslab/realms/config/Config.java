@@ -74,6 +74,46 @@ public class Config extends OkaeriConfig {
         private List<String> blockedKeywords = List.of("admin", "mod", "owner", "chunkslab", "fuck");
         @Comment("Blocks forbidden to set realm spawn location")
         private List<String> forbiddenBlocks = List.of("WATER", "LAVA");
+        @Comment("Items that can act as switches")
+        private List<String> switchItems = List.of(
+                "CHEST",
+                "SHULKER_BOXES",
+                "TRAPPED_CHEST",
+                "FURNACE",
+                "BLAST_FURNACE",
+                "DISPENSER",
+                "HOPPER",
+                "DROPPER",
+                "JUKEBOX",
+                "SMOKER",
+                "COMPOSTER",
+                "BELL",
+                "BARREL",
+                "BREWING_STAND",
+                "LEVER",
+                "NON_WOODEN_PRESSURE_PLATES",
+                "BUTTONS",
+                "WOOD_DOORS",
+                "FENCE_GATES",
+                "TRAPDOORS",
+                "MINECARTS",
+                "LODESTONE",
+                "RESPAWN_ANCHOR",
+                "TARGET",
+                "OAK_CHEST_BOAT",
+                "DECORATED_POT",
+                "CRAFTER"
+        );
+        @Comment("Items allowed for specific use cases")
+        private List<String> useItems = List.of(
+                "MINECARTS",
+                "BOATS",
+                "ENDER_PEARL",
+                "FIREBALL",
+                "CHORUS_FRUIT",
+                "LEAD",
+                "EGG"
+        );
     }
 
     @Getter @Setter

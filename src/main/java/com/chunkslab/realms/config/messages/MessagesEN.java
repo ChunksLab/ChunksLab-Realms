@@ -45,6 +45,7 @@ public class MessagesEN extends OkaeriConfig {
     private String targetAlreadyMember = "<prefix> <#DC2625>Target player already a member of your realm.";
     private String targetAlreadyHasInvite = "<prefix> <#DC2625>Target player already has an invite, please wait for 3 minutes and try again.";
     private String noInvite = "<prefix> <#DC2625>You do not have an invite. -_-";
+    private String actionCancelled = "<prefix> <#DC2625>You do not have the permission to do in this realm.";
     private String noFlyPermission = "<prefix> <#DC2625>You do not have permission to fly in this realm.";
 
     private String realmSpawnSet = "<prefix> <#85CC16>You successfully set your realm spawn point!";
@@ -55,6 +56,9 @@ public class MessagesEN extends OkaeriConfig {
     private String playerUnbanned = "<prefix> <#85CC16><player>'s ban has been successfully lifted.";
     private String borderColorChanged = "<prefix> <#85CC16>Border color changed successfully.";
     private String playerInvited = "<prefix> <#85CC16>Player invited successfully.";
+    private String inviteReceived = "<yellow>You just got an invite from <player>. ";
+    private String inviteAccept = "<#85CC16>ACCEPT";
+    private String inviteReject = "<#DC2625>DENY";
     private String inviteAccepted = "<prefix> <#85CC16>Invite accepted. Teleporting...";
     private String inviteRejected = "<prefix> <#85CC16>Invite rejected.";
 }
