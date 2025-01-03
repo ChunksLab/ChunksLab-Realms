@@ -2,6 +2,7 @@ package com.chunkslab.realms.api;
 
 import com.chunkslab.realms.api.biome.IBiomeManager;
 import com.chunkslab.realms.api.invite.IInviteManager;
+import com.chunkslab.realms.api.item.IItemManager;
 import com.chunkslab.realms.api.module.ModuleManager;
 import com.chunkslab.realms.api.player.IPlayerManager;
 import com.chunkslab.realms.api.rank.IRankManager;
@@ -48,6 +49,8 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract IRankManager getRankManager();
 
+    public abstract IItemManager getItemManager();
+
     public abstract IBiomeManager getBiomeManager();
 
     public abstract IInviteManager getInviteManager();
@@ -67,6 +70,8 @@ public abstract class RealmsAPI extends JavaPlugin {
     public abstract void setWorldManager(IWorldManager worldManager);
 
     public abstract void setRankManager(IRankManager rankManager);
+
+    public abstract void setItemManager(IItemManager itemManager);
 
     public abstract void setBiomeManager(IBiomeManager biomeManager);
 

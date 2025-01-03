@@ -111,7 +111,6 @@ public class DefaultMembersController implements MembersController {
     @Override
     public void removeMember(RealmPlayer player) {
         getMembers().removeIf(member -> member.getContext().equals(player.getContext()));
-        player.setRealmId(null);
     }
 
     @Override

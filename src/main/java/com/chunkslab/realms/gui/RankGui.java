@@ -13,6 +13,7 @@ import com.chunkslab.realms.util.ChatUtils;
 import com.chunkslab.realms.util.ItemUtils;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.item.Item;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
@@ -37,24 +38,28 @@ public class RankGui {
 
         Item visitor = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.v")), event -> {
             realm.getMembersController().kick(member, player.getName());
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRoleModified()));
             player.getBukkitPlayer().closeInventory();
         });
 
         Item resident = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.r")), event -> {
             Rank rank = plugin.getRankManager().getRank(Rank.Assignment.RESIDENT);
             realm.getMembersController().setMember(member, rank, member.getJoinDate(), true);
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRoleModified()));
             player.getBukkitPlayer().closeInventory();
         });
 
         Item trusted = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.t")), event -> {
             Rank rank = plugin.getRankManager().getRank(Rank.Assignment.TRUSTED);
             realm.getMembersController().setMember(member, rank, member.getJoinDate(), true);
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRoleModified()));
             player.getBukkitPlayer().closeInventory();
         });
 
         Item ban = new UpdatingItem(20, () -> new ItemBuilder(ItemUtils.build(config, "items.b")), event -> {
             realm.getMembersController().kick(member, player.getName());
             realm.getMembersController().getBans().add(new DefaultBannedPlayer(member.getContext(), System.currentTimeMillis()));
+            ChatUtils.sendMessage(player.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getPlayerBanned(), Placeholder.unparsed("player", member.getName())));
             player.getBukkitPlayer().closeInventory();
         });
 

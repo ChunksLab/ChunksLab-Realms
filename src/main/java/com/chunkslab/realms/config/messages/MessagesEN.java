@@ -54,6 +54,7 @@ public class MessagesEN extends OkaeriConfig {
     private String playerRemoved = "<prefix> <#85CC16>Player successfully removed.";
     private String playerBanned = "<prefix> <#85CC16><player> has been successfully banned.";
     private String playerUnbanned = "<prefix> <#85CC16><player>'s ban has been successfully lifted.";
+    private String roleModified = "<prefix> <#85CC16>Modified member's role!";
     private String borderColorChanged = "<prefix> <#85CC16>Border color changed successfully.";
     private String playerInvited = "<prefix> <#85CC16>Player invited successfully.";
     private String inviteReceived = "<yellow>You just got an invite from <player>. ";

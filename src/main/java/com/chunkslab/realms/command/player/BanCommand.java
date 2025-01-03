@@ -51,7 +51,7 @@ public class BanCommand extends BaseCommand {
             return;
         }
         if (realm.getMembersController().isMember(targetPlayer))
-            realm.getMembersController().removeMember(targetPlayer);
+            realm.getMembersController().kick(targetPlayer, player.getName());
         realm.getMembersController().getBans().add(new DefaultBannedPlayer(targetPlayer.getContext(), System.currentTimeMillis()));
         ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getPlayerBanned(), Placeholder.unparsed("player", target)));
     }

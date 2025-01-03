@@ -1,5 +1,6 @@
 package com.chunkslab.realms.util;
 
+import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.config.ConfigFile;
 import dev.dbassett.skullcreator.SkullCreator;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -27,8 +28,12 @@ public class ItemUtils {
             } catch (Exception e) {
                 itemStack = SkullCreator.itemFromName(material);
             }
-        else
-            itemStack = new ItemStack(Material.valueOf(material.toUpperCase(Locale.ENGLISH)));
+        else {
+            if (material.startsWith("custom-"))
+                itemStack = RealmsPlugin.getInstance().getItemManager().getItemWithId(material.replace("custom-", ""));
+            else
+                itemStack = new ItemStack(Material.valueOf(material.toUpperCase(Locale.ENGLISH)));
+        }
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (config.contains(path + ".name"))
