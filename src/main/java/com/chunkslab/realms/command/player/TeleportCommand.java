@@ -3,6 +3,8 @@ package com.chunkslab.realms.command.player;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.Permission;
+import com.chunkslab.realms.api.realm.Realm;
+import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.util.ChatUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -47,6 +49,18 @@ public class TeleportCommand extends BaseCommand {
             if (targetPlayer.getRealmId() == null) {
                 ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoRealm()));
                 return;
+            }
+            Realm targetRealm = targetPlayer.getRealm();
+            if (targetRealm.getPrivacyOption() != PrivacyOption.ANYONE) {
+                if (targetRealm.getPrivacyOption() == PrivacyOption.MEMBERS) {
+                    if (!targetRealm.getMembersController().isMember(realmPlayer)) {
+                        ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTeleportCancelled()));
+                        return;
+                    }
+                } else {
+                    ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTeleportCancelled()));
+                    return;
+                }
             }
 
             ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getTeleportToRealm()));
