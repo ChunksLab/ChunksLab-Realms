@@ -36,7 +36,6 @@ import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
 import com.chunkslab.realms.invite.InviteManager;
-import com.chunkslab.realms.item.ItemManager;
 import com.chunkslab.realms.listener.ListenerManager;
 import com.chunkslab.realms.papi.PapiHook;
 import com.chunkslab.realms.player.PlayerManager;
@@ -105,7 +104,7 @@ public final class RealmsPlugin extends RealmsAPI {
     @Setter private ISchematicManager schematicManager = new SchematicManager(this);
     @Setter private IUpgradeManager upgradeManager = new UpgradeManager(this);
     @Setter private IRankManager rankManager = new RankManager(this);
-    @Setter private IItemManager itemManager = new ItemManager(this).getManager();
+    //@Setter private IItemManager itemManager = new ItemManager(this).getManager();
     @Setter private IBiomeManager biomeManager= new BiomeManager(this);
     @Setter private IRealmManager realmManager = new RealmManager(this);
     @Setter private IInviteManager inviteManager = new InviteManager(this);

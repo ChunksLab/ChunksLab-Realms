@@ -30,7 +30,8 @@ public class ItemUtils {
             }
         else {
             if (material.startsWith("custom-"))
-                itemStack = RealmsPlugin.getInstance().getItemManager().getItemWithId(material.replace("custom-", ""));
+                itemStack = new ItemStack(Material.valueOf(material.toUpperCase(Locale.ENGLISH)));
+                //itemStack = RealmsPlugin.getInstance().getItemManager().getItemWithId(material.replace("custom-", ""));
             else
                 itemStack = new ItemStack(Material.valueOf(material.toUpperCase(Locale.ENGLISH)));
         }

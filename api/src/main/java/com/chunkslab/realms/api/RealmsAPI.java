@@ -49,7 +49,7 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract IRankManager getRankManager();
 
-    public abstract IItemManager getItemManager();
+    //public abstract IItemManager getItemManager();
 
     public abstract IBiomeManager getBiomeManager();
 
@@ -71,7 +71,7 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public abstract void setRankManager(IRankManager rankManager);
 
-    public abstract void setItemManager(IItemManager itemManager);
+    //public abstract void setItemManager(IItemManager itemManager);
 
     public abstract void setBiomeManager(IBiomeManager biomeManager);
 
