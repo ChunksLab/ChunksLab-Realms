@@ -3,8 +3,8 @@ package com.chunkslab.realms.biome;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.biome.Biome;
 import com.chunkslab.realms.api.biome.IBiomeManager;
+import com.chunkslab.realms.util.ItemUtils;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +33,7 @@ public class BiomeManager implements IBiomeManager {
             String displayName = section.getString("display-name");
             List<String> description = section.getStringList("description");
             String permission = section.getString("permission");
-            ItemStack icon = new ItemStack(Material.getMaterial(section.getString("icon")));
+            ItemStack icon = ItemUtils.build(plugin.getBiomesFile(), section.getString("icon"));
             FilenameFilter filter = (dir, name) -> name.startsWith(s + "_");
             File[] files = schematicsFolder.listFiles(filter);
             List<File> schematics = new ArrayList<>();

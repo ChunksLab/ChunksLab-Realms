@@ -130,10 +130,10 @@ project(":api") {
         }
         repositories {
             maven {
-                url = uri("https://repo.chunkslab.com/release")
+                url = uri("https://repo.voxelarc.net/releases")
                 credentials {
-                    username = System.getenv("CHUNKSLAB_REPO_USERNAME")
-                    password = System.getenv("CHUNKSLAB_REPO_PASSWORD")
+                    username = System.getenv("VOXELARC_REPO_USERNAME")
+                    password = System.getenv("VOXELARC_REPO_PASSWORD")
                 }
             }
         }
