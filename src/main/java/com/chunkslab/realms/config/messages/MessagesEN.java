@@ -63,4 +63,6 @@ public class MessagesEN extends OkaeriConfig {
     private String inviteReject = "<#DC2625>DENY";
     private String inviteAccepted = "<prefix> <#85CC16>Invite accepted. Teleporting...";
     private String inviteRejected = "<prefix> <#85CC16>Invite rejected.";
+    private String joinRealm = "<prefix> <#85CC16>Please welcome <yellow><name><#85CC16>, a new realm member";
+    private String kickRealm = "<prefix> <yellow><name> <#DC2625>has been kicked from the realm by <yellow><kicker>";
 }

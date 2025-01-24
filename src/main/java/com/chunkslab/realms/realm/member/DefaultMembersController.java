@@ -9,9 +9,11 @@ import com.chunkslab.realms.api.player.permissions.ranks.players.DefaultRankedPl
 import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.realm.member.MembersController;
+import com.chunkslab.realms.util.ChatUtils;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -153,13 +155,13 @@ public class DefaultMembersController implements MembersController {
     public void join(@NotNull RealmPlayer player) {
         player.setRealmId(getRealm().getUniqueId());
         setMember(player, RealmsPlugin.getInstance().getRankManager().getRank(Rank.Assignment.RESIDENT),false);
-        //TODO: SEND BROADCAST MESSAGE TO ALL MEMBER
+        realm.broadcast(ChatUtils.format(RealmsPlugin.getInstance().getPluginMessages().getJoinRealm(), Placeholder.unparsed("name", player.getName())));
     }
 
     @Override
     public void kick(@NotNull RealmPlayer player, @Nullable String kicker) {
         player.setRealmId(null);
         removeMember(player);
-        //TODO: SEND BROADCAST MESSAGE TO ALL MEMBER
+        realm.broadcast(ChatUtils.format(RealmsPlugin.getInstance().getPluginMessages().getKickRealm(), Placeholder.unparsed("name", player.getName()), Placeholder.unparsed("kicker", (kicker == null ? "UNKNOWN" : kicker))));
     }
 }

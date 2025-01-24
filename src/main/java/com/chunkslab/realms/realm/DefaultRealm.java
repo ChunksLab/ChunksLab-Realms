@@ -10,8 +10,10 @@ import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.realm.member.DefaultMembersController;
 import com.chunkslab.realms.realm.member.data.DefaultMembersData;
+import com.chunkslab.realms.util.ChatUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,6 +66,12 @@ public class DefaultRealm implements Realm {
     @Override
     public void addRating(RealmPlayer player, int rating) {
         this.ratings.put(player, rating);
+    }
+
+    @Override
+    public void broadcast(@NotNull Component message) {
+        for (RealmPlayer realmPlayer : getMembersController().getMembers())
+            ChatUtils.sendMessage(realmPlayer.getBukkitPlayer(), message);
     }
 
     @Override

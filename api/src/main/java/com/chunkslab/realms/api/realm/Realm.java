@@ -6,6 +6,7 @@ import com.chunkslab.realms.api.realm.member.MembersController;
 import com.chunkslab.realms.api.realm.member.data.MembersData;
 import com.chunkslab.realms.api.realm.privacy.PrivacyOption;
 import com.chunkslab.realms.api.upgrade.Upgrade;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -139,4 +140,6 @@ public interface Realm {
      * @param privacyOption new privacy option
      */
     void setPrivacyOption(PrivacyOption privacyOption);
+
+    void broadcast(@NotNull Component message);
 }
