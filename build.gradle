@@ -4,8 +4,13 @@ plugins {
     id("io.github.goooler.shadow") version "8.1.7"
 }
 
+ext {
+    baseVersion = '1.0.0'
+    channel = 'SNAPSHOT'
+}
+
 group = 'com.chunkslab.realms'
-version = '1.0.0-SNAPSHOT'
+version = getVersion()
 
 allprojects {
     apply plugin: 'java'
@@ -98,6 +103,7 @@ shadowJar {
     dependsOn(jar)
 
     archiveFileName = "Realms v${archiveVersion.get()}.jar"
+    destinationDirectory.set(file("$rootDir/target"))
 
     relocate 'net.kyori', 'com.chunkslab.realms.libs.adventure'
     relocate 'dev.triumphteam.cmd', 'com.chunkslab.realms.libs.triumphteam'
@@ -124,18 +130,52 @@ project(":api") {
             maven(MavenPublication) {
                 groupId = project.group
                 artifactId = project.name
-                version = project.version
+                version = project.baseVersion
                 artifact shadowJar
             }
         }
         repositories {
             maven {
-                url = uri("https://repo.voxelarc.net/releases")
+                url = uri(getRepositoryURL())
                 credentials {
                     username = System.getenv("VOXELARC_REPO_USERNAME")
                     password = System.getenv("VOXELARC_REPO_PASSWORD")
                 }
             }
         }
+    }
+}
+
+def getGitCommitHash() {
+    try {
+        def process = new ProcessBuilder('git', 'rev-parse', '--short', 'HEAD')
+                .redirectErrorStream(true)
+                .start()
+        process.waitFor()
+        return '-' + process.inputStream.text.trim()
+    } catch (Exception e) {
+        return '-unknown'
+    }
+}
+
+def getVersion() {
+    def finalVersion = baseVersion
+    if (channel && !channel.isEmpty()) {
+        finalVersion += "-${channel}"
+    }
+    def includeHash = System.getenv("INCLUDE_GIT_HASH")
+    if (includeHash == null || includeHash.toBoolean()) {
+        finalVersion += getGitCommitHash()
+    }
+    return finalVersion
+}
+
+def getRepositoryURL() {
+    if (channel.contains("SNAPSHOT")) {
+        return "https://repo.voxelarc.net/snapshots/"
+    } else if (channel.contains("DEVELOPMENT")) {
+        return "https://repo.voxelarc.net/development/"
+    } else {
+        return "https://repo.voxelarc.net/releases/"
     }
 }

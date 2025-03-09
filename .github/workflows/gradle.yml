@@ -1,11 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
+name: '🚀 Release Build & Publish'
 
 on:
   push:
@@ -15,37 +8,42 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: 'Checkout for CI 🛎️'
+        uses: actions/checkout@v4
+      - name: 'Set up JDK 17 📦'
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2 # v3.1.0
+      - name: 'Set up Gradle ⚙️'
+        uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.5'
-
-      - name: Init gradle wrapper
+          gradle-version: '8.13'
+      - name: 'Initialize Gradle Wrapper 🚀'
         run: gradle wrapper
-
-      - name: Change wrapper permissions
+      - name: 'Change Wrapper Permissions 🔓'
         run: chmod +x ./gradlew
-
-      - name: Build with Gradle wrapper
+      - name: 'Build Main Project 🏗️'
         run: ./gradlew build
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.6.1 #https://github.com/actions/upload-artifact/releases
+      - name: 'Fetch Version Name 📝'
+        id: fetch-version
+        run: |
+          VERSION_NAME=$(./gradlew properties --no-daemon --console=plain -q | grep "^version:" | awk '{print $2}')
+          echo "VERSION_NAME=v$VERSION_NAME" >> $GITHUB_ENV
+      - name: 'Get Version 📝'
+        run:  |
+          echo "Version: $VERSION_NAME"
+      - name: 'Upload Build Artifact 📦'
+        uses: actions/upload-artifact@v4
         with:
-          name: Realms
-          path: build/libs/Realms v**.jar
+          name: Realms ${{ env.VERSION_NAME }}
+          path: target/Realms ${{ env.VERSION_NAME }}.jar
+      - name: 'Publish to repo.voxelarc.net 📡'
+        run: ./gradlew publish
+        env:
+          VOXELARC_REPO_USERNAME: ${{ secrets.VOXELARC_REPO_USERNAME }}
+          VOXELARC_REPO_PASSWORD: ${{ secrets.VOXELARC_REPO_PASSWORD }}
