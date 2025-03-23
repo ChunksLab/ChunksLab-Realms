@@ -80,6 +80,8 @@ public class WorldEditPaster implements SchematicPaster {
             Location surface = world.getHighestBlockAt(newX, newZ).getLocation();
             Material groundMaterial = surface.getBlock().getType();
 
+            if (surface.getBlockY() <= world.getMinHeight()) continue;
+
             if (forbiddenBlocks.contains(groundMaterial.name())) continue;
 
             location = surface.add(0, 1, 0);
