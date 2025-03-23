@@ -78,6 +78,7 @@ public final class RealmsPlugin extends RealmsAPI {
     private final ConfigFile upgradesFile = new ConfigFile(this, "upgrades.yml", true);
     private final ConfigFile permissionsFile = new ConfigFile(this, "permissions.yml", true);
     private final ConfigFile biomesFile = new ConfigFile(this, "biomes.yml", true);
+    private final ConfigFile createMenuConfig = new ConfigFile(this, "menus", "create-menu.yml");
     private final ConfigFile realmsMenuConfig = new ConfigFile(this, "menus", "realms-menu.yml");
     private final ConfigFile settingsMenuConfig = new ConfigFile(this, "menus", "settings-menu.yml");
     private final ConfigFile membersMenuConfig = new ConfigFile(this, "menus", "members-menu.yml");
@@ -122,6 +123,7 @@ public final class RealmsPlugin extends RealmsAPI {
         upgradesFile.create();
         permissionsFile.create();
         biomesFile.create();
+        createMenuConfig.create();
         realmsMenuConfig.create();
         settingsMenuConfig.create();
         membersMenuConfig.create();

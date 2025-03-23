@@ -3,6 +3,7 @@ package com.chunkslab.realms.command.player;
 import com.chunkslab.realms.RealmsPlugin;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.Permission;
+import com.chunkslab.realms.gui.CreateGui;
 import com.chunkslab.realms.util.ChatUtils;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -21,14 +22,6 @@ public class CreateCommand extends BaseCommand {
 
     @SubCommand("create")
     public void createCommand(Player player, @Optional @Suggestion("biomes") String biome) {
-        if (biome == null) {
-
-            return;
-        }
-        if (plugin.getBiomeManager().getBiome(biome) == null) {
-            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getBiomeNotFound()));
-            return;
-        }
         RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(player);
         if (realmPlayer == null) {
             ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getDataLoading()));
@@ -40,6 +33,14 @@ public class CreateCommand extends BaseCommand {
         }
         if (!realmPlayer.hasPermission(permission)) {
             ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNotEnoughPermission()));
+            return;
+        }
+        if (biome == null) {
+            CreateGui.open(realmPlayer, plugin);
+            return;
+        }
+        if (plugin.getBiomeManager().getBiome(biome) == null) {
+            ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getBiomeNotFound()));
             return;
         }
         ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getRealmCreating()));

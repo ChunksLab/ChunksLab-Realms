@@ -1,0 +1,28 @@
+structure:
+  - "# # # # # # # # #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# x x x x x x x #"
+  - "# # # # # # # # #"
+
+title: "<underlined>Bans"
+
+items:
+  '#':
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  '<':
+    material: "ARROW"
+    name: "<yellow>Previous Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the previous page"
+      - ""
+  '>':
+    material: "ARROW"
+    name: "<yellow>Next Page"
+    lore:
+      - ""
+      - "<gray>Click to go to the next page"
+      - ""

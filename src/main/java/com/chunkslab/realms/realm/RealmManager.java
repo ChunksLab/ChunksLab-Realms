@@ -5,6 +5,7 @@ import com.chunkslab.realms.api.biome.Biome;
 import com.chunkslab.realms.api.location.ServerLocation;
 import com.chunkslab.realms.api.player.objects.RealmPlayer;
 import com.chunkslab.realms.api.player.permissions.ranks.Rank;
+import com.chunkslab.realms.api.player.permissions.ranks.players.RankedPlayer;
 import com.chunkslab.realms.api.realm.IRealmManager;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.upgrade.Upgrade;
@@ -88,10 +89,11 @@ public class RealmManager implements IRealmManager {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getDatabase().deleteRealm(realm));
 
-        for (RealmPlayer realmPlayer : realm.getMembersController().getMembers()) {
-            realmPlayer.setRealmId(null);
-            if (realmPlayer.getBukkitPlayer() != null) {
-                ChatUtils.sendMessage(realmPlayer.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRealmDeleted()));
+        for (RankedPlayer rankedPlayer : realm.getMembersController().getMembers()) {
+            RealmPlayer realmPlayer = plugin.getPlayerManager().getPlayer(rankedPlayer.getUniqueId());
+            if (realmPlayer != null && rankedPlayer.getBukkitPlayer() != null) {
+                realmPlayer.setRealmId(null);
+                ChatUtils.sendMessage(rankedPlayer.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRealmDeleted()));
             }
         }
 

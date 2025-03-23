@@ -252,5 +252,21 @@ public class YamlDatabase implements Database {
     public void deleteRealm(UUID realmUUID) {
         File file = new File(REALMS_FOLDER.getPath(), realmUUID.toString() + ".yml");
         file.delete();
+
+        File[] files = PLAYERS_FOLDER.listFiles();
+        if (files == null) return;
+
+        for (File playerFile : files) {
+            if (!playerFile.getName().endsWith(".yml")) continue;
+
+            YamlData data = new YamlData(PLAYERS_FOLDER.getPath(), playerFile.getName());
+            data.create();
+
+            String realmIdStr = data.getString("realm");
+            if (realmIdStr != null && realmIdStr.equalsIgnoreCase(realmUUID.toString())) {
+                data.set("realm", null);
+                data.save();
+            }
+        }
     }
 }

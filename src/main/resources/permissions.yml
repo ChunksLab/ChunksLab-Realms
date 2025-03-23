@@ -6,6 +6,7 @@ common:
   - "REALM_COMMAND_TELEPORT"
   - "REALM_COMMAND_BORDER"
   - "REALM_MENU"
+  - "REALM_MENU_CREATE"
 ranks:
   - id: "owner"
     power: 3
