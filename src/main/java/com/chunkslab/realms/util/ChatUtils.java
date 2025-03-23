@@ -2,6 +2,7 @@ package com.chunkslab.realms.util;
 
 import com.chunkslab.realms.RealmsPlugin;
 import lombok.Setter;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -71,11 +72,11 @@ public class ChatUtils {
     }
 
     public static ComponentWrapper formatForGui(String string, TagResolver... placeholders) {
-        return new AdventureComponentWrapper(format(string, placeholders));
+        return new AdventureComponentWrapper(format(PlaceholderAPI.setPlaceholders(null, string), placeholders));
     }
 
     public static List<ComponentWrapper> formatForGui(List<String> list, TagResolver... placeholders) {
-        return list.stream().map(s -> formatForGui(s, placeholders)).collect(Collectors.toList());
+        return list.stream().map(s -> formatForGui(PlaceholderAPI.setPlaceholders(null, s), placeholders)).collect(Collectors.toList());
     }
 
     public static Component format(String string, TagResolver... placeholders) {

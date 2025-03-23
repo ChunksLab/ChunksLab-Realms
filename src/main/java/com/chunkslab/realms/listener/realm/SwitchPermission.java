@@ -42,9 +42,11 @@ public class SwitchPermission extends RealmPermissionListener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.hasBlock())
+        if (event.hasBlock()) {
+            if (event.getItem() == null) return;
             if (switchUseMaterials.contains(event.getItem().getType()))
                 checkAndCancel(event, event.getPlayer());
+        }
     }
 
     @EventHandler
