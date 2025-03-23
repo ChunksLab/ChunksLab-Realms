@@ -1,17 +1,17 @@
 structure:
-  - "# # # # # # # # #"
-  - "# x x x x x x x #"
-  - "# x x x x x x x #"
-  - "# x x x x x x x #"
-  - "# x x x x x x x #"
-  - "# # # # # # # # #"
+  - "p p d d s s f f <"
+  - "p p d d s s f f #"
+  - "p p d d s s f f >"
 
-title: "<underlined>Bans"
+title: "<underlined>Select Biome"
 
 items:
   '#':
     material: "GRAY_STAINED_GLASS_PANE"
     name: "<aqua>ᴄʜᴜɴᴋsʟᴀʙ"
+  'fallback':
+    material: "PAPER"
+    name: "<aqua>ᴄᴏᴍɪɴɢ sᴏᴏɴ"
   '<':
     material: "ARROW"
     name: "<yellow>Previous Page"
