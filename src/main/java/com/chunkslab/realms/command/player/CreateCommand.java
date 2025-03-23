@@ -46,7 +46,7 @@ public class CreateCommand extends BaseCommand {
         ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getRealmCreating()));
         plugin.getRealmManager().createRealm(plugin.getBiomeManager().getDefaultBiome(), realmPlayer).thenAccept(result -> {
            if (!result) {
-               ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getProblemNotifyAdmin()));
+               ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getRealmAlreadyCreating()));
                return;
            }
 

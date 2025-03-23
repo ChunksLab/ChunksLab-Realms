@@ -26,6 +26,7 @@ public class RealmManager implements IRealmManager {
 
     private final Map<UUID, Realm> realmMap = new ConcurrentHashMap<>();
     private final TreeMap<Double, TreeMap<Double, Realm>> locationMap = new TreeMap<>();
+    private final Collection<RealmPlayer> realmsCreating = new ArrayList<>();
 
     @Override
     public Collection<Realm> getRealms() {
@@ -39,6 +40,10 @@ public class RealmManager implements IRealmManager {
 
     @Override
     public CompletableFuture<Boolean> createRealm(Biome biome, RealmPlayer realmPlayer) {
+        if (realmsCreating.contains(realmPlayer)) {
+            return CompletableFuture.completedFuture(false);
+        }
+        realmsCreating.add(realmPlayer);
         Location location = plugin.getWorldManager().getNextLocation(true);
         return plugin.getSchematicManager().getSchematicPaster()
                 .paste(location, biome.getSchematics().get(new Random().nextInt(biome.getSchematics().size())))
@@ -51,6 +56,12 @@ public class RealmManager implements IRealmManager {
                     realmPlayer.setRealmId(realm.getUniqueId());
                     loadRealm(realm);
                     return true;
+                }).whenComplete((result, throwable) -> {
+                    realmsCreating.remove(realmPlayer);
+                    if (throwable != null) {
+                        throwable.printStackTrace();
+                        ChatUtils.sendMessage(realmPlayer.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getProblemNotifyAdmin()));
+                    }
                 });
     }
 

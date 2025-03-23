@@ -51,6 +51,7 @@ public class MessagesEN extends OkaeriConfig {
     private String teleportCancelled = "<prefix> <#DC2625>Your teleportation was canceled due to the realm's teleport settings.";
     private String noFlyPermission = "<prefix> <#DC2625>You don’t have permission to fly in this realm.";
     private String biomeNotFound = "<prefix> <#DC2625>No biome could be located.";
+    private String realmAlreadyCreating = "<prefix> <#DC2625>Your realm is already being created. Please wait...";
 
     private String realmSpawnSet = "<prefix> <#85CC16>Your realm spawn point has been set successfully!";
     private String teleportToRealm = "<prefix> <#85CC16>Teleporting to your realm...";
