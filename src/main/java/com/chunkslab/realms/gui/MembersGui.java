@@ -46,7 +46,7 @@ public class MembersGui {
                 .sorted((member1, member2) -> Integer.compare(member2.getRank().power(), member1.getRank().power()))
                 .map(member -> {
                     try {
-                        SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
+                        SkullBuilder item = new SkullBuilder(member.getUniqueId());
                         item.setDisplayName(
                                 ChatUtils.formatForGui(
                                         PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.member.name")),

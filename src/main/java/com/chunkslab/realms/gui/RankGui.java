@@ -32,7 +32,7 @@ public class RankGui {
 
         ItemBuilder border = new ItemBuilder(ItemUtils.build(config, "items.#"));
 
-        SkullBuilder skull = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
+        SkullBuilder skull = new SkullBuilder(member.getUniqueId());
         skull.setDisplayName(ChatUtils.formatForGui(PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.name"))));
         skull.setCustomModelData(config.getInt("items.x.custom-model-data"));
 

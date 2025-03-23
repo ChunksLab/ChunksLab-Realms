@@ -71,8 +71,7 @@ public class RealmsGui {
         List<Item> realms = plugin.getRealmManager().getRealms()
                 .stream().map(realm -> {
                     try {
-                        SkullBuilder item = new SkullBuilder(
-                                SkullBuilder.HeadTexture.of(realm.getMembersController().getOwnerPlayer().getBukkitOfflinePlayer()));
+                        SkullBuilder item = new SkullBuilder(realm.getMembersController().getOwner().getUniqueId());
 
                         ComponentWrapper displayName = ChatUtils.formatForGui(
                                 PlaceholderAPI.setPlaceholders(

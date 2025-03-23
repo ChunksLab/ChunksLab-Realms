@@ -48,7 +48,7 @@ public class BansGui {
                 .sorted((member1, member2) -> Float.compare(member2.getBanDate(), member1.getBanDate()))
                 .map(member -> {
                     try {
-                        SkullBuilder item = new SkullBuilder(SkullBuilder.HeadTexture.of(member.getBukkitOfflinePlayer()));
+                        SkullBuilder item = new SkullBuilder(member.getUniqueId());
                         item.setDisplayName(
                                 ChatUtils.formatForGui(
                                         PlaceholderAPI.setPlaceholders(member.getBukkitOfflinePlayer(), config.getString("items.x.member.name"))
