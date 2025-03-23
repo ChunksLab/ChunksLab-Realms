@@ -12,6 +12,7 @@ ranks:
     display: "<red>Owner"
     assignment: OWNER
     permissions:
+      - "REALM_COMMAND_DELETE"
       - "REALM_COMMAND_SETTINGS"
       - "REALM_COMMAND_MEMBER"
       - "REALM_COMMAND_MEMBERS"

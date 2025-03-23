@@ -250,6 +250,7 @@ public class YamlDatabase implements Database {
 
     @Override
     public void deleteRealm(UUID realmUUID) {
-
+        File file = new File(REALMS_FOLDER.getPath(), realmUUID.toString() + ".yml");
+        file.delete();
     }
 }

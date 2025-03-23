@@ -50,7 +50,7 @@ public class PlayerTeleportListener implements Listener {
             LogUtils.debug("Sending Border...");
             plugin.getScheduler().runTaskSyncLater(() -> WorldBorderUtils.send(realmPlayer, to), to.getCenterLocation().getLocation(), 5);
 
-            if (player.isFlying() && realmPlayer.hasPermission(Permission.PROTECTION_FLY) && !realmPlayer.getData().isBypass()) {
+            if (player.isFlying() && !realmPlayer.hasPermission(Permission.PROTECTION_FLY) && !realmPlayer.getData().isBypass()) {
                 player.setFlying(false);
                 player.setAllowFlight(false);
                 ChatUtils.sendMessage(player, ChatUtils.format(plugin.getPluginMessages().getNoFlyPermission()));

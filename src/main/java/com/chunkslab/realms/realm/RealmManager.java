@@ -9,7 +9,9 @@ import com.chunkslab.realms.api.realm.IRealmManager;
 import com.chunkslab.realms.api.realm.Realm;
 import com.chunkslab.realms.api.upgrade.Upgrade;
 import com.chunkslab.realms.api.util.LogUtils;
+import com.chunkslab.realms.util.ChatUtils;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.*;
@@ -78,6 +80,29 @@ public class RealmManager implements IRealmManager {
         this.realmMap.remove(realm.getUniqueId());
 
         plugin.getScheduler().runTaskSync(() -> plugin.getDatabase().saveRealm(realm), realm.getSpawnLocation().getLocation());
+    }
+
+    @Override
+    public void deleteRealm(Realm realm) {
+        LogUtils.debug(String.format("Deleting realm... [%s]", realm.getUniqueId().toString()));
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getDatabase().deleteRealm(realm));
+
+        for (RealmPlayer realmPlayer : realm.getMembersController().getMembers()) {
+            realmPlayer.setRealmId(null);
+            if (realmPlayer.getBukkitPlayer() != null) {
+                ChatUtils.sendMessage(realmPlayer.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRealmDeleted()));
+            }
+        }
+
+        for (RealmPlayer visitor : realm.getMembersController().getVisitors()) {
+            if (visitor.getBukkitPlayer() != null) {
+                ChatUtils.sendMessage(visitor.getBukkitPlayer(), ChatUtils.format(plugin.getPluginMessages().getRealmDeletedVisitor()));
+                //TODO: teleport the player safe location
+            }
+        }
+
+        this.realmMap.remove(realm.getUniqueId());
     }
 
     @Override

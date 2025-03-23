@@ -30,5 +30,7 @@ public interface IRealmManager {
 
     void unloadRealm(Realm realm);
 
+    void deleteRealm(Realm realm);
+
     Realm getRealm(Location location);
 }

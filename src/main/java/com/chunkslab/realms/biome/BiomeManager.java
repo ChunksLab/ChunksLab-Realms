@@ -58,4 +58,9 @@ public class BiomeManager implements IBiomeManager {
 
         return null;
     }
+
+    @Override
+    public Collection<Biome> getBiomes() {
+        return biomeMap.values();
+    }
 }

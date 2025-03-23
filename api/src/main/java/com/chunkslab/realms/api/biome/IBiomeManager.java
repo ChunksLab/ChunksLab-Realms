@@ -1,5 +1,7 @@
 package com.chunkslab.realms.api.biome;
 
+import java.util.Collection;
+
 public interface IBiomeManager {
 
     void enable();
@@ -7,5 +9,7 @@ public interface IBiomeManager {
     Biome getBiome(String name);
 
     Biome getDefaultBiome();
+
+    Collection<Biome> getBiomes();
 
 }

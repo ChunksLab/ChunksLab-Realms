@@ -6,7 +6,7 @@ plugins {
 
 ext {
     baseVersion = '1.0.0'
-    channel = 'SNAPSHOT'
+    channel = 'DEVELOPMENT'
 }
 
 group = 'com.chunkslab.realms'
@@ -99,8 +99,18 @@ processResources {
     }
 }
 
+tasks.register("cleanTarget") {
+    doFirst {
+        def targetDir = file("$rootDir/target")
+        if (targetDir.exists()) {
+            targetDir.deleteDir()
+        }
+    }
+}
+
 shadowJar {
     dependsOn(jar)
+    dependsOn(cleanTarget)
 
     archiveFileName = "Realms v${archiveVersion.get()}.jar"
     destinationDirectory.set(file("$rootDir/target"))
@@ -164,7 +174,7 @@ def getVersion() {
         finalVersion += "-${channel}"
     }
     def includeHash = System.getenv("INCLUDE_GIT_HASH")
-    if (includeHash == null || includeHash.toBoolean()) {
+    if ((includeHash == null || includeHash.toBoolean()) && channel != "DEVELOPMENT") {
         finalVersion += getGitCommitHash()
     }
     return finalVersion

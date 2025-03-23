@@ -16,11 +16,13 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
@@ -45,7 +47,8 @@ public class WorldEditPaster implements SchematicPaster {
                         .build();
                 Operations.complete(operation);
                 Location center = getCenter(location, clipboard);
-                return new Pair<>(center, getRandomSurfaceLocationNearCenter(center));
+                Location surface = getRandomSurfaceLocationNearCenter(center);
+                return new Pair<>(center, surface);
             } catch (IOException | WorldEditException e) {
                 throw new RuntimeException(e);
             }
@@ -60,23 +63,29 @@ public class WorldEditPaster implements SchematicPaster {
     }
 
     private Location getRandomSurfaceLocationNearCenter(Location center) {
-        Location location = null;
-        do {
-            Random random = new Random();
-            int maxDistance = RealmsPlugin.getInstance().getUpgradeManager().getUpgrade(Upgrade.Type.SIZE, 0).value() * 16;
+        Location location;
+        Random random = new Random();
+        World world = center.getWorld();
 
+        int maxDistance = RealmsPlugin.getInstance().getUpgradeManager().getUpgrade(Upgrade.Type.SIZE, 0).value() * 16;
+        List<String> forbiddenBlocks = RealmsPlugin.getInstance().getPluginConfig().getSettings().getForbiddenBlocks();
+
+        do {
             int offsetX = random.nextInt(maxDistance * 2 + 1) - maxDistance;
             int offsetZ = random.nextInt(maxDistance * 2 + 1) - maxDistance;
 
             int newX = center.getBlockX() + offsetX;
             int newZ = center.getBlockZ() + offsetZ;
 
-            World world = center.getWorld();
-            int surfaceY = world.getHighestBlockYAt(newX, newZ);
+            Location surface = world.getHighestBlockAt(newX, newZ).getLocation();
+            Material groundMaterial = surface.getBlock().getType();
 
-            location = new Location(world, newX, surfaceY, newZ);
-        } while (RealmsPlugin.getInstance().getPluginConfig().getSettings().getForbiddenBlocks().contains(location.getBlock().getType().name()));
-        return location.add(0, 1, 0);
+            if (forbiddenBlocks.contains(groundMaterial.name())) continue;
+
+            location = surface.add(0, 1, 0);
+            break;
+        } while (true);
+
+        return location;
     }
-
 }

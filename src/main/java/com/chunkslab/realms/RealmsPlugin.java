@@ -1,6 +1,7 @@
 package com.chunkslab.realms;
 
 import com.chunkslab.realms.api.RealmsAPI;
+import com.chunkslab.realms.api.biome.Biome;
 import com.chunkslab.realms.api.biome.IBiomeManager;
 import com.chunkslab.realms.api.config.ConfigFile;
 import com.chunkslab.realms.api.database.Database;
@@ -19,19 +20,7 @@ import com.chunkslab.realms.api.upgrade.IUpgradeManager;
 import com.chunkslab.realms.api.world.IWorldManager;
 import com.chunkslab.realms.biome.BiomeManager;
 import com.chunkslab.realms.command.MainCommand;
-import com.chunkslab.realms.command.player.AcceptCommand;
-import com.chunkslab.realms.command.player.BanCommand;
-import com.chunkslab.realms.command.player.BorderCommand;
-import com.chunkslab.realms.command.player.CreateCommand;
-import com.chunkslab.realms.command.player.DenyCommand;
-import com.chunkslab.realms.command.player.InviteCommand;
-import com.chunkslab.realms.command.player.MemberCommand;
-import com.chunkslab.realms.command.player.MembersCommand;
-import com.chunkslab.realms.command.player.RemoveCommand;
-import com.chunkslab.realms.command.player.SetSpawnCommand;
-import com.chunkslab.realms.command.player.SettingsCommand;
-import com.chunkslab.realms.command.player.TeleportCommand;
-import com.chunkslab.realms.command.player.UnBanCommand;
+import com.chunkslab.realms.command.player.*;
 import com.chunkslab.realms.config.Config;
 import com.chunkslab.realms.config.messages.MessagesEN;
 import com.chunkslab.realms.database.impl.yaml.YamlDatabase;
@@ -217,12 +206,16 @@ public final class RealmsPlugin extends RealmsAPI {
         commandManager.registerSuggestion(SuggestionKey.of("players"), (sender, context) ->
                 new ArrayList<>(this.serverManager.getAllOnlinePlayers())
         );
+        commandManager.registerSuggestion(SuggestionKey.of("biomes"), (sender, context) ->
+                biomeManager.getBiomes().stream().map(Biome::getId).toList()
+        );
 
         commandManager.registerCommand(new MainCommand(this, Permission.REALM_COMMAND));
 
         // Player Commands
         commandManager.registerCommand(
                 new CreateCommand(this, Permission.REALM_COMMAND_CREATE),
+                new DeleteCommand(this, Permission.REALM_COMMAND_DELETE),
                 new TeleportCommand(this, Permission.REALM_COMMAND_TELEPORT),
                 new SettingsCommand(this, Permission.REALM_COMMAND_SETTINGS),
                 new SetSpawnCommand(this, Permission.REALM_COMMAND_SETSPAWN),
