@@ -1,0 +1,35 @@
+name: Realms
+description: An Realms plugin created with love.
+version: '${version}'
+main: com.chunkslab.realms.paper.PaperRealmsPlugin
+loader: com.chunkslab.realms.paper.PaperRealmsPluginLoader
+api-version: '1.20'
+authors: [amownyy, ChunksLab]
+website: https://chunkslab.com/
+folia-supported: true
+dependencies:
+  server:
+    PlaceholderAPI:
+      required: true
+      load: BEFORE
+      join-classpath: true
+    WorldEdit:
+      required: false
+      load: BEFORE
+      join-classpath: true
+    Nexo:
+      required: false
+      load: BEFORE
+      join-classpath: true
+    Oraxen:
+      required: false
+      load: BEFORE
+      join-classpath: true
+    ItemsAdder:
+      required: false
+      load: BEFORE
+      join-classpath: true
+    CraftEngine:
+      required: false
+      load: BEFORE
+      join-classpath: true

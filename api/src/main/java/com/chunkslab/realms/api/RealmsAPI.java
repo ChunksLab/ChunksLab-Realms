@@ -15,6 +15,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.util.jar.JarFile;
+
 public abstract class RealmsAPI extends JavaPlugin {
 
     private static RealmsAPI api;
@@ -31,6 +34,14 @@ public abstract class RealmsAPI extends JavaPlugin {
 
     public static RealmsAPI getInstance() {
         return api;
+    }
+
+    public static JarFile getJarFile() {
+        try {
+            return new JarFile(api.getFile());
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     // abstract

@@ -6,7 +6,15 @@ plugins {
 
 ext {
     baseVersion = '1.0.0'
-    channel = 'DEVELOPMENT'
+    channel = 'SNAPSHOT'
+
+    invui_version = invui_version.toString();
+    bstats_version = bstats_version.toString();
+    skullcreator_version = skullcreator_version.toString();
+    adventure_bundle_version = adventure_bundle_version.toString();
+    adventure_platform_version = adventure_platform_version.toString();
+    hikari_version = hikari_version.toString();
+    worldedit_version = worldedit_version.toString();
 }
 
 group = 'com.chunkslab.realms'
@@ -52,24 +60,28 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
     implementation project(':api')
     implementation project(':folia')
 
-    implementation("net.kyori:adventure-api:4.17.0")
-    implementation("net.kyori:adventure-text-minimessage:4.17.0")
-    implementation("net.kyori:adventure-text-serializer-legacy:4.17.0")
-    implementation("net.kyori:adventure-platform-bukkit:4.3.4")
+    implementation("dev.triumphteam:triumph-cmd-bukkit:${rootProject.properties['triumph_cmd_version']}") {
+        exclude group: "com.google.code.gson"
+    }
+    implementation("eu.okaeri:okaeri-configs-yaml-bukkit:${rootProject.properties['okaeri_config_version']}")
+    implementation("org.bstats:bstats-bukkit:${rootProject.properties['bstats_version']}")
+    implementation("org.bstats:bstats-base:${rootProject.properties['bstats_version']}")
+    implementation("dev.dbassett:skullcreator:${rootProject.properties['skullcreator_version']}")
 
-    implementation 'dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT'  exclude group: 'com.google.code.gson'
-    implementation 'eu.okaeri:okaeri-configs-yaml-bukkit:5.0.5'
-    implementation 'xyz.xenondevs.invui:invui:1.43'
-    implementation 'org.bstats:bstats-bukkit:3.1.0'
-    implementation 'dev.dbassett:skullcreator:3.0.1'
+    compileOnly("net.kyori:adventure-api:${rootProject.properties['adventure_bundle_version']}")
+    compileOnly("net.kyori:adventure-text-minimessage:${rootProject.properties['adventure_bundle_version']}")
+    compileOnly("net.kyori:adventure-text-serializer-legacy:${rootProject.properties['adventure_bundle_version']}")
+    compileOnly("net.kyori:adventure-platform-bukkit:${rootProject.properties['adventure_platform_version']}")
 
-    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.13'
-    compileOnly 'me.clip:placeholderapi:2.11.6'
-    compileOnly 'com.zaxxer:HikariCP:5.0.1'
+    compileOnly("xyz.xenondevs.invui:invui:${rootProject.properties['invui_version']}")
+    compileOnly("me.clip:placeholderapi:${rootProject.properties['placeholder_api_version']}")
+
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:${rootProject.properties['worldedit_version']}")
+    compileOnly("com.zaxxer:HikariCP:${rootProject.properties['hikari_version']}")
 }
 
 def targetJavaVersion = 17
@@ -91,10 +103,17 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [
+            'version': version,
+            'invui_version': project.ext.invui_version,
+            'bstats_version': project.ext.bstats_version,
+            'adventure_bundle_version': project.ext.adventure_bundle_version,
+            'adventure_platform_version': project.ext.adventure_platform_version,
+            'hikari_version': project.ext.hikari_version,
+    ]
     inputs.properties props
     filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
+    filesMatching(['**/*.json', '**/*.yml', '**/*.properties']) {
         expand props
     }
 }
@@ -108,6 +127,10 @@ tasks.register("cleanTarget") {
     }
 }
 
+tasks.named("clean") {
+    dependsOn("cleanTarget")
+}
+
 shadowJar {
     dependsOn(jar)
     dependsOn(cleanTarget)
@@ -115,12 +138,23 @@ shadowJar {
     archiveFileName = "Realms v${archiveVersion.get()}.jar"
     destinationDirectory.set(file("$rootDir/target"))
 
-    relocate 'net.kyori', 'com.chunkslab.realms.libs.adventure'
-    relocate 'dev.triumphteam.cmd', 'com.chunkslab.realms.libs.triumphteam'
-    relocate 'xyz.xenondevs.invui', 'com.chunkslab.realms.libs.invui'
-    relocate 'dev.dbassett', 'com.chunkslab.realms.libs.skullcreator'
-    relocate 'eu.okaeri', 'com.chunkslab.realms.libs.okaeri'
-    relocate 'org.bstats', 'com.chunkslab.realms.libs.bstats'
+    relocate 'dev.triumphteam.cmd', 'com.chunkslab.realms.libraries.triumphteam'
+    relocate 'eu.okaeri', 'com.chunkslab.realms.libraries.okaeri'
+    relocate 'org.bstats', 'com.chunkslab.realms.libraries.bstats'
+    relocate 'dev.dbassett', 'com.chunkslab.realms.libraries.dbassett'
+    relocate 'com.zaxxer', 'com.chunkslab.realms.libraries.zaxxer'
+
+    manifest {
+        attributes(
+                "Built-By": System.getProperty("user.name"),
+                "Version": project.version,
+                "Build-Timestamp": new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSZ").format(new Date()),
+                "Created-By": "Gradle ${gradle.gradleVersion}",
+                "Build-Jdk": "${System.getProperty("java.version")} ${System.getProperty("java.vendor")} ${System.getProperty("java.vm.version")}",
+                "Build-OS": "${System.getProperty("os.name")} ${System.getProperty("os.arch")} ${System.getProperty("os.version")}",
+                "Compiled": (project.findProperty("realms_compiled")?.toString() ?: "true")
+        )
+    }
 
     from sourceSets.getByName("main").output
     configurations = [project.configurations.getByName("runtimeClasspath")]
@@ -130,7 +164,7 @@ shadowJar.shouldRunAfter build
 
 tasks.shadowJar {
     doLast {
-        file("${buildDir}/libs/${project.name}-${version}.jar").delete()
+        file("${rootDir}/libs/${project.name}-${project.version}.jar").delete()
     }
 }
 

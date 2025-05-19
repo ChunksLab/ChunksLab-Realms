@@ -35,6 +35,7 @@ import com.chunkslab.realms.schematic.SchematicManager;
 import com.chunkslab.realms.server.ServerManager;
 import com.chunkslab.realms.upgrade.UpgradeManager;
 import com.chunkslab.realms.util.ChatUtils;
+import com.chunkslab.realms.util.NoticeUtil;
 import com.chunkslab.realms.world.WorldManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
@@ -47,6 +48,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -65,7 +67,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @Getter
-public final class RealmsPlugin extends RealmsAPI {
+public class RealmsPlugin extends RealmsAPI {
 
     @Getter private static RealmsPlugin instance;
 
@@ -73,6 +75,14 @@ public final class RealmsPlugin extends RealmsAPI {
     private Config pluginConfig;
     private MessagesEN pluginMessages;
     private BukkitCommandManager<CommandSender> commandManager;
+
+    // license
+    private final String builtByBit = "%%__BUILTBYBIT__%%";
+    private final String polymart = "%%__POLYMART__%%";
+    private String username = "%%__USERNAME__%%";
+    private String user = "%%__USER__%%";
+    private final String time = "%%__TIMESTAMP__%%";
+    private final String nonce = "%%__NONCE__%%";
 
     // config
     private final ConfigFile upgradesFile = new ConfigFile(this, "upgrades.yml", true);
@@ -147,7 +157,19 @@ public final class RealmsPlugin extends RealmsAPI {
 
         database = new YamlDatabase(this);
 
+        boolean downloadFromPolymart = polymart.equals("1");
+        boolean downloadFromBBB = builtByBit.equals("true");
+
+        if (!downloadFromPolymart && !downloadFromBBB) {
+            username = "Github User";
+            user = "0";
+        }
+
         new PapiHook(this).register();
+
+        new NoticeUtil(this);
+
+        new Metrics(this, 25022);
 
         this.getModuleManager().enableModules();
         database.enable();

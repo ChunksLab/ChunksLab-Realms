@@ -1,19 +1,5 @@
-name: Realms
-description: An Realms plugin created with love.
-version: '${version}'
-main: com.chunkslab.realms.RealmsPlugin
-api-version: '1.18'
-authors: [amownyy, ChunksLab]
-website: https://chunkslab.com/
-folia-supported: true
-depend: [PlaceholderAPI]
-softdepend:
-  - WorldEdit
-  - Nexo
-  - Oraxen
-  - ItemsAdder
-  - CraftEngine
 libraries:
+  - 'xyz.xenondevs.invui:invui:pom:${invui_version}'
   - 'net.kyori:adventure-api:${adventure_bundle_version}'
   - 'net.kyori:adventure-text-minimessage:${adventure_bundle_version}'
   - 'net.kyori:adventure-text-serializer-legacy:${adventure_bundle_version}'
